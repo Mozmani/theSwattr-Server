@@ -1,0 +1,44 @@
+root: true
+env:
+  commonjs: true
+  browser: true
+  es2021: true
+  mocha: true
+  node: true
+parserOptions:
+  ecmaVersion: 12
+  sourceType: module
+extends:
+  - eslint:recommended
+  - airbnb-base
+  #! Prettier must be last, in this order
+  - plugin:prettier/recommended
+globals:
+  expect: readonly
+  supertest: readonly
+ignorePatterns:
+  #! target only db/ src/ tests/
+  - '/*'
+  - '!db/'
+  - '!src/'
+  - '!tests/'
+  - 'db/**.csv'
+rules:
+  camelcase: 0
+  no-unused-vars:
+    #! example - if not using 'req': router.get((_req, res, next) => {})
+    - error
+    - argsIgnorePattern: ^_
+  linebreak-style:
+    - error
+    - unix
+  no-empty-function:
+    - error
+    - allow:
+        #! this allows for empty service/boilerplate code
+        - methods
+  no-plusplus: 0
+  no-return-assign: 0
+  no-param-reassign: 0
+  no-trailing-spaces: 0
+  no-underscore-dangle: 0

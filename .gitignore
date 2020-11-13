@@ -1,0 +1,14 @@
+.env
+.env.test
+*.log
+
+.nyc_output/
+logs/
+node_modules/
+
+docker-data
+
+# Custom stuff
+.shorten_folder_marker
+
+!db/
