@@ -1,0 +1,13 @@
+SET TIME ZONE UTC;
+
+DROP TABLE IF EXISTS user_data;
+
+CREATE TABLE user_data (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  user_name VARCHAR(50) NOT NULL,
+  password VARCHAR(500) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  dev BOOLEAN NOT NULL
+);
