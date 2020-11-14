@@ -11,7 +11,7 @@ const {
   jsonBodyParser,
 } = require('../../src/middlewares');
 
-const usersRouter = Router();
-const TABLE_NAME = TABLE_NAMES.USERS;
+const commentThreadRouter = Router();
+const TABLE_NAME = TABLE_NAMES.COMMENT_THREAD;
 
-module.exports = usersRouter;
+module.exports = commentThreadRouter;

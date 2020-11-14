@@ -5,5 +5,5 @@ const SerializeService = require('./serialize.service');
 module.exports = {
   CRUDService,
   QueryService,
-  SerializeService
+  SerializeService,
 };

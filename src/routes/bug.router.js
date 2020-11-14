@@ -3,7 +3,7 @@ const {
   SerializeService,
 } = require('../../src/services');
 
-const { TABLE_NAMES } = require('../../src/constants/db.constants');
+const { TABLE_NAMES } = require('../..src/constants/db.constants');
 const {
   auth,
   validate,
@@ -11,7 +11,7 @@ const {
   jsonBodyParser,
 } = require('../../src/middlewares');
 
-const usersRouter = Router();
-const TABLE_NAME = TABLE_NAMES.USERS;
+const bugRouter = Router();
+const TABLE_NAME = TABLE_NAMES.BUG;
 
-module.exports = usersRouter;
+module.exports = bugRouter;

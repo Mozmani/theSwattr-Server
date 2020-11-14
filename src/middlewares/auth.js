@@ -9,7 +9,7 @@ const createJwtService = (user_name, id) => {
 
   return jwt.sign(payload, JWT_SECRET, {
     subject,
-    algorithm: 'HS256'
+    algorithm: 'HS256',
   });
 };
 
@@ -18,7 +18,10 @@ const passwordCheck = async (req, res, next) => {
     const plaintextPassword = req.body.password;
     const { password, user_name, id } = res.dbUser;
 
-    const passwordsMatch = await bcrypt.compare(plaintextPassword, password);
+    const passwordsMatch = await bcrypt.compare(
+      plaintextPassword,
+      password,
+    );
 
     if (!passwordsMatch)
       return res.status(401).json({ error: 'Unauthorized request' });

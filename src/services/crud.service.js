@@ -1,3 +1,11 @@
+/*
+* TODO - test this!
+! select('*') can use an array of strings to target columns:
+?   CRUDService.getAllData(db, TABLE_NAME, ['col1', 'col2', 'col3'])
+! then in the method...
+?   getAllData(db, table, cols) { return db(table).select([...cols]) };
+*/
+
 const CRUDService = {
   getAllData(db, table) {
     return db(table).select('*');
@@ -11,12 +19,12 @@ const CRUDService = {
     return db(table).where({ id }).del();
   },
 
-  createEntry(db, table, newSong) {
-    return db(table).insert(newSong, '*');
+  createEntry(db, table, newData) {
+    return db(table).insert(newData, '*');
   },
 
-  updateEntry(db, table, id, newSong) {
-    return db(table).where({ id }).update(newSong, '*');
+  updateEntry(db, table, id, newData) {
+    return db(table).where({ id }).update(newData, '*');
   },
 
   // special case for user login

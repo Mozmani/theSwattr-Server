@@ -4,11 +4,11 @@ const winston = require('winston');
 
 const { NODE_ENV } = require('../../src/config');
 
-const { format } = winston
+const { format } = winston;
 
 const fileFormat = format.combine(
   format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  format.json()
+  format.json(),
 );
 
 const consoleFormat = format.combine(
@@ -16,8 +16,8 @@ const consoleFormat = format.combine(
   format.timestamp({ format: 'HH:mm:ss' }),
   format.align(),
   format.printf(
-    (info) => `[${info.timestamp}] ❗${info.level}: ${info.message}`
-  )
+    (info) => `[${info.timestamp}] ❗${info.level}: ${info.message}`,
+  ),
 );
 
 const logger = winston.createLogger();
@@ -31,16 +31,16 @@ logger.add(
     maxsize: 20000000, // 20MB
     tailable: true,
     zippedArchive: true,
-    format: fileFormat
-  })
+    format: fileFormat,
+  }),
 );
 
 if (NODE_ENV === 'development') {
   logger.add(
     new winston.transports.Console({
       level: 'silly',
-      format: consoleFormat
-    })
+      format: consoleFormat,
+    }),
   );
 }
 

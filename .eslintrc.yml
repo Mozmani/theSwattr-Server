@@ -14,8 +14,13 @@ extends:
   #! Prettier must be last, in this order
   - plugin:prettier/recommended
 globals:
+  #! for testing
   expect: readonly
   supertest: readonly
+  NODE_ENV: readonly
+  TEST_DB_URL: readonly
+  JWT_SECRET: readonly
+  JWT_EXPIRY: readonly
 ignorePatterns:
   #! target only db/ src/ tests/
   - '/*'

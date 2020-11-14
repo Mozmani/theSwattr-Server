@@ -1,7 +1,7 @@
-const auth = require('./auth')
-const validate = require('./body-validators')
-const error = require('./error-handlers')
-const { app, Router ,jsonBodyParser } = require('./express-methods')
+const auth = require('./auth');
+const validate = require('./body-validators');
+const error = require('./error-handlers');
+const { app, Router, jsonBodyParser } = require('./express-methods');
 
 module.exports = {
   auth,
@@ -9,5 +9,5 @@ module.exports = {
   error,
   app,
   Router,
-  jsonBodyParser
-}
+  jsonBodyParser,
+};

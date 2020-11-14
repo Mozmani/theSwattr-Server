@@ -1,4 +1,6 @@
 export const ROUTES = {
   API: '/api-name/v1',
-  EXAMPLE: '/route-name/example',
+  USERS: '/users',
+  BUG: '/bug',
+  COMMENT_THREAD: '/comment-thread',
 };

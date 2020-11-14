@@ -1,6 +1,8 @@
 function checkFields(object) {
   const fields = Object.entries(object);
-  const keyError = fields.find(([key, value]) => value === undefined && key);
+  const keyError = fields.find(
+    ([key, value]) => value === undefined && key,
+  );
   return keyError;
 }
 
@@ -12,7 +14,7 @@ const loginBody = (req, res, next) => {
 
   if (keyError)
     return res.status(400).json({
-      error: `Missing '${keyError}' in request body`
+      error: `Missing '${keyError}' in request body`,
     });
 
   res.loginUser = loginUser;
@@ -20,5 +22,5 @@ const loginBody = (req, res, next) => {
 };
 
 module.exports = {
-  loginBody
+  loginBody,
 };
