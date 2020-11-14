@@ -1,8 +1,8 @@
 SET TIME ZONE UTC;
 
-DROP TABLE IF EXISTS user_data;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE user_data (
+CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
