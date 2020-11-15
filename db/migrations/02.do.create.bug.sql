@@ -32,9 +32,9 @@ CREATE TABLE bug (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   completed_at TIMESTAMPTZ,
   completed_notes VARCHAR(5000),
-  app_name VARCHAR(50) NOT NULL,
-  severity VARCHAR(50) NOT NULL,
-  status VARCHAR(50) NOT NULL
+  app_name VARCHAR(50) NOT NULL DEFAULT 'main-app',
+  severity VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+  status VARCHAR(50) NOT NULL DEFAULT 'PENDING'
 );
 
 -- STILL NEEDS TESTING!
