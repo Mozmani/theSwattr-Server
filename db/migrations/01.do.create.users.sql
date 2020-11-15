@@ -9,5 +9,5 @@ CREATE TABLE users (
   user_name VARCHAR(50) NOT NULL,
   password VARCHAR(500) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  dev BOOLEAN NOT NULL
+  dev BOOLEAN DEFAULT FALSE
 );
