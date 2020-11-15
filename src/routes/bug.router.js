@@ -3,7 +3,7 @@ const {
   SerializeService,
 } = require('../../src/services');
 
-const { TABLE_NAMES } = require('../..src/constants/db.constants');
+const { TABLE_NAMES } = require('../../src/constants/db.constants');
 const {
   auth,
   validate,

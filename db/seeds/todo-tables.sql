@@ -47,8 +47,8 @@ VALUES
   ('Dormant');
 INSERT INTO bug_status (bug_id, status_id)
 VALUES
-  (1, 2),
-  (2, 3);
+  (1, 1),
+  (2, 4);
 
 INSERT INTO severity_level (level)
 VALUES

@@ -1,13 +1,13 @@
-export const TABLE_NAMES = {
+const TABLE_NAMES = {
   BUG: 'bug',
   COMMENT_THREAD: 'comment_thread',
   USERS: 'users',
   APP: 'app',
   STATUS: 'status',
-  SEVERITY_LEVEL: 'severity_level'
+  SEVERITY_LEVEL: 'severity_level',
 };
 
-export const BUG_TABLE = [
+const BUG_TABLE = [
   'id',
   'user_id',
   'bug_name',
@@ -20,14 +20,14 @@ export const BUG_TABLE = [
   'severity',
 ];
 
-export const COMMENT_THREAD_TABLE = [
+const COMMENT_THREAD_TABLE = [
   'bug_id',
   'user_id',
   'created_at',
   'comment',
 ];
 
-export const USERS_TABLE = [
+const USERS_TABLE = [
   'id',
   'first_name',
   'last_name',
@@ -37,8 +37,18 @@ export const USERS_TABLE = [
   'dev',
 ];
 
-export const APP_TABLE = ['id', 'app_name'];
+const APP_TABLE = ['id', 'app_name'];
 
-export const BUG_STATUS_TABLE = ['id', 'status'];
+const BUG_STATUS_TABLE = ['id', 'status'];
 
-export const BUG_SEVERITY_LEVEL_TABLE = ['id', 'level'];
+const BUG_SEVERITY_LEVEL_TABLE = ['id', 'level'];
+
+module.exports = {
+  TABLE_NAMES,
+  BUG_TABLE,
+  COMMENT_THREAD_TABLE,
+  USERS_TABLE,
+  APP_TABLE,
+  BUG_STATUS_TABLE,
+  BUG_SEVERITY_LEVEL_TABLE,
+};
