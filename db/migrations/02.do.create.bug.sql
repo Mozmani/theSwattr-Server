@@ -1,12 +1,25 @@
--- function for updating the updated_at column
-CREATE OR REPLACE FUNCTION trigger_set_timestamp()
-RETURNS TRIGGER AS $$
+-- function for updating the updated_at column in bug table
+CREATE OR REPLACE FUNCTION trigger_bug_updated_at()
+RETURNS TRIGGER AS $bug_updated_at$
 BEGIN
-  NEW.updated_at = NOW();
+  -- basic checks
+  IF NEW.bug_id IS NULL THEN
+    RAISE EXCEPTION 'bug_id cannot be null';
+  END IF;
+  IF NEW.user_id IS NULL THEN
+    RAISE EXCEPTION 'user_id cannot be null';
+  END IF;
+  IF NEW.comment IS NULL THEN
+    RAISE EXCEPTION 'comment cannot be null';
+  END IF;
+
+  -- update timestamp by id
+  UPDATE bug SET updated_at = NOW()
+  WHERE id = NEW.bug_id;
   RETURN NEW;
 END;
 
-$$ LANGUAGE plpgsql;
+$bug_updated_at$ LANGUAGE plpgsql;
 
 DROP TABLE IF EXISTS bug;
 
@@ -24,8 +37,9 @@ CREATE TABLE bug (
   status VARCHAR(50) NOT NULL
 );
 
+-- STILL NEEDS TESTING!
+
 -- this will auto stamp updated_at on every table row update
-CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON bug
-FOR EACH ROW
-EXECUTE PROCEDURE trigger_set_timestamp();
+-- CREATE TRIGGER bug_updated_at
+-- BEFORE INSERT OR UPDATE OR DELETE ON comment_thread
+-- FOR EACH ROW EXECUTE FUNCTION trigger_bug_updated_at();
