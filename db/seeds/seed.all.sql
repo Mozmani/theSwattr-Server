@@ -12,7 +12,8 @@ INSERT INTO users
     dev
   )
 VALUES
-  ('first', 'last', 'admin', 'pass', 'email', true);
+  ('John', 'Smith', 'admin', 'pass', 'email@yoohoo.com', true),
+  ('Jane', 'Austin', 'user', 'pass', 'user@yoohoo.com', false);
 
 INSERT INTO bug
   (
@@ -21,7 +22,8 @@ INSERT INTO bug
     description
   )
 VALUES
-  (1, 'bug_name', 'decription');
+  (1, 'Bug 1', 'decription of Bug 1'),
+  (2, 'Bug 2', 'decription of Bug 2');
 
 INSERT INTO comment_thread
   (
@@ -30,6 +32,10 @@ INSERT INTO comment_thread
     comment
   )
 VALUES
-  (1, 1, 'comment');
+  (1, 1, 'dev comment 1'),
+  (2, 1, 'dev response 1'),
+  (2, 2, 'user response 1'),
+  (2, 1, 'dev response 2'),
+  (1, 1, 'dev comment 1');
 
 COMMIT;

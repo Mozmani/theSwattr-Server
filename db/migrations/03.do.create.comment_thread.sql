@@ -35,3 +35,32 @@ $bug_updated_at$ LANGUAGE plpgsql;
 CREATE TRIGGER bug_updated_at
 BEFORE INSERT OR UPDATE OR DELETE ON comment_thread
 FOR EACH ROW EXECUTE FUNCTION trigger_bug_updated_at();
+
+-- function for updating status on bug linkage table
+CREATE OR REPLACE FUNCTION trigger_bug_status()
+RETURNS TRIGGER AS $bug_status$
+  DECLARE
+    current_status INTEGER;
+  BEGIN
+    -- grab current status
+    SELECT status_id INTO current_status
+    FROM bug_status WHERE bug_id = NEW.bug_id;
+
+    -- check if bug is closed
+    IF current_status = 2 THEN
+      RETURN NULL;
+    ELSEIF current_status = 3 THEN
+      RAISE EXCEPTION 'bug is closed';
+    END IF;
+
+    -- update status by id to 'open'
+    UPDATE bug_status SET status_id = 2
+    WHERE bug_id = NEW.bug_id;
+    RETURN NULL;
+  END;
+$bug_status$ LANGUAGE plpgsql;
+
+-- this will auto update status if needed on comment update
+CREATE TRIGGER bug_status
+AFTER INSERT OR UPDATE OR DELETE ON comment_thread
+FOR EACH ROW EXECUTE FUNCTION trigger_bug_status();
