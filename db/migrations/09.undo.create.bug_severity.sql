@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS bug_severity_level;
+DROP TABLE bug_severity_level;

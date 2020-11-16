@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS bug_app;
+DROP TABLE bug_app;

@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS bug_status;
+DROP TABLE bug_status;

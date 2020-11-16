@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS severity_level;
+DROP TABLE severity_level;

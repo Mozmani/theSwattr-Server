@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS app;
+DROP TABLE app;
