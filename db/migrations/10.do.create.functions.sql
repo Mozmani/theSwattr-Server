@@ -55,9 +55,9 @@ $update_bug_severity$ LANGUAGE plpgsql;
 
 -- function for initializing a bug's app and severity level
 CREATE OR REPLACE FUNCTION init_app_severity(new_bug_id INTEGER, app TEXT, severity TEXT)
-RETURNS VOID AS $init_app_severity$
+RETURNS VOID AS $$
   BEGIN
     PERFORM update_bug_app(new_bug_id, app);
     PERFORM update_bug_severity(new_bug_id, severity);
   END;
-$init_app_severity$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;

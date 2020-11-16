@@ -1,6 +1,24 @@
 BEGIN;
 
-TRUNCATE users RESTART IDENTITY CASCADE;
+TRUNCATE users, status, app, severity_level RESTART IDENTITY CASCADE;
+
+-- start with base tables for linkages
+INSERT INTO status (status_name)
+VALUES
+  ('pending'),
+  ('open'),
+  ('closed'),
+  ('dormant');
+
+INSERT INTO app (app_name)
+VALUES
+  ('main app');
+
+INSERT INTO severity_level (level)
+VALUES
+  ('low'),
+  ('medium'),
+  ('high');
 
 INSERT INTO users
   (
@@ -24,23 +42,6 @@ INSERT INTO bug
 VALUES
   (1, 'Bug 1', 'decription of Bug 1'),
   (2, 'Bug 2', 'decription of Bug 2');
-
-INSERT INTO status (status_name)
-VALUES
-  ('pending'),
-  ('open'),
-  ('closed'),
-  ('dormant');
-
-INSERT INTO app (app_name)
-VALUES
-  ('main app');
-
-INSERT INTO severity_level (level)
-VALUES
-  ('low'),
-  ('medium'),
-  ('high');
 
 -- functions to seed linkage tables
 SELECT init_app_severity(1, 'main app', 'low');
