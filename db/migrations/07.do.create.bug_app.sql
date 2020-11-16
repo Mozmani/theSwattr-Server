@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS bug_app;
+
+CREATE TABLE bug_app (
+  bug_id INTEGER REFERENCES bug(id) ON DELETE CASCADE,
+  app_id INTEGER REFERENCES app(id) ON DELETE CASCADE,
+  PRIMARY KEY (bug_id, app_id)
+);

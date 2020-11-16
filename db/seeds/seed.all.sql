@@ -25,6 +25,27 @@ VALUES
   (1, 'Bug 1', 'decription of Bug 1'),
   (2, 'Bug 2', 'decription of Bug 2');
 
+INSERT INTO status (status_name)
+VALUES
+  ('pending'),
+  ('open'),
+  ('closed'),
+  ('dormant');
+
+INSERT INTO app (app_name)
+VALUES
+  ('main app');
+
+INSERT INTO severity_level (level)
+VALUES
+  ('low'),
+  ('medium'),
+  ('high');
+
+-- functions to seed linkage tables
+SELECT init_app_severity(1, 'main app', 'low');
+SELECT init_app_severity(2, 'main app', 'high');
+
 INSERT INTO comment_thread
   (
     bug_id,

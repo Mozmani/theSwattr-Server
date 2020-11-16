@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS app;
+
+CREATE TABLE app (
+  id SERIAL PRIMARY KEY,
+  app_name VARCHAR(50)
+);
