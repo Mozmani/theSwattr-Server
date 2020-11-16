@@ -20,7 +20,7 @@ const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
 const corsOrigin = {
   origin:
-    NODE_ENV === 'production' ? CORS_ORIGIN_DEV : CORS_ORIGIN_PROD,
+    NODE_ENV === 'production' ? CORS_ORIGIN_PROD : CORS_ORIGIN_DEV,
 };
 
 app.use(morgan(morganOption, morganSkip));

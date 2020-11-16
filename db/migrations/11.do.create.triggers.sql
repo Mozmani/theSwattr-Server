@@ -36,13 +36,28 @@ BEGIN
   WHERE id = NEW.bug_id;
   RETURN NEW;
 END;
-
 $bug_updated_at$ LANGUAGE plpgsql;
 
 -- this will auto stamp updated_at on every comment update
 CREATE TRIGGER bug_updated_at
 BEFORE INSERT OR UPDATE OR DELETE ON comment_thread
 FOR EACH ROW EXECUTE FUNCTION trigger_bug_updated_at();
+
+-- trigger function for updating the updated_at column in bug table when updated
+CREATE OR REPLACE FUNCTION trigger_bug_update_at()
+RETURNS TRIGGER AS $bug_update_at$
+BEGIN
+  -- update timestamp by id
+  UPDATE bug SET updated_at = NOW()
+  WHERE id = NEW.bug_id;
+  RETURN NULL;
+END;
+$bug_update_at$ LANGUAGE plpgsql;
+
+-- this will auto stamp updated_at on every bug update
+CREATE TRIGGER bug_update_at
+AFTER UPDATE ON bug
+FOR EACH ROW EXECUTE FUNCTION trigger_bug_update_at();
 
 -- trigger function for updating status on bug linkage table
 CREATE OR REPLACE FUNCTION trigger_bug_status()
