@@ -16,6 +16,8 @@ const {
   usersRouter,
 } = require('./routes');
 
+const authRouter = require('./routes/auth.router')
+
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
 const corsOrigin = {
@@ -24,7 +26,7 @@ const corsOrigin = {
 };
 
 app.use(morgan(morganOption, morganSkip));
-app.use(cors(corsOrigin));
+app.use(cors());
 app.use(helmet());
 
 app.get('/', (_req, res) => {
@@ -33,7 +35,11 @@ app.get('/', (_req, res) => {
 
 /*
 | ROUTES HERE -------------------------
+
 */
+app.use('/api/user', usersRouter)
+app.use('/api/auth', authRouter)
+
 
 const BUG_EP = ROUTES.API + ROUTES.BUG;
 const COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD;

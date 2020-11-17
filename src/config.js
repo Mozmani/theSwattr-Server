@@ -9,5 +9,5 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
   SALT_ROUNDS: process.env.SALT_ROUNDS,
   DATABASE_URL: process.env.DATABASE_URL,
-  TEST_DB_URL: process.env.TEST_DB_URL
+  TEST_DB_URL: process.env.TEST_DB_URL,
 };
