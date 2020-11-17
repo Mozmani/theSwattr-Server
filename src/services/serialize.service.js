@@ -2,46 +2,57 @@ const xss = require('xss');
 
 const {
   TABLE_NAMES,
-  BUG_TABLE,
-  COMMENT_THREAD_TABLE,
   USERS_TABLE,
 } = require('../constants/db.constants');
 
 const { BUG, COMMENT_THREAD, USERS } = TABLE_NAMES;
 
 const SerializeService = {
-  serializeBug(bug) {
-    BUG_TABLE.forEach((field) => (bug[field] = xss(bug[field])));
-    return bug;
+  serializeObject(rawObject) {
+    const keyVals = Object.entries(rawObject);
+
+    keyVals.forEach(([key, value]) => (rawObject[key] = xss(value)));
+
+    return rawObject;
   },
 
-  serializeBug(comment) {
-    COMMENT_THREAD_TABLE.forEach(
-      (field) => (comment[field] = xss(comment[field])),
-    );
-    return comment;
+  serializeAll(rawArray) {
+    return rawArray.map(this.serializeObject);
   },
 
-  serializeBug(user) {
-    USERS_TABLE.forEach((field) => (user[field] = xss(user[field])));
-    return user;
-  },
+  // serializeUser(user) {
+  //   USERS_TABLE.forEach((field) => {
+  //     if (user[field]) user[field] = xss(user[field]);
+  //   });
+  //   return user;
+  // },
 
-  serializeData(table, data) {
-    switch (table) {
-      case BUG:
-        return data.map(this.serializeSomething);
+  // serializeBug(bug) {
+  //   bug.bug_name = xss(bug.bug_name);
+  //   bug.description = xss(bug.description);
+  //   return bug;
+  // },
 
-      case COMMENT_THREAD:
-        return data.map(this.serializeSomething);
+  // serializeComment(comment) {
+  //   comment.comment = xss(comment.comment);
+  //   return comment;
+  // },
 
-      case USERS:
-        return data.map(this.serializeSomething);
+  // serializeData(table, data) {
+  //   switch (table) {
+  //     case USERS:
+  //       return data.map(this.serializeUser);
 
-      default:
-        return { message: 'Serialization failed' };
-    }
-  },
+  //     case BUG:
+  //       return data.map(this.serializeBug);
+
+  //     case COMMENT_THREAD:
+  //       return data.map(this.serializeComment);
+
+  //     default:
+  //       return { message: 'Serialization failed' };
+  //   }
+  // },
 };
 
 module.exports = SerializeService;

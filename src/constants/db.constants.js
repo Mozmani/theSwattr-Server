@@ -51,6 +51,13 @@ const BUG_APP_TABLE = ['bug_id', 'app_id'];
 
 const BUG_SEVERITY_TABLE = ['bug_id', 'severity_id'];
 
+//! Postgres-side custom functions
+//* SELECT init_app_severity(new_bug_id INTEGER, app TEXT, severity TEXT)
+
+//* SELECT update_bug_severity(new_bug_id INTEGER, severity TEXT)
+
+//* SELECT update_bug_app(new_bug_id INTEGER, app TEXT)
+
 module.exports = {
   TABLE_NAMES,
   USERS_TABLE,
