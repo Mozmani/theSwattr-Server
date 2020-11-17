@@ -35,6 +35,7 @@ app.get('/', (_req, res) => {
 | ROUTES HERE -------------------------
 */
 
+//? endpoint url strings
 const BUG_EP = ROUTES.API + ROUTES.BUG;
 const COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD;
 const USERS_EP = ROUTES.API + ROUTES.USERS;
