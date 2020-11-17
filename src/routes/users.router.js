@@ -2,7 +2,7 @@ const {
   CRUDService,
   SerializeService,
 } = require('../../src/services');
-const UserService = require('../services/user-service')
+const UserService = require('../services/user.service')
 
 const { TABLE_NAMES } = require('../../src/constants/db.constants');
 const {
