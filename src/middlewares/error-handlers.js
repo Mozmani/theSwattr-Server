@@ -16,7 +16,7 @@ const notFound = (req, res, next) => {
   next(error);
 };
 
-const errorHandler = (error, req, res, next) => {
+const errorHandler = (error, _req, res, _next) => {
   const statusCode =
     res.statusCode === 200
       ? errorTypes[error.name] || 500

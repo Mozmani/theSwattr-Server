@@ -1,5 +1,3 @@
-const xss = require('xss');
-
 const {
   TABLE_NAMES: {
     USERS,
@@ -8,19 +6,12 @@ const {
     STATUS,
     APP,
     SEVERITY_LEVEL,
-    BUG_STATUS,
     BUG_APP,
     BUG_SEVERITY,
   },
-  BUG_TABLE,
-  COMMENT_THREAD_TABLE,
-  USERS_TABLE,
-  APP_TABLE,
-  BUG_SEVERITY_LEVEL_TABLE,
-  BUG_STATUS_TABLE,
 } = require('../src/constants/db.constants');
 
-//? helper function for generating seed data
+// ? helper function for generating seed data
 // const formatTableRow = (id, row, col) => {
 //   if (col === 'id' || col.includes('id')) {
 //     row[col] = id;
@@ -46,7 +37,7 @@ const {
 |--------------------------------------------------------------------------
 */
 
-//! These are hard coded for custom SQL Triggers/Functions
+// ! These are hard coded for custom SQL Triggers/Functions
 const status_seed = [
   {
     id: 1,
@@ -88,14 +79,14 @@ const severity_level_seed = [
   },
 ];
 
-//! These can be test-specific
+// ! These can be test-specific
 const users_seed = [
   {
     id: 1,
     first_name: 'first_name1',
     last_name: 'last_name1',
     user_name: 'user_name1',
-    //! PASSWORD HERE!!!
+    // ! PASSWORD HERE!!!
     password: 'HASH HERE!!!',
     email: 'user1@yoohoo.com',
     dev: true,
@@ -105,7 +96,7 @@ const users_seed = [
     first_name: 'first_name2',
     last_name: 'last_name2',
     user_name: 'user_name2',
-    //! PASSWORD HERE!!!
+    // ! PASSWORD HERE!!!
     password: 'HASH HERE!!!',
     email: 'user2@yoohoo.com',
     dev: false,
@@ -115,14 +106,14 @@ const users_seed = [
     first_name: 'first_name3',
     last_name: 'last_name3',
     user_name: 'user_name3',
-    //! PASSWORD HERE!!!
+    // ! PASSWORD HERE!!!
     password: 'HASH HERE!!!',
     email: 'user3@yoohoo.com',
     dev: true,
   },
 ];
 
-//! export these!!!
+// ! export these!!!
 const CREATED_AT_DATE = '2020-11-16 15:03:52.802713-07';
 const UPDATED_AT_DATE = '2020-11-16 15:04:56.423753-07';
 const COMPLETED_AT_DATE = '2020-11-16 15:05:28.457464-07';
@@ -238,7 +229,7 @@ const safeUser = {
     dev: true,
   },
   result: {
-    //! check if (id = 4) and (password = HASH HERE!!!)
+    // ! check if (id = 4) and (password = HASH HERE!!!)
     firstName: 'safe first name',
     lastName: 'safe last name',
     userName: 'safe user name',
@@ -301,7 +292,7 @@ const maliciousUser = {
     dev: true,
   },
   result: {
-    //! check if (id = 4) and (password = HASH HERE!!!)
+    // ! check if (id = 4) and (password = HASH HERE!!!)
     firstName: '&lt;script&gt;naughty&lt;/script&gt;',
     lastName: '&lt;script&gt;naughty&lt;/script&gt;',
     userName: '&lt;script&gt;naughty&lt;/script&gt;',
@@ -439,7 +430,7 @@ const GET_REQUESTS = {
     dev: true,
   },
 
-  //! implement table joins
+  // ! implement table joins
   bugId1: {
     id: 1,
     bugPostedBy: 'user_name1',
@@ -590,7 +581,6 @@ const getSeedData = () => ({
   users_seed,
   bug_seed,
   comment_thread_seed,
-  bug_status_seed,
   bug_app_seed,
   bug_severity_seed,
 });
@@ -608,10 +598,10 @@ const getMaliciousSubmissions = () => ({
 });
 
 const getDevOnlySubmissions = () => ({
-  devBugUpdate,
-  devBugStatusUpdate,
-  devBugAppUpdate,
-  devBugSeverityUpdate,
+  devBug1Update,
+  devBug1StatusUpdate,
+  devBug1AppUpdate,
+  devBug1SeverityUpdate,
 });
 
 const getExpectedQueryData = () => ({

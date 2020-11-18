@@ -9,8 +9,8 @@ const {
   NODE_ENV,
   TEST_DB_URL,
   JWT_SECRET,
-  JWT_EXPIRY
-} = require('../dist/config');
+  JWT_EXPIRY,
+} = require('../src/config');
 
 global.expect = expect;
 global.supertest = supertest;

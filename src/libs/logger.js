@@ -2,7 +2,7 @@ const path = require('path');
 
 const winston = require('winston');
 
-const { NODE_ENV } = require('../../src/config');
+const { NODE_ENV } = require('../config');
 
 const { format } = winston;
 
