@@ -1,5 +1,5 @@
 const ROUTES = {
-  API: '/api-name/v1',
+  API: '/api',
   USERS: '/users',
   BUG: '/bug',
   COMMENT_THREAD: '/comment-thread',

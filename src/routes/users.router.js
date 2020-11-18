@@ -36,7 +36,6 @@ usersRouter
     try {
       const dbUser = await CRUDService.getByName(
         req.app.get('db'),
-        TABLE_NAME,
         req.loginUser.user_name,
       );
 
@@ -77,7 +76,7 @@ usersRouter
       const { password } = req.newUser;
       req.newUser.password = await auth.hashPassword(password);
 
-      const newDbUser = await CRUDService.createEntry(
+      const [newDbUser] = await CRUDService.createEntry(
         req.app.get('db'),
         TABLE_NAME,
         req.newUser,

@@ -98,7 +98,9 @@ const registrationBody = async (req, res, next) => {
     return;
   }
 
-  const passError = ValidationMethods.validateEmail(rawUser.password);
+  const passError = ValidationMethods.validatePassword(
+    rawUser.password,
+  );
   if (passError) {
     res.status(400).json({ error: passError });
     return;
