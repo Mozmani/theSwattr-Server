@@ -13,11 +13,11 @@
 | const { thingsRouter, stuffRouter, userRouter } = require('./routes')
 */
 const bugRouter = require('./bug.router');
-const commentThreadRouter = require('./comment-thread.router');
+const commentRouter = require('./comment.router');
 const usersRouter = require('./users.router');
 
 module.exports = {
   bugRouter,
-  commentThreadRouter,
+  commentRouter,
   usersRouter,
 };

@@ -10,11 +10,7 @@ const {
 } = require('./config');
 
 const { app, error } = require('./middlewares');
-const {
-  bugRouter,
-  commentThreadRouter,
-  usersRouter,
-} = require('./routes');
+const { bugRouter, commentRouter, usersRouter } = require('./routes');
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
@@ -42,7 +38,7 @@ const COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD;
 const USERS_EP = ROUTES.API + ROUTES.USERS;
 
 app.use(BUG_EP, bugRouter);
-app.use(COMMENT_THREAD_EP, commentThreadRouter);
+app.use(COMMENT_THREAD_EP, commentRouter);
 app.use(USERS_EP, usersRouter);
 
 /*

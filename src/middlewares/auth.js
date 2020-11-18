@@ -68,6 +68,7 @@ const requireAuth = async (req, res, next) => {
       dbUser = await CRUDService.getBySearch(
         req.app.get('db'),
         TABLE_NAMES.USERS,
+        'user_name',
         payload.sub,
       );
     }

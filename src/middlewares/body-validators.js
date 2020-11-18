@@ -1,5 +1,4 @@
-const { TABLE_NAMES } = require('../constants/db.constants');
-const { SerializeService, CRUDService } = require('../services');
+const { SerializeService } = require('../services');
 
 // eslint-disable-next-line no-useless-escape
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
@@ -147,21 +146,8 @@ const bugBody = async (req, res, next) => {
 };
 
 const commentBody = async (req, res, next) => {
-  const { bug_id, comment } = req.body;
-  const rawComment = { bug_id, comment };
-
-  const { user_name } = req.body;
-  if (!user_name) {
-    ValidationMethods.errorResponse(res, 'user_name');
-    return;
-  }
-
-  const { id } = await CRUDService.getBySearch(
-    req.app.get('db'),
-    TABLE_NAMES.USERS,
-    user_name,
-  );
-  rawComment.user_id = id;
+  const { bug_id, user_name, comment } = req.body;
+  const rawComment = { bug_id, user_name, comment };
 
   // ? for testing only
   if (req.body.id) {
