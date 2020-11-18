@@ -55,7 +55,9 @@ usersRouter
   })
   .post(auth.passwordCheck, (req, res, next) => {
     try {
-      res.send({ authToken: req.token });
+      const user = SerializeService.formatUser(req.dbUser);
+
+      res.send({ user, authToken: req.token });
     } catch (error) {
       next(error);
     }
