@@ -34,8 +34,9 @@ usersRouter
   .route('/login')
   .all(validate.loginBody, async (req, res, next) => {
     try {
-      const dbUser = await CRUDService.getByName(
+      const dbUser = await CRUDService.getBySearch(
         req.app.get('db'),
+        TABLE_NAME,
         req.loginUser.user_name,
       );
 

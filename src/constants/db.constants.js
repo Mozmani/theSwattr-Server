@@ -22,7 +22,7 @@ const USERS_TABLE = [
 
 const BUG_TABLE = [
   'id',
-  'user_id',
+  'user_name',
   'bug_name',
   'description',
   'created_at',
@@ -34,7 +34,7 @@ const BUG_TABLE = [
 const COMMENT_THREAD_TABLE = [
   'id',
   'bug_id',
-  'user_id',
+  'user_name',
   'created_at',
   'comment',
 ];
@@ -52,7 +52,7 @@ const BUG_APP_TABLE = ['bug_id', 'app_id'];
 const BUG_SEVERITY_TABLE = ['bug_id', 'severity_id'];
 
 // ! Postgres-side custom functions
-// * SELECT init_app_severity(new_bug_id INTEGER, app TEXT, severity TEXT)
+// * SELECT init_app_severity(new_bug_id INTEGER, app TEXT)
 
 // * SELECT update_bug_severity(new_bug_id INTEGER, severity TEXT)
 

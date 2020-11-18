@@ -1,36 +1,26 @@
-/*
-* TODO - test this!
-! select('*') can use an array of strings to target columns:
-?   CRUDService.getAllData(db, TABLE_NAME, ['col1', 'col2', 'col3'])
-! then in the method...
-?   getAllData(db, table, '*') { return db(table).select([...'*']) };
-*/
-
 const CRUDService = {
   getAllData(db, table) {
-    return db(table).select('*');
+    return db(table);
   },
 
-  getById(db, table, id) {
-    return db(table).select('*').where({ id }).first();
+  getAllBySearch(db, table, search) {
+    return db(table).where({ search });
   },
 
-  deleteById(db, table, id) {
-    return db(table).returning('*').where({ id }).del();
+  getBySearch(db, table, search) {
+    return db(table).where({ search }).first();
+  },
+
+  deleteBySearch(db, table, search) {
+    return db(table).where({ search }).del();
   },
 
   async createEntry(db, table, newData) {
     return db(table).insert(newData, '*');
   },
 
-  updateEntry(db, table, id, newData) {
-    return db(table).where({ id }).update(newData, '*');
-  },
-
-  // special case for user login
-  getByName(db, user_name) {
-    console.log('CHECKER2', user_name);
-    return db('users').where({ user_name }).first('*');
+  updateEntry(db, table, search, newData) {
+    return db(table).where({ search }).update(newData, '*');
   },
 };
 

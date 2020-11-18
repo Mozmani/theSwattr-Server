@@ -23,7 +23,7 @@ BEGIN
     RAISE EXCEPTION 'bug_id cannot be null';
   END IF;
 
-  IF NEW.user_id IS NULL THEN
+  IF NEW.user_name IS NULL THEN
     RAISE EXCEPTION 'user_id cannot be null';
   END IF;
 
@@ -56,7 +56,7 @@ $bug_update_at$ LANGUAGE plpgsql;
 
 -- this will auto stamp updated_at on every bug update
 CREATE TRIGGER bug_update_at
-AFTER UPDATE ON bug
+AFTER UPDATE ON bug_severity_level
 FOR EACH ROW EXECUTE FUNCTION trigger_bug_update_at();
 
 -- trigger function for updating status on bug linkage table

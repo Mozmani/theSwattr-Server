@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const { JWT_SECRET, SALT_ROUNDS } = require('../config');
+const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService } = require('../services');
 
 const createJwt = (user_name, id) => {
@@ -64,8 +65,9 @@ const requireAuth = async (req, res, next) => {
 
     let dbUser;
     if (payload.sub) {
-      dbUser = await CRUDService.getByName(
+      dbUser = await CRUDService.getBySearch(
         req.app.get('db'),
+        TABLE_NAMES.USERS,
         payload.sub,
       );
     }

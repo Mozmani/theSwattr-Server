@@ -1,3 +1,4 @@
+const { TABLE_NAMES } = require('../constants/db.constants');
 const { SerializeService, CRUDService } = require('../services');
 
 // eslint-disable-next-line no-useless-escape
@@ -119,20 +120,14 @@ const registrationBody = async (req, res, next) => {
 };
 
 const bugBody = async (req, res, next) => {
-  const { bug_name, description, app, severity } = req.body;
-  const rawBug = { bug_name, description, app, severity };
-
-  const { user_name } = req.body;
-  if (!user_name) {
-    ValidationMethods.errorResponse(res, 'user_name');
-    return;
-  }
-
-  const { id } = await CRUDService.getByName(
-    req.app.get('db'),
+  const {
     user_name,
-  );
-  rawBug.user_id = { id };
+    bug_name,
+    description,
+    app,
+    severity,
+  } = req.body;
+  const rawBug = { user_name, bug_name, description, app, severity };
 
   // ? for testing only
   if (req.body.id) {
@@ -161,8 +156,9 @@ const commentBody = async (req, res, next) => {
     return;
   }
 
-  const { id } = await CRUDService.getByName(
+  const { id } = await CRUDService.getBySearch(
     req.app.get('db'),
+    TABLE_NAMES.USERS,
     user_name,
   );
   rawComment.user_id = id;

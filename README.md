@@ -90,7 +90,7 @@ Initially, the verify function had this type of return: `verify(): object | stri
 
 ```js
 /* auth.js (line 66) */
-const user = await CRUDService.getByName(req.app.get('db'), payload.sub);
+const user = await CRUDService.getBySearch(req.app.get('db'), 'users', payload.sub);
 ```
 
 Besides that, the module remains unchanged...

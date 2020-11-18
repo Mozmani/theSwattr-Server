@@ -19,7 +19,8 @@ INSERT INTO severity_level (level)
 VALUES
   ('low'),
   ('medium'),
-  ('high');
+  ('high'),
+  ('pending');
 
 INSERT INTO users
   (
@@ -32,33 +33,35 @@ INSERT INTO users
   )
 VALUES
   ('John', 'Smith', 'admin', 'pass', 'email@yoohoo.com', true),
-  ('Jane', 'Austin', 'user', 'pass', 'user@yoohoo.com', false);
+  ('Jane', 'Austin', 'user2', 'pass', 'user@yoohoo.com', false);
 
 INSERT INTO bug
   (
-    user_id,
+    user_name,
     bug_name,
     description
   )
 VALUES
-  (1, 'Bug 1', 'decription of Bug 1'),
-  (2, 'Bug 2', 'decription of Bug 2');
+  ('admin', 'Bug 1', 'decription of Bug 1'),
+  ('user2', 'Bug 2', 'decription of Bug 2');
 
 -- functions to seed linkage tables
-SELECT init_app_severity(1, 'main app', 'low');
-SELECT init_app_severity(2, 'second app', 'high');
+SELECT init_app_severity(1, 'main app');
+SELECT init_app_severity(2, 'second app');
+
+SELECT update_bug_severity(1, 'high');
 
 INSERT INTO comment_thread
   (
     bug_id,
-    user_id,
+    user_name,
     comment
   )
 VALUES
-  (1, 1, 'dev comment 1'),
-  (2, 1, 'dev response 1'),
-  (2, 2, 'user response 1'),
-  (2, 1, 'dev response 2'),
-  (1, 1, 'dev comment 1');
+  (1, 'admin', 'dev comment 1'),
+  (2, 'admin', 'dev response 1'),
+  (2, 'user2', 'user response 1'),
+  (2, 'admin', 'dev response 2'),
+  (1, 'admin', 'dev comment 1');
 
 COMMIT;
