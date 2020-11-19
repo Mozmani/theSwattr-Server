@@ -119,12 +119,7 @@ const registrationBody = async (req, res, next) => {
 };
 
 const bugBody = async (req, res, next) => {
-  const {
-    user_name,
-    bug_name,
-    description,
-    severity,
-  } = req.body;
+  const { user_name, bug_name, description, severity } = req.body;
   const rawBug = { user_name, bug_name, description };
 
   // ? for testing only
@@ -141,7 +136,7 @@ const bugBody = async (req, res, next) => {
   const newBug = SerializeService.sanitizeObject(rawBug);
 
   req.newBug = newBug;
-  req.severity= severity;
+  req.severity = severity;
   next();
 };
 
