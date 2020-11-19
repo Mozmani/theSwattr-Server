@@ -28,10 +28,10 @@ usersRouter
       const dbUser = await CRUDService.getBySearch(
         req.app.get("db"),
         TABLE_NAME,
-        req.body.user_name,
+        'user_name',
         req.body.user_name
       );
-      console.log("lol", dbUser);
+      
       if (!dbUser) {
         res.status(400).json({
           error: "Incorrect username or password",
@@ -46,10 +46,9 @@ usersRouter
     }
   })
   .post(auth.passwordCheck, (req, res, next) => {
-    //console.log(req.token)
+   
     try {
-      //const user = SerializeService.formatUser(req.dbUser);
-
+      
       res.send({ authToken: req.token });
     } catch (error) {
       next(error);
