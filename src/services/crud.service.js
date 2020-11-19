@@ -11,7 +11,7 @@ const CRUDService = {
     return db(table).where(colName, colVal).first();
   },
   getBySearchLog(db, table, val) {
-    return db(table).select(val).where({val}).first();
+    return db(table).where({val}).first();
   },
 
   deleteBySearch(db, table, colName, colVal) {

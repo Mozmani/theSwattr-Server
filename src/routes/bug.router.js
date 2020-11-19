@@ -76,17 +76,17 @@ bugRouter.route("/severity/:severity").get(async (req, res, next) => {
     let rawBugs = await CRUDService.getAllData(req.app.get("db"), TABLE_NAME);
 
     let theDb = req.app.get("db");
-    let newBugs = []
+    let newBugs = [];
     for (let i = 0; i < rawBugs.length; i++) {
       let thisBug = rawBugs[i];
       thisBug.status = await QueryService.grabStatus(theDb, thisBug.id);
       thisBug.severity = await QueryService.grabSeverity(theDb, thisBug.id);
       thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
-      if(thisBug.severity === severity){
-        newBugs.push(thisBug)
+      if (thisBug.severity === severity) {
+        newBugs.push(thisBug);
       }
     }
-    
+
     const bugs = SerializeService.formatAll(newBugs, TABLE_NAME);
 
     res.status(200).json({ bugs });
@@ -94,5 +94,29 @@ bugRouter.route("/severity/:severity").get(async (req, res, next) => {
     next(error);
   }
 });
+// bugRouter.route("/edit/:bugId").get(async (req, res, next) => {
+//   try {
+//     let { bugId } = req.params;
+//     const rawBugs = await CRUDService.getBySearch(
+//       req.app.get("db"),
+//       TABLE_NAME,
+//       'bug_id',
+//       bugId
+//     );
+
+//     // let theDb = req.app.get("db");
+//     // for (let i = 0; i < rawBugs.length; i++) {
+//     //   let thisBug = rawBugs[i];
+//     //   thisBug.status = await QueryService.grabStatus(theDb, thisBug.id);
+//     //   thisBug.severity = await QueryService.grabSeverity(theDb, thisBug.id);
+//     //   thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
+//     // }
+//     // const bugs = SerializeService.formatAll(rawBugs, TABLE_NAME);
+
+//     res.status(200).json({ rawBugs });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 module.exports = bugRouter;
