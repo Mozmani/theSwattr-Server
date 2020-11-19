@@ -1,7 +1,7 @@
 const ROUTES = {
   API: '/api',
   USERS: '/users',
-  BUG: '/bug',
+  BUG: '/bugs',
   COMMENT_THREAD: '/comments',
 };
 

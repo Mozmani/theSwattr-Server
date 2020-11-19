@@ -5,9 +5,9 @@ const { JWT_SECRET, SALT_ROUNDS } = require('../config');
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService } = require('../services');
 
-const createJwt = (user_name, id) => {
+const createJwt = (user_name, email, firstName, lastName) => {
   const subject = user_name;
-  const payload = { user_id: id };
+  const payload = { email, firstName, lastName };
 
   return jwt.sign(payload, JWT_SECRET, {
     subject,
@@ -26,7 +26,13 @@ const hashPassword = async (password) => {
 const passwordCheck = async (req, res, next) => {
   try {
     const plaintextPassword = req.loginUser.password;
-    const { password, user_name, id } = req.dbUser;
+    const {
+      password,
+      user_name,
+      email,
+      first_name,
+      last_name,
+    } = req.dbUser;
 
     const passwordsMatch = await bcrypt.compare(
       plaintextPassword,
@@ -40,7 +46,7 @@ const passwordCheck = async (req, res, next) => {
       return;
     }
 
-    const token = createJwt(user_name, id);
+    const token = createJwt(user_name, email, first_name, last_name);
 
     req.token = token;
     next();
