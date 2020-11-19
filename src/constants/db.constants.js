@@ -7,7 +7,7 @@ const TABLE_NAMES = {
   SEVERITY_LEVEL: 'severity_level',
   BUG_STATUS: 'bug_status',
   BUG_APP: 'bug_app',
-  BUG_SEVERITY: 'bug_severity',
+  BUG_SEVERITY: 'bug_severity_level',
 };
 
 const USERS_TABLE = [
