@@ -13,9 +13,9 @@ const {
 
 const bugRouter = Router();
 const TABLE_NAME = TABLE_NAMES.BUG;
-const bugSeverity = TABLE_NAMES.BUG_SEVERITY
-const bugStatus = TABLE_NAMES.BUG_STATUS
-const bugApp = TABLE_NAMES.BUG_APP
+const bugSeverity = TABLE_NAMES.BUG_SEVERITY;
+const bugStatus = TABLE_NAMES.BUG_STATUS;
+const bugApp = TABLE_NAMES.BUG_APP;
 
 bugRouter.use(auth.requireAuth);
 
@@ -45,6 +45,7 @@ bugRouter.route('/').get(async (req, res, next) => {
     next(error);
   }
 });
+
 bugRouter
   .route('/:app')
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
@@ -73,6 +74,7 @@ bugRouter
       next(error);
     }
   });
+
 bugRouter.route('/:user_name').get(async (req, res, next) => {
   try {
     const { user_name } = req.params;
@@ -101,19 +103,14 @@ bugRouter.route('/:user_name').get(async (req, res, next) => {
     next(error);
   }
 });
+
 bugRouter.route('/severity/:severity').get(async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const { severity } = req.params;
     const rawBugs = await CRUDService.getAllData(
       req.app.get('db'),
       TABLE_NAME,
     );
-=======
-    let { severity } = req.params;
-    
-    let rawBugs = await CRUDService.getAllData(req.app.get("db"), TABLE_NAME);
->>>>>>> 42222d22632339a072619ea2626ee26ba2984ed8
 
     const theDb = req.app.get('db');
     const newBugs = [];
@@ -140,20 +137,30 @@ bugRouter.route('/severity/:severity').get(async (req, res, next) => {
     next(error);
   }
 });
-bugRouter.route("/app/:app").get(async (req, res, next) => {
+
+bugRouter.route('/app/:app').get(async (req, res, next) => {
   try {
     let { app } = req.params;
-    
-    app = app.replace(/-/g, " ");
 
-    let rawBugs = await CRUDService.getAllData(req.app.get("db"), TABLE_NAME);
+    app = app.replace(/-/g, ' ');
 
-    let theDb = req.app.get("db");
-    let newBugs = [];
+    const rawBugs = await CRUDService.getAllData(
+      req.app.get('db'),
+      TABLE_NAME,
+    );
+
+    const theDb = req.app.get('db');
+    const newBugs = [];
     for (let i = 0; i < rawBugs.length; i++) {
-      let thisBug = rawBugs[i];
-      thisBug.status = await QueryService.grabStatus(theDb, thisBug.id);
-      thisBug.severity = await QueryService.grabSeverity(theDb, thisBug.id);
+      const thisBug = rawBugs[i];
+      thisBug.status = await QueryService.grabStatus(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.severity = await QueryService.grabSeverity(
+        theDb,
+        thisBug.id,
+      );
       thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
       if (thisBug.app === app) {
         newBugs.push(thisBug);
@@ -167,19 +174,28 @@ bugRouter.route("/app/:app").get(async (req, res, next) => {
     next(error);
   }
 });
-bugRouter.route("/status/:status").get(async (req, res, next) => {
+
+bugRouter.route('/status/:status').get(async (req, res, next) => {
   try {
-    let { status } = req.params;
-    
+    const { status } = req.params;
 
-    let rawBugs = await CRUDService.getAllData(req.app.get("db"), TABLE_NAME);
+    const rawBugs = await CRUDService.getAllData(
+      req.app.get('db'),
+      TABLE_NAME,
+    );
 
-    let theDb = req.app.get("db");
-    let newBugs = [];
+    const theDb = req.app.get('db');
+    const newBugs = [];
     for (let i = 0; i < rawBugs.length; i++) {
-      let thisBug = rawBugs[i];
-      thisBug.status = await QueryService.grabStatus(theDb, thisBug.id);
-      thisBug.severity = await QueryService.grabSeverity(theDb, thisBug.id);
+      const thisBug = rawBugs[i];
+      thisBug.status = await QueryService.grabStatus(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.severity = await QueryService.grabSeverity(
+        theDb,
+        thisBug.id,
+      );
       thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
       if (thisBug.status === status) {
         newBugs.push(thisBug);
@@ -194,44 +210,139 @@ bugRouter.route("/status/:status").get(async (req, res, next) => {
   }
 });
 
+bugRouter.route('/app/:app').get(async (req, res, next) => {
+  try {
+    let { app } = req.params;
+
+    app = app.replace(/-/g, ' ');
+
+    const rawBugs = await CRUDService.getAllData(
+      req.app.get('db'),
+      TABLE_NAME,
+    );
+
+    const theDb = req.app.get('db');
+    const newBugs = [];
+    for (let i = 0; i < rawBugs.length; i++) {
+      const thisBug = rawBugs[i];
+      thisBug.status = await QueryService.grabStatus(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.severity = await QueryService.grabSeverity(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
+      if (thisBug.app === app) {
+        newBugs.push(thisBug);
+      }
+    }
+
+    const bugs = SerializeService.formatAll(newBugs, TABLE_NAME);
+
+    res.status(200).json({ bugs });
+  } catch (error) {
+    next(error);
+  }
+});
+
+bugRouter.route('/status/:status').get(async (req, res, next) => {
+  try {
+    const { status } = req.params;
+
+    const rawBugs = await CRUDService.getAllData(
+      req.app.get('db'),
+      TABLE_NAME,
+    );
+
+    const theDb = req.app.get('db');
+    const newBugs = [];
+    for (let i = 0; i < rawBugs.length; i++) {
+      const thisBug = rawBugs[i];
+      thisBug.status = await QueryService.grabStatus(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.severity = await QueryService.grabSeverity(
+        theDb,
+        thisBug.id,
+      );
+      thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
+      if (thisBug.status === status) {
+        newBugs.push(thisBug);
+      }
+    }
+
+    const bugs = SerializeService.formatAll(newBugs, TABLE_NAME);
+
+    res.status(200).json({ bugs });
+  } catch (error) {
+    next(error);
+  }
+});
 
 bugRouter
-  .route("/edit/:bugId")
-  .patch( jsonBodyParser, async (req, res, next) => {
+  .route('/edit/:bugId')
+  .patch(jsonBodyParser, async (req, res, next) => {
     try {
-      let { bugId } = req.params;
-      let {severity, status, app} = req.body;
+      const { bugId } = req.params;
+      const { severity, status, app } = req.body;
       const rawBug = await CRUDService.getAllData(
-        req.app.get("db"),
-        TABLE_NAME
+        req.app.get('db'),
+        TABLE_NAME,
       );
 
-      let thisBug = rawBug.find((item) => {
+      const thisBug = rawBug.find((item) => {
         return (item.id = bugId);
       });
-      let theDb = req.app.get("db");
+      const theDb = req.app.get('db');
 
-      if (!severity && !status &&!app) {
-        res.status(400).json({error: 'you have added no values to edit!'});
+      if (!severity && !status && !app) {
+        res
+          .status(400)
+          .json({ error: 'you have added no values to edit!' });
       }
 
       if (severity) {
-        
-        await CRUDService.updateEasy(theDb, bugSeverity, 'severity_id', severity, bugId)
-            
-      } 
-      thisBug.severity = await QueryService.grabSeverity(theDb, thisBug.id);
-      
-      if (status) {
-        await CRUDService.updateEasy(theDb, bugStatus, 'status_id', status, bugId)
-      } 
-        thisBug.status = await QueryService.grabStatus(theDb, thisBug.id);
-      if (app) {
-        await CRUDService.updateEasy(theDb, bugApp, 'app_id', app, bugId)            
-      } 
-        thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
+        await CRUDService.updateEasy(
+          theDb,
+          bugSeverity,
+          'severity_id',
+          severity,
+          bugId,
+        );
+      }
+      thisBug.severity = await QueryService.grabSeverity(
+        theDb,
+        thisBug.id,
+      );
 
-      res.status(200).json({thisBug});
+      if (status) {
+        await CRUDService.updateEasy(
+          theDb,
+          bugStatus,
+          'status_id',
+          status,
+          bugId,
+        );
+      }
+      thisBug.status = await QueryService.grabStatus(
+        theDb,
+        thisBug.id,
+      );
+      if (app) {
+        await CRUDService.updateEasy(
+          theDb,
+          bugApp,
+          'app_id',
+          app,
+          bugId,
+        );
+      }
+      thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
+
+      res.status(200).json({ thisBug });
     } catch (error) {
       next(error);
     }

@@ -25,11 +25,11 @@ const CRUDService = {
   updateEntry(db, table, colName, colVal, newData) {
     return db(table).where(colName, colVal).update(newData, '*');
   },
-  updateEasy(db, table, colName, newVal, bugId ){
-    return db.raw(`update ${table} 
+  updateEasy(db, table, colName, newVal, bugId) {
+    return db.raw(`update ${table}
     set ${colName} = ${newVal}
-    where bug_id =${bugId};`)
-  }
+    where bug_id =${bugId};`);
+  },
 };
 
 module.exports = CRUDService;
