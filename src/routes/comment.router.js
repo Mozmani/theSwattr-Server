@@ -1,7 +1,7 @@
 const { TABLE_NAMES } = require('../constants/db.constants');
-const { CRUDService } = require('../services');
+const { CRUDService, SerializeService } = require('../services');
 const {
-  auth,
+  // auth,
   validate,
   Router,
   jsonBodyParser,
@@ -10,14 +10,37 @@ const {
 const commentRouter = Router();
 const TABLE_NAME = TABLE_NAMES.COMMENT_THREAD;
 
-commentRouter.use(auth.requireAuth);
+const bugName = async (db, bug_id) => {
+  const { bug_name } = await CRUDService.getBySearch(
+    db,
+    TABLE_NAMES.BUG,
+    'id',
+    bug_id,
+  );
+  return bug_name;
+};
+
+// commentRouter.use(auth.requireAuth);
 
 commentRouter
   .route('/')
   .get(async (req, res, next) => {
     try {
-      const comments = await CRUDService.getAllData(
+      const rawComments = await CRUDService.getAllData(
         req.app.get('db'),
+        TABLE_NAME,
+      );
+
+      for (let i = 0; i < rawComments.length; i++) {
+        const { bug_id } = rawComments[i];
+        rawComments[i].bug_name = await bugName(
+          req.app.get('db'),
+          bug_id,
+        );
+      }
+
+      const comments = SerializeService.formatAll(
+        rawComments,
         TABLE_NAME,
       );
 
@@ -30,13 +53,21 @@ commentRouter
     jsonBodyParser,
     validate.commentBody,
     async (req, res, next) => {
-      const newComment = await CRUDService.createEntry(
-        req.app.get('db'),
-        TABLE_NAME,
-        req.newComment,
-      );
       try {
-        res.status(200).json();
+        const [newComment] = await CRUDService.createEntry(
+          req.app.get('db'),
+          TABLE_NAME,
+          req.newComment,
+        );
+
+        newComment.bug_name = await bugName(
+          req.app.get('db'),
+          newComment.bug_id,
+        );
+
+        const comment = SerializeService.formatComment(newComment);
+
+        res.status(200).json(comment);
       } catch (error) {
         next(error);
       }
@@ -47,7 +78,21 @@ commentRouter
   .route('/:id')
   .get(async (req, res, next) => {
     try {
-      res.status(200).json();
+      const rawComment = await CRUDService.getBySearch(
+        req.app.get('db'),
+        TABLE_NAME,
+        'id',
+        req.params.id,
+      );
+
+      rawComment.bug_name = await bugName(
+        req.app.get('db'),
+        rawComment.bug_id,
+      );
+
+      const comment = SerializeService.formatComment(rawComment);
+
+      res.status(200).json(comment);
     } catch (error) {
       next(error);
     }
@@ -57,7 +102,23 @@ commentRouter
     validate.commentBody,
     async (req, res, next) => {
       try {
-        res.status(200).json();
+        const [updComment] = await CRUDService.updateEntry(
+          req.app.get('db'),
+          TABLE_NAME,
+          'id',
+          req.params.id,
+        );
+
+        updComment.bug_name = await bugName(
+          req.app.get('db'),
+          updComment.bug_id,
+        );
+
+        const comment = SerializeService.formatComment(updComment);
+
+        res
+          .status(200)
+          .json({ message: 'Update successful', comment });
       } catch (error) {
         next(error);
       }
@@ -65,7 +126,21 @@ commentRouter
   )
   .delete(async (req, res, next) => {
     try {
-      res.status(200).json();
+      const [delComment] = await CRUDService.deleteBySearch(
+        req.app.get('db'),
+        TABLE_NAME,
+        'id',
+        req.params.id,
+      );
+
+      delComment.bug_name = await bugName(
+        req.app.get('db'),
+        delComment.bug_id,
+      );
+
+      const comment = SerializeService.formatComment(delComment);
+
+      res.status(200).json({ message: 'Delete successful', comment });
     } catch (error) {
       next(error);
     }
@@ -73,7 +148,27 @@ commentRouter
 
 commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
   try {
-    res.status(200).json();
+    const rawComments = await CRUDService.getAllBySearch(
+      req.app.get('db'),
+      TABLE_NAME,
+      'bug_id',
+      req.params.bugId,
+    );
+
+    for (let i = 0; i < rawComments.length; i++) {
+      const { bug_id } = rawComments[i];
+      rawComments[i].bug_name = await bugName(
+        req.app.get('db'),
+        bug_id,
+      );
+    }
+
+    const comments = SerializeService.formatAll(
+      rawComments,
+      TABLE_NAME,
+    );
+
+    res.status(200).json({ filteredBy: 'bug_id', comments });
   } catch (error) {
     next(error);
   }
@@ -81,7 +176,27 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
 
 commentRouter.route('/user/:userName').get(async (req, res, next) => {
   try {
-    res.status(200).json();
+    const rawComments = await CRUDService.getAllBySearch(
+      req.app.get('db'),
+      TABLE_NAME,
+      'user_name',
+      req.params.userName,
+    );
+
+    for (let i = 0; i < rawComments.length; i++) {
+      const { bug_id } = rawComments[i];
+      rawComments[i].bug_name = await bugName(
+        req.app.get('db'),
+        bug_id,
+      );
+    }
+
+    const comments = SerializeService.formatAll(
+      rawComments,
+      TABLE_NAME,
+    );
+
+    res.status(200).json({ filteredBy: 'user_name', comments });
   } catch (error) {
     next(error);
   }

@@ -37,6 +37,7 @@ usersRouter
       const dbUser = await CRUDService.getBySearch(
         req.app.get('db'),
         TABLE_NAME,
+        'user_name',
         req.loginUser.user_name,
       );
 
