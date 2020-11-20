@@ -30,6 +30,7 @@ ignorePatterns:
   - 'db/**.csv'
 rules:
   camelcase: 0
+  one-var: 0
   no-unused-vars:
     #! example - if not using 'req': router.get((_req, res, next) => {})
     - error

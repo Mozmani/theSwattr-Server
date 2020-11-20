@@ -22,30 +22,30 @@ const SerializeService = {
     return rawArray.map(this.serializeObject);
   },
 
-  formatUser(dbUser) {
+  formatUser(rawUser) {
     const keyVals = Object.entries(USERS_CLIENT_RETURN);
 
     const user = {};
-    keyVals.forEach(([key, value]) => (user[key] = dbUser[value]));
+    keyVals.forEach(([key, value]) => (user[key] = rawUser[value]));
 
     return user;
   },
 
-  formatBug(newBug) {
+  formatBug(rawBug) {
     const keyVals = Object.entries(BUG_CLIENT_RETURN);
 
     const bug = {};
-    keyVals.forEach(([key, value]) => (bug[key] = newBug[value]));
+    keyVals.forEach(([key, value]) => (bug[key] = rawBug[value]));
 
     return bug;
   },
 
-  formatComment(newComment) {
+  formatComment(rawComment) {
     const keyVals = Object.entries(COMMENT_THREAD_CLIENT_RETURN);
 
     const comment = {};
     keyVals.forEach(
-      ([key, value]) => (comment[key] = newComment[value]),
+      ([key, value]) => (comment[key] = rawComment[value]),
     );
 
     return comment;

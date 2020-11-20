@@ -63,7 +63,6 @@ const requireAuth = async (req, res, next) => {
     return;
   }
   const token = authToken.split(' ')[1];
-
   try {
     const payload = jwt.verify(token, JWT_SECRET, {
       algorithms: ['HS256'],

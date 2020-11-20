@@ -10,7 +10,12 @@ const {
 } = require('./config');
 
 const { app, error } = require('./middlewares');
-const { bugRouter, commentRouter, usersRouter } = require('./routes');
+const {
+  bugRouter,
+  commentRouter,
+  sortBugsRouter,
+  usersRouter,
+} = require('./routes');
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
@@ -32,13 +37,16 @@ app.get('/', (_req, res) => {
 
 */
 
-// ? endpoint url strings
-const BUG_EP = ROUTES.API + ROUTES.BUG;
+const BUG_EP = ROUTES.API + ROUTES.BUGS;
 const COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD;
+const EDIT_BUGS_EP = ROUTES.API + ROUTES.EDIT_BUGS;
+const SORT_BUGS_EP = ROUTES.API + ROUTES.SORT_BUGS;
 const USERS_EP = ROUTES.API + ROUTES.USERS;
 
 app.use(BUG_EP, bugRouter);
 app.use(COMMENT_THREAD_EP, commentRouter);
+app.use(SORT_BUGS_EP, sortBugsRouter);
+app.use(EDIT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
 
 /*

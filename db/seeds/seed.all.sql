@@ -32,7 +32,8 @@ INSERT INTO users
     dev
   )
 VALUES
-  ('John', 'Smith', 'admin', 'pass', 'email@yoohoo.com', true),
+  -- admin password: 'pass'
+  ('John', 'Smith', 'admin', '$2a$05$8AUgiI2oqtTwrY5zTZIbq.TVHfKYcTOdXnny6Yfuu3MKIQTzPQDLK', 'email@yoohoo.com', true),
   ('Jane', 'Austin', 'user2', 'pass', 'user@yoohoo.com', false);
 
 INSERT INTO bug

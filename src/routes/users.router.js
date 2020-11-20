@@ -1,5 +1,3 @@
-const path = require('path');
-
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService, QueryService } = require('../services');
 const {
@@ -16,9 +14,11 @@ usersRouter.use(jsonBodyParser);
 
 usersRouter.route('/').get(async (req, res, next) => {
   try {
-    const allUsers = await CRUDService.getAllData(
+    const allUsers = await CRUDService.getAllDataByOrder(
       req.app.get('db'),
       TABLE_NAME,
+      'dev',
+      'desc',
     );
     res.status(200).json(allUsers);
   } catch (error) {
@@ -87,12 +87,7 @@ usersRouter
         newDbUser.last_name,
       );
 
-      res
-        .status(201)
-        .location(
-          path.posix.join(req.originalUrl, `/${newDbUser.user_name}`),
-        )
-        .json({ authToken: token });
+      res.status(201).json({ authToken: token });
     } catch (error) {
       next(error);
     }

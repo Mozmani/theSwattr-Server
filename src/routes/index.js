@@ -14,10 +14,12 @@
 */
 const bugRouter = require('./bug.router');
 const commentRouter = require('./comment.router');
+const sortBugsRouter = require('./sort-bugs.router');
 const usersRouter = require('./users.router');
 
 module.exports = {
   bugRouter,
   commentRouter,
+  sortBugsRouter,
   usersRouter,
 };

@@ -4,64 +4,59 @@ const { SerializeService } = require('../services');
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const ValidationMethods = {
-  checkFields(rawObject) {
-    const keyVals = Object.entries(rawObject);
+function _checkFields(rawObject) {
+  const keyVals = Object.entries(rawObject);
 
-    const undefField = keyVals.find(
-      ([, value]) => value === undefined,
-    );
+  const undefField = keyVals.find(([, value]) => value === undefined);
 
-    return undefField ? undefField[0] : null;
-  },
+  return undefField ? undefField[0] : null;
+}
 
-  errorResponse(res, undefField) {
-    res.status(400).json({
-      error: `Missing '${undefField}' in request body`,
-    });
-  },
+function _errorResponse(res, undefField) {
+  res.status(400).json({
+    error: `Missing '${undefField}' in request body`,
+  });
+}
 
-  validateEmail(email) {
-    if (email.length < 5) {
-      return 'email must be longer than 4 characters';
-    }
+function _validateEmail(email) {
+  if (email.length < 5) {
+    return 'email must be longer than 4 characters';
+  }
 
-    if (!EMAIL_REGEX.test(email)) {
-      return 'You must use a valid email!';
-    }
+  if (!EMAIL_REGEX.test(email)) {
+    return 'You must use a valid email!';
+  }
 
-    return null;
-  },
+  return null;
+}
 
-  // ? service to validate password based of required fields
-  validatePassword(password) {
-    if (password.length < 8) {
-      return 'Password be longer than 8 characters';
-    }
+function _validatePassword(password) {
+  if (password.length < 8) {
+    return 'Password be longer than 8 characters';
+  }
 
-    if (password.length > 72) {
-      return 'Password be less than 72 characters';
-    }
+  if (password.length > 72) {
+    return 'Password be less than 72 characters';
+  }
 
-    if (password.startsWith(' ') || password.endsWith(' ')) {
-      return 'Password must not start or end with empty spaces';
-    }
+  if (password.startsWith(' ') || password.endsWith(' ')) {
+    return 'Password must not start or end with empty spaces';
+  }
 
-    if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
-      return 'Password must contain one upper case, lower case, number and special character';
-    }
+  if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
+    return 'Password must contain one upper case, lower case, number and special character';
+  }
 
-    return null;
-  },
-};
+  return null;
+}
 
 const loginBody = (req, res, next) => {
   const { user_name, password } = req.body;
   const rawLogin = { user_name, password };
 
-  const undefField = ValidationMethods.checkFields(rawLogin);
+  const undefField = _checkFields(rawLogin);
   if (undefField) {
-    ValidationMethods.errorResponse(res, undefField);
+    _errorResponse(res, undefField);
     return;
   }
 
@@ -79,6 +74,7 @@ const registrationBody = async (req, res, next) => {
     password,
     email,
   } = req.body;
+
   const rawUser = {
     first_name,
     last_name,
@@ -92,15 +88,13 @@ const registrationBody = async (req, res, next) => {
     rawUser.id = req.body.id;
   }
 
-  const undefField = ValidationMethods.checkFields(rawUser);
+  const undefField = _checkFields(rawUser);
   if (undefField) {
-    ValidationMethods.errorResponse(res, undefField);
+    _errorResponse(res, undefField);
     return;
   }
 
-  const passError = ValidationMethods.validatePassword(
-    rawUser.password,
-  );
+  const passError = _validatePassword(rawUser.password);
   if (passError) {
     res.status(400).json({ error: passError });
     return;
@@ -108,7 +102,7 @@ const registrationBody = async (req, res, next) => {
 
   const newUser = SerializeService.sanitizeObject(rawUser);
 
-  const emailError = ValidationMethods.validateEmail(newUser.email);
+  const emailError = _validateEmail(newUser.email);
   if (emailError) {
     res.status(400).json({ error: emailError });
     return;
@@ -119,24 +113,50 @@ const registrationBody = async (req, res, next) => {
 };
 
 const bugBody = async (req, res, next) => {
-  const { user_name, bug_name, description, severity } = req.body;
-  const rawBug = { user_name, bug_name, description };
+  const app = req.body.app.replace(/-/g, ' ');
+  const {
+    user_name,
+    bug_name,
+    description,
+    completed_notes,
+  } = req.body;
+
+  const rawBug = { user_name, bug_name, description, app };
 
   // ? for testing only
   if (req.body.id) {
     rawBug.id = req.body.id;
   }
 
-  const undefField = ValidationMethods.checkFields(rawBug);
+  const undefField = _checkFields(rawBug);
   if (undefField) {
-    ValidationMethods.errorResponse(res, undefField);
+    _errorResponse(res, undefField);
     return;
+  }
+
+  if (completed_notes) {
+    rawBug.completed_notes = completed_notes;
   }
 
   const newBug = SerializeService.sanitizeObject(rawBug);
 
   req.newBug = newBug;
-  req.severity = severity;
+  next();
+};
+
+const linkageBody = async (req, res, next) => {
+  const { status, app, severity } = req.body;
+  const rawLinks = { status, app, severity };
+
+  const undefField = _checkFields(rawLinks);
+  if (undefField) {
+    _errorResponse(res, undefField);
+    return;
+  }
+
+  const links = SerializeService.sanitizeObject(rawLinks);
+
+  req.links = links;
   next();
 };
 
@@ -149,9 +169,9 @@ const commentBody = async (req, res, next) => {
     rawComment.id = req.body.id;
   }
 
-  const undefField = ValidationMethods.checkFields(rawComment);
+  const undefField = _checkFields(rawComment);
   if (undefField) {
-    ValidationMethods.errorResponse(res, undefField);
+    _errorResponse(res, undefField);
     return;
   }
 
@@ -166,4 +186,5 @@ module.exports = {
   loginBody,
   bugBody,
   commentBody,
+  linkageBody,
 };

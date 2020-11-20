@@ -1,7 +1,7 @@
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService, SerializeService } = require('../services');
 const {
-  // auth,
+  auth,
   validate,
   Router,
   jsonBodyParser,
@@ -20,15 +20,17 @@ const bugName = async (db, bug_id) => {
   return bug_name;
 };
 
-// commentRouter.use(auth.requireAuth);
+commentRouter.use(auth.requireAuth);
 
 commentRouter
   .route('/')
   .get(async (req, res, next) => {
     try {
-      const rawComments = await CRUDService.getAllData(
+      const rawComments = await CRUDService.getAllDataByOrder(
         req.app.get('db'),
         TABLE_NAME,
+        'created_at',
+        'desc',
       );
 
       for (let i = 0; i < rawComments.length; i++) {
