@@ -3,20 +3,23 @@ const CRUDService = {
     return db(table);
   },
 
-  getAllDataByOrder(db, table, order, direction = 'asc') {
+  getAllByOrder(db, table, order, direction = 'asc') {
     return db(table).orderBy(order, direction);
   },
 
-  getAllBySearch(db, table, colName, colVal) {
-    return db(table).where(colName, colVal);
+  getAllBySearchOrder(
+    db,
+    table,
+    colName,
+    colVal,
+    order,
+    direction = 'asc',
+  ) {
+    return db(table).where(colName, colVal).orderBy(order, direction);
   },
 
   getBySearch(db, table, colName, colVal) {
     return db(table).where(colName, colVal).first();
-  },
-
-  deleteBySearch(db, table, colName, colVal) {
-    return db(table).where(colName, colVal).del();
   },
 
   createEntry(db, table, newData) {
@@ -27,10 +30,19 @@ const CRUDService = {
     return db(table).where(colName, colVal).update(newData, '*');
   },
 
-  updateFieldByBugId(db, table, colName, newVal, bug_id) {
+  deleteEntry(db, table, colName, colVal) {
+    return db(table).where(colName, colVal).del();
+  },
+
+  updateDevField(db, user_name, dev) {
+    return db('users').where({ user_name }).update({ dev }, '*');
+  },
+
+  // ? for updating linkage tables
+  updateFieldByBugId(db, table, bug_id, colName, newVal) {
     return db(table)
-      .update({ [colName]: newVal }, '*')
-      .where({ bug_id });
+      .where({ bug_id })
+      .update({ [colName]: newVal }, '*');
   },
 };
 

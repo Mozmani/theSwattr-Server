@@ -1,16 +1,10 @@
+const { DEV_SECRET } = require('../config');
 const { SerializeService } = require('../services');
-
-// eslint-disable-next-line no-useless-escape
-const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-function _checkFields(rawObject) {
-  const keyVals = Object.entries(rawObject);
-
-  const undefField = keyVals.find(([, value]) => value === undefined);
-
-  return undefField ? undefField[0] : null;
-}
+const {
+  checkFields,
+  validateEmail,
+  validatePassword,
+} = require('../helpers/validations');
 
 function _errorResponse(res, undefField) {
   res.status(400).json({
@@ -18,43 +12,11 @@ function _errorResponse(res, undefField) {
   });
 }
 
-function _validateEmail(email) {
-  if (email.length < 5) {
-    return 'email must be longer than 4 characters';
-  }
-
-  if (!EMAIL_REGEX.test(email)) {
-    return 'You must use a valid email!';
-  }
-
-  return null;
-}
-
-function _validatePassword(password) {
-  if (password.length < 8) {
-    return 'Password be longer than 8 characters';
-  }
-
-  if (password.length > 72) {
-    return 'Password be less than 72 characters';
-  }
-
-  if (password.startsWith(' ') || password.endsWith(' ')) {
-    return 'Password must not start or end with empty spaces';
-  }
-
-  if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
-    return 'Password must contain one upper case, lower case, number and special character';
-  }
-
-  return null;
-}
-
 const loginBody = (req, res, next) => {
   const { user_name, password } = req.body;
   const rawLogin = { user_name, password };
 
-  const undefField = _checkFields(rawLogin);
+  const undefField = checkFields(rawLogin);
   if (undefField) {
     _errorResponse(res, undefField);
     return;
@@ -88,13 +50,13 @@ const registrationBody = async (req, res, next) => {
     rawUser.id = req.body.id;
   }
 
-  const undefField = _checkFields(rawUser);
+  const undefField = checkFields(rawUser);
   if (undefField) {
     _errorResponse(res, undefField);
     return;
   }
 
-  const passError = _validatePassword(rawUser.password);
+  const passError = validatePassword(rawUser.password);
   if (passError) {
     res.status(400).json({ error: passError });
     return;
@@ -102,13 +64,29 @@ const registrationBody = async (req, res, next) => {
 
   const newUser = SerializeService.sanitizeObject(rawUser);
 
-  const emailError = _validateEmail(newUser.email);
+  const emailError = validateEmail(newUser.email);
   if (emailError) {
     res.status(400).json({ error: emailError });
     return;
   }
 
   req.newUser = newUser;
+  next();
+};
+
+const devBody = (req, res, next) => {
+  const { dev_secret } = req.body;
+
+  if (!dev_secret) {
+    _errorResponse(res, 'dev_secret');
+    return;
+  }
+
+  if (dev_secret !== DEV_SECRET) {
+    res.status(401).json({ error: `Invalid code` });
+    return;
+  }
+
   next();
 };
 
@@ -128,7 +106,7 @@ const bugBody = async (req, res, next) => {
     rawBug.id = req.body.id;
   }
 
-  const undefField = _checkFields(rawBug);
+  const undefField = checkFields(rawBug);
   if (undefField) {
     _errorResponse(res, undefField);
     return;
@@ -148,7 +126,7 @@ const linkageBody = async (req, res, next) => {
   const { status, app, severity } = req.body;
   const rawLinks = { status, app, severity };
 
-  const undefField = _checkFields(rawLinks);
+  const undefField = checkFields(rawLinks);
   if (undefField) {
     _errorResponse(res, undefField);
     return;
@@ -169,7 +147,7 @@ const commentBody = async (req, res, next) => {
     rawComment.id = req.body.id;
   }
 
-  const undefField = _checkFields(rawComment);
+  const undefField = checkFields(rawComment);
   if (undefField) {
     _errorResponse(res, undefField);
     return;
@@ -184,7 +162,8 @@ const commentBody = async (req, res, next) => {
 module.exports = {
   registrationBody,
   loginBody,
+  devBody,
   bugBody,
-  commentBody,
   linkageBody,
+  commentBody,
 };

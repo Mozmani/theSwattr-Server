@@ -9,6 +9,7 @@ module.exports = {
   API_TOKEN: process.env.API_TOKEN,
   JWT_SECRET: process.env.JWT_SECRET,
   SALT_ROUNDS: +process.env.SALT_ROUNDS,
+  DEV_SECRET: process.env.DEV_SECRET,
   DATABASE_URL: process.env.DATABASE_URL,
   TEST_DB_URL: process.env.TEST_DB_URL,
 };

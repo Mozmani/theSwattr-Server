@@ -5,9 +5,9 @@ const { JWT_SECRET, SALT_ROUNDS } = require('../config');
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService } = require('../services');
 
-const createJwt = (user_name, email, firstName, lastName) => {
+const createJwt = (user_name, email, firstName, lastName, dev) => {
   const subject = user_name;
-  const payload = { email, firstName, lastName };
+  const payload = { email, firstName, lastName, dev };
 
   return jwt.sign(payload, JWT_SECRET, {
     subject,
@@ -32,6 +32,7 @@ const passwordCheck = async (req, res, next) => {
       email,
       first_name,
       last_name,
+      dev,
     } = req.dbUser;
 
     const passwordsMatch = await bcrypt.compare(
@@ -46,7 +47,13 @@ const passwordCheck = async (req, res, next) => {
       return;
     }
 
-    const token = createJwt(user_name, email, first_name, last_name);
+    const token = createJwt(
+      user_name,
+      email,
+      first_name,
+      last_name,
+      dev,
+    );
 
     req.token = token;
     next();
@@ -62,7 +69,9 @@ const requireAuth = async (req, res, next) => {
     res.status(401).json({ error: 'Missing bearer token' });
     return;
   }
+
   const token = authToken.split(' ')[1];
+
   try {
     const payload = jwt.verify(token, JWT_SECRET, {
       algorithms: ['HS256'],

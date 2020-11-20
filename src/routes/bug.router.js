@@ -24,15 +24,16 @@ bugRouter
       const { dev, user_name } = req.dbUser;
 
       const rawBugs = dev
-        ? await CRUDService.getAllDataByOrder(
+        ? await CRUDService.getAllByOrder(
             req.app.get('db'),
             TABLE_NAME,
             'updated_at',
           )
-        : await CRUDService.getAllBySearch(
+        : await CRUDService.getAllBySearchOrder(
             req.app.get('db'),
             'user_name',
             user_name,
+            'updated_at',
           );
 
       if (!rawBugs.length) {
@@ -98,11 +99,12 @@ bugRouter.route('/user/:userName').get(async (req, res, next) => {
       return;
     }
 
-    const filtBugs = await CRUDService.getBySearch(
+    const filtBugs = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'user_name',
       userName,
+      'updated_at',
     );
 
     for (let i = 0; i < filtBugs.length; i++) {
@@ -134,15 +136,16 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
-      ? await CRUDService.getAllDataByOrder(
+      ? await CRUDService.getAllByOrder(
           req.app.get('db'),
           TABLE_NAME,
           'updated_at',
         )
-      : await CRUDService.getAllBySearch(
+      : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
           'user_name',
           user_name,
+          'updated_at',
         );
 
     const filtBugs = [];
@@ -179,15 +182,16 @@ bugRouter.route('/status/:status').get(async (req, res, next) => {
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
-      ? await CRUDService.getAllDataByOrder(
+      ? await CRUDService.getAllByOrder(
           req.app.get('db'),
           TABLE_NAME,
           'updated_at',
         )
-      : await CRUDService.getAllBySearch(
+      : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
           'user_name',
           user_name,
+          'updated_at',
         );
 
     const filtBugs = [];
@@ -224,15 +228,16 @@ bugRouter.route('/severity/:level').get(async (req, res, next) => {
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
-      ? await CRUDService.getAllDataByOrder(
+      ? await CRUDService.getAllByOrder(
           req.app.get('db'),
           TABLE_NAME,
           'updated_at',
         )
-      : await CRUDService.getAllBySearch(
+      : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
           'user_name',
           user_name,
+          'updated_at',
         );
 
     const filtBugs = [];

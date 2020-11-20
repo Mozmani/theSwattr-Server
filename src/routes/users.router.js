@@ -10,25 +10,31 @@ const {
 const usersRouter = Router();
 const TABLE_NAME = TABLE_NAMES.USERS;
 
-usersRouter.use(jsonBodyParser);
+usersRouter
+  .route('/')
+  .get(auth.requireAuth, async (req, res, next) => {
+    try {
+      if (!req.dbUser.dev) {
+        res.status(401).json({ error: `Unauthorized request` });
+        return;
+      }
 
-usersRouter.route('/').get(async (req, res, next) => {
-  try {
-    const allUsers = await CRUDService.getAllDataByOrder(
-      req.app.get('db'),
-      TABLE_NAME,
-      'dev',
-      'desc',
-    );
-    res.status(200).json(allUsers);
-  } catch (error) {
-    next(error);
-  }
-});
+      const allUsers = await CRUDService.getAllByOrder(
+        req.app.get('db'),
+        TABLE_NAME,
+        'dev',
+        'desc',
+      );
+
+      res.status(200).json({ allUsers });
+    } catch (error) {
+      next(error);
+    }
+  });
 
 usersRouter
   .route('/login')
-  .all(validate.loginBody, async (req, res, next) => {
+  .all(jsonBodyParser, validate.loginBody, async (req, res, next) => {
     try {
       const dbUser = await CRUDService.getBySearch(
         req.app.get('db'),
@@ -60,14 +66,16 @@ usersRouter
 
 usersRouter
   .route('/register')
-  .post(validate.registrationBody, async (req, res, next) => {
+  .all(jsonBodyParser, validate.registrationBody)
+  .post(async (req, res, next) => {
     try {
       const invalidName = await QueryService.userNameExists(
         req.app.get('db'),
         req.newUser.user_name,
       );
+
       if (invalidName) {
-        res.status(400).json({ error: `Username already taken` });
+        res.status(401).json({ error: `Invalid username` });
         return;
       }
 
@@ -85,9 +93,29 @@ usersRouter
         newDbUser.email,
         newDbUser.first_name,
         newDbUser.last_name,
+        newDbUser.dev,
       );
 
       res.status(201).json({ authToken: token });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+usersRouter
+  .route('/dev/:userName')
+  .all(auth.requireAuth, jsonBodyParser, validate.devBody)
+  .patch(async (req, res, next) => {
+    try {
+      const { user_name, dev } = req.dbUser;
+
+      await CRUDService.updateDevField(
+        req.app.get('db'),
+        user_name,
+        !dev,
+      );
+
+      res.status(201).json({ devStat: !dev });
     } catch (error) {
       next(error);
     }

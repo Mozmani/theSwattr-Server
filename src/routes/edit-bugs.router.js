@@ -96,9 +96,9 @@ editBugsRouter
           await CRUDService.updateFieldByBugId(
             appDb,
             BUG_STAT_TABLE,
+            bugId,
             'status_id',
             status.id,
-            bugId,
           );
 
           rawBug.status = req.status;
@@ -115,9 +115,9 @@ editBugsRouter
           await CRUDService.updateFieldByBugId(
             appDb,
             BUG_APP_TABLE,
+            bugId,
             'app_id',
             app.id,
-            bugId,
           );
 
           rawBug.app = req.app;
@@ -134,9 +134,9 @@ editBugsRouter
           await CRUDService.updateFieldByBugId(
             appDb,
             BUG_SEV_TABLE,
+            bugId,
             'severity_id',
             severity.id,
-            bugId,
           );
 
           rawBug.severity = req.level;

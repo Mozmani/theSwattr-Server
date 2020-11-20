@@ -10,15 +10,20 @@ const {
 const commentRouter = Router();
 const TABLE_NAME = TABLE_NAMES.COMMENT_THREAD;
 
-const bugName = async (db, bug_id) => {
-  const { bug_name } = await CRUDService.getBySearch(
+async function _bugName(db, bug_id, dev, user_name) {
+  const bug = await CRUDService.getBySearch(
     db,
     TABLE_NAMES.BUG,
     'id',
     bug_id,
   );
-  return bug_name;
-};
+
+  if (dev || bug.user_name === user_name) {
+    return bug.bug_name;
+  }
+
+  return null;
+}
 
 commentRouter.use(auth.requireAuth);
 
@@ -26,16 +31,24 @@ commentRouter
   .route('/')
   .get(async (req, res, next) => {
     try {
-      const rawComments = await CRUDService.getAllDataByOrder(
-        req.app.get('db'),
-        TABLE_NAME,
-        'created_at',
-        'desc',
-      );
+      const { dev, user_name } = req.dbUser;
+
+      const rawComments = dev
+        ? await CRUDService.getAllByOrder(
+            req.app.get('db'),
+            TABLE_NAME,
+            'created_at',
+          )
+        : await CRUDService.getAllBySearchOrder(
+            req.app.get('db'),
+            'user_name',
+            user_name,
+            'created_at',
+          );
 
       for (let i = 0; i < rawComments.length; i++) {
         const { bug_id } = rawComments[i];
-        rawComments[i].bug_name = await bugName(
+        rawComments[i].bug_name = await _bugName(
           req.app.get('db'),
           bug_id,
         );
@@ -56,20 +69,33 @@ commentRouter
     validate.commentBody,
     async (req, res, next) => {
       try {
-        const [newComment] = await CRUDService.createEntry(
+        const { dev, user_name } = req.dbUser;
+
+        const bug_name = await _bugName(
+          req.app.get('db'),
+          req.newComment.bug_id,
+          dev,
+          user_name,
+        );
+
+        if (!bug_name) {
+          res
+            .status(401)
+            .json({ error: `Unauthorized comment post` });
+          return;
+        }
+
+        const [rawComment] = await CRUDService.createEntry(
           req.app.get('db'),
           TABLE_NAME,
           req.newComment,
         );
 
-        newComment.bug_name = await bugName(
-          req.app.get('db'),
-          newComment.bug_id,
-        );
+        rawComment.bug_name = bug_name;
 
-        const comment = SerializeService.formatComment(newComment);
+        const newComment = SerializeService.formatComment(rawComment);
 
-        res.status(200).json(comment);
+        res.status(200).json({ newComment });
       } catch (error) {
         next(error);
       }
@@ -78,6 +104,29 @@ commentRouter
 
 commentRouter
   .route('/:id')
+  .all(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { dev, user_name } = req.dbUser;
+
+      const bug_name = await _bugName(
+        req.app.get('db'),
+        id,
+        dev,
+        user_name,
+      );
+
+      if (!bug_name) {
+        res.status(401).json({ error: `Unauthorized comment query` });
+        return;
+      }
+
+      req.bug_name = bug_name;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  })
   .get(async (req, res, next) => {
     try {
       const rawComment = await CRUDService.getBySearch(
@@ -87,10 +136,7 @@ commentRouter
         req.params.id,
       );
 
-      rawComment.bug_name = await bugName(
-        req.app.get('db'),
-        rawComment.bug_id,
-      );
+      rawComment.bug_name = req.bug_name;
 
       const comment = SerializeService.formatComment(rawComment);
 
@@ -109,12 +155,10 @@ commentRouter
           TABLE_NAME,
           'id',
           req.params.id,
+          req.newComment,
         );
 
-        updComment.bug_name = await bugName(
-          req.app.get('db'),
-          updComment.bug_id,
-        );
+        updComment.bug_name = req.bug_name;
 
         const comment = SerializeService.formatComment(updComment);
 
@@ -128,17 +172,14 @@ commentRouter
   )
   .delete(async (req, res, next) => {
     try {
-      const [delComment] = await CRUDService.deleteBySearch(
+      const [delComment] = await CRUDService.deleteEntry(
         req.app.get('db'),
         TABLE_NAME,
         'id',
         req.params.id,
       );
 
-      delComment.bug_name = await bugName(
-        req.app.get('db'),
-        delComment.bug_id,
-      );
+      delComment.bug_name = req.bug_name;
 
       const comment = SerializeService.formatComment(delComment);
 
@@ -150,16 +191,17 @@ commentRouter
 
 commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
   try {
-    const rawComments = await CRUDService.getAllBySearch(
+    const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'bug_id',
       req.params.bugId,
+      'updated_at',
     );
 
     for (let i = 0; i < rawComments.length; i++) {
       const { bug_id } = rawComments[i];
-      rawComments[i].bug_name = await bugName(
+      rawComments[i].bug_name = await _bugName(
         req.app.get('db'),
         bug_id,
       );
@@ -178,16 +220,17 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
 
 commentRouter.route('/user/:userName').get(async (req, res, next) => {
   try {
-    const rawComments = await CRUDService.getAllBySearch(
+    const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'user_name',
       req.params.userName,
+      'updated_at',
     );
 
     for (let i = 0; i < rawComments.length; i++) {
       const { bug_id } = rawComments[i];
-      rawComments[i].bug_name = await bugName(
+      rawComments[i].bug_name = await _bugName(
         req.app.get('db'),
         bug_id,
       );

@@ -18,15 +18,16 @@ sortBugsRouter.route('/status/:app').get(async (req, res, next) => {
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
-      ? await CRUDService.getAllDataByOrder(
+      ? await CRUDService.getAllByOrder(
           req.app.get('db'),
           TABLE_NAME,
           'updated_at',
         )
-      : await CRUDService.getAllBySearch(
+      : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
           'user_name',
           user_name,
+          'updated_at',
         );
 
     const pending = [],
@@ -90,15 +91,16 @@ sortBugsRouter.route('/app').get(async (req, res, next) => {
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
-      ? await CRUDService.getAllDataByOrder(
+      ? await CRUDService.getAllByOrder(
           req.app.get('db'),
           TABLE_NAME,
           'updated_at',
         )
-      : await CRUDService.getAllBySearch(
+      : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
           'user_name',
           user_name,
+          'updated_at',
         );
 
     const rawAppBugs = { mainApp: [], seconsApp: [] };
@@ -147,7 +149,7 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
   try {
     const app = req.params.app.replace(/-/g, ' ');
 
-    const rawBugs = await CRUDService.getAllDataByOrder(
+    const rawBugs = await CRUDService.getAllByOrder(
       req.app.get('db'),
       TABLE_NAME,
       'updated_at',
