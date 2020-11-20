@@ -103,7 +103,7 @@ sortBugsRouter.route('/app').get(async (req, res, next) => {
           'updated_at',
         );
 
-    const rawAppBugs = { mainApp: [], seconsApp: [] };
+    const rawAppBugs = { mainApp: [], secondApp: [] };
     for (let i = 0; i < rawBugs.length; i++) {
       const thisBug = rawBugs[i];
 
