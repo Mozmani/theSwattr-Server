@@ -150,7 +150,13 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
     );
 
     const theDb = req.app.get('db');
-    const newBugs = [];
+    const pending = [];
+    const high =[];
+    const medium =[];
+    const low = [];
+
+
+
     for (let i = 0; i < rawBugs.length; i++) {
       const thisBug = rawBugs[i];
       thisBug.status = await QueryService.grabStatus(
@@ -163,13 +169,26 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
       );
       thisBug.app = await QueryService.grabAppName(theDb, thisBug.id);
       if (thisBug.app === app) {
-        newBugs.push(thisBug);
+        if (thisBug.severity === 'pending'){
+          pending.push(thisBug)
+        } else if (thisBug.severity === 'high'){
+          high.push(thisBug)
+        }
+        else if (thisBug.severity === 'medium'){
+          medium.push(thisBug)
+        }
+        else if (thisBug.severity === 'low'){
+          low.push(thisBug)
+        }
       }
     }
 
-    const bugs = SerializeService.formatAll(newBugs, TABLE_NAME);
+    const bugsPend = SerializeService.formatAll(pending, TABLE_NAME);
+    const bugsHigh = SerializeService.formatAll(high, TABLE_NAME);
+    const bugsMedium = SerializeService.formatAll(medium, TABLE_NAME);
+    const bugsLow = SerializeService.formatAll(low, TABLE_NAME);
 
-    res.status(200).json({ bugs });
+    res.status(200).json({ bugsPend, bugsHigh, bugsMedium, bugsLow });
   } catch (error) {
     next(error);
   }
