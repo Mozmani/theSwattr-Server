@@ -2,6 +2,9 @@ const CRUDService = {
   getAllData(db, table) {
     return db(table);
   },
+  getAllDataOrder(db, table, order){
+    return db(table).orderBy(order);
+  },
 
   getAllBySearch(db, table, colName, colVal) {
     return db(table).where(colName, colVal);

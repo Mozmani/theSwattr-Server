@@ -144,9 +144,10 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
 
     app = app.replace(/-/g, ' ');
 
-    const rawBugs = await CRUDService.getAllData(
+    const rawBugs = await CRUDService.getAllDataOrder(
       req.app.get('db'),
       TABLE_NAME,
+      'updated_at'
     );
 
     const theDb = req.app.get('db');
