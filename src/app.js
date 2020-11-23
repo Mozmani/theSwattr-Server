@@ -14,8 +14,11 @@ const {
   bugRouter,
   commentRouter,
   sortBugsRouter,
-  usersRouter,
+  usersRouter
 } = require('./routes');
+
+const appRouter = require('./routes/app.router')
+
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
@@ -48,6 +51,7 @@ app.use(COMMENT_THREAD_EP, commentRouter);
 app.use(SORT_BUGS_EP, sortBugsRouter);
 app.use(EDIT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
+app.use('/api/app', appRouter)
 
 /*
 |--------------------------------------
