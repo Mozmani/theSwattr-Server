@@ -48,7 +48,7 @@ const USERS_EP = ROUTES.API + ROUTES.USERS;
 
 app.use(BUG_EP, bugRouter);
 app.use(COMMENT_THREAD_EP, commentRouter);
-app.use(SORT_BUGS_EP, sortBugsRouter);
+app.use('/api/sort', sortBugsRouter);
 app.use(EDIT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
 app.use('/api/app', appRouter)
