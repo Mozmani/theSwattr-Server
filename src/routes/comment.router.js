@@ -191,21 +191,25 @@ commentRouter
 
 commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
   try {
-    
+    const { bugId } = req.params;
+    const { dev, user_name } = req.dbUser;
+
     const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'bug_id',
-      req.params.bugId,
+      bugId,
       'created_at',
     );
 
     for (let i = 0; i < rawComments.length; i++) {
-      const { bug_id } = rawComments[i];
-      rawComments[i].bug_name = await _bugName(
+      const data = await _bugName(
         req.app.get('db'),
-        bug_id,
+        bugId,
+        dev,
+        user_name,
       );
+      rawComments[i].bug_name = data;
     }
 
     const comments = SerializeService.formatAll(
