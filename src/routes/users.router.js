@@ -33,6 +33,18 @@ usersRouter
   });
 
 usersRouter
+  .route('/token')
+  .get(auth.requireAuth, async (req, res, next) => {
+    try {
+      const authToken = auth.createJwt(req.dbUser);
+
+      res.status(200).json({ authToken });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+usersRouter
   .route('/login')
   .all(jsonBodyParser, validate.loginBody, async (req, res, next) => {
     try {
@@ -88,13 +100,7 @@ usersRouter
         req.newUser,
       );
 
-      const token = auth.createJwt(
-        newDbUser.user_name,
-        newDbUser.email,
-        newDbUser.first_name,
-        newDbUser.last_name,
-        newDbUser.dev,
-      );
+      const token = auth.createJwt(newDbUser);
 
       res.status(201).json({ authToken: token });
     } catch (error) {

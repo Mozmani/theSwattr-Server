@@ -1,16 +1,24 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const { JWT_SECRET, SALT_ROUNDS } = require('../config');
+const { JWT_SECRET, JWT_EXPIRY, SALT_ROUNDS } = require('../config');
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService } = require('../services');
 
-const createJwt = (user_name, email, firstName, lastName, dev) => {
+const createJwt = (user) => {
+  const { user_name, email, first_name, last_name, dev } = user;
+
   const subject = user_name;
-  const payload = { email, firstName, lastName, dev };
+  const payload = {
+    email,
+    firstName: first_name,
+    lastName: last_name,
+    dev,
+  };
 
   return jwt.sign(payload, JWT_SECRET, {
     subject,
+    expiresIn: JWT_EXPIRY,
     algorithm: 'HS256',
   });
 };
@@ -25,19 +33,12 @@ const hashPassword = async (password) => {
 
 const passwordCheck = async (req, res, next) => {
   try {
-    const plaintextPassword = req.loginUser.password;
-    const {
-      password,
-      user_name,
-      email,
-      first_name,
-      last_name,
-      dev,
-    } = req.dbUser;
+    const plainTextPassword = req.loginUser.password;
+    const hashedPassword = req.dbUser.password;
 
     const passwordsMatch = await bcrypt.compare(
-      plaintextPassword,
-      password,
+      plainTextPassword,
+      hashedPassword,
     );
 
     if (!passwordsMatch) {
@@ -47,13 +48,7 @@ const passwordCheck = async (req, res, next) => {
       return;
     }
 
-    const token = createJwt(
-      user_name,
-      email,
-      first_name,
-      last_name,
-      dev,
-    );
+    const token = createJwt(req.dbUser);
 
     req.token = token;
     next();
