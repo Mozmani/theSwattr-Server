@@ -66,6 +66,7 @@ bugRouter
 
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
     try {
+      console.log(req.body)
       const [newBug] = await CRUDService.createEntry(
         req.app.get('db'),
         TABLE_NAME,

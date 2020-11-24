@@ -191,12 +191,13 @@ commentRouter
 
 commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
   try {
+    
     const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'bug_id',
       req.params.bugId,
-      'updated_at',
+      'created_at',
     );
 
     for (let i = 0; i < rawComments.length; i++) {
