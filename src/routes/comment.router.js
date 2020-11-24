@@ -51,6 +51,8 @@ commentRouter
         rawComments[i].bug_name = await _bugName(
           req.app.get('db'),
           bug_id,
+          dev,
+          user_name,
         );
       }
 
@@ -203,13 +205,12 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
     );
 
     for (let i = 0; i < rawComments.length; i++) {
-      const data = await _bugName(
+      rawComments[i].bug_name = await _bugName(
         req.app.get('db'),
         bugId,
         dev,
         user_name,
       );
-      rawComments[i].bug_name = data;
     }
 
     const comments = SerializeService.formatAll(
@@ -225,11 +226,14 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
 
 commentRouter.route('/user/:userName').get(async (req, res, next) => {
   try {
+    const { userName } = req.params;
+    const { dev, user_name } = req.dbUser;
+
     const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
       'user_name',
-      req.params.userName,
+      userName,
       'updated_at',
     );
 
@@ -238,6 +242,8 @@ commentRouter.route('/user/:userName').get(async (req, res, next) => {
       rawComments[i].bug_name = await _bugName(
         req.app.get('db'),
         bug_id,
+        dev,
+        user_name,
       );
     }
 
