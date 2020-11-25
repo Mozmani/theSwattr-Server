@@ -2,8 +2,9 @@ const ROUTES = {
   API: '/api',
   USERS: '/users',
   BUGS: '/bugs',
-  EDIT_BUGS: '/edit/bugs',
-  SORT_BUGS: '/sort/bugs',
+  APP: '/app',
+  EDIT_BUGS: '/edit',
+  SORT_BUGS: '/sort',
   COMMENT_THREAD: '/comments',
 };
 

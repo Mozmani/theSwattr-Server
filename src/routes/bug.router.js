@@ -66,8 +66,7 @@ bugRouter
 
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
     try {
-      console.log(req.body)
-      const [newBug] = await CRUDService.createEntry(
+      const [rawBug] = await CRUDService.createEntry(
         req.app.get('db'),
         TABLE_NAME,
         req.newBug,
@@ -75,13 +74,15 @@ bugRouter
 
       await QueryService.initLinkages(
         req.app.get('db'),
-        newBug.id,
+        rawBug.id,
         req.newBug.app,
       );
 
-      newBug.status = 'pending';
-      newBug.severity = 'pending';
-      newBug.app = req.newBug.app;
+      rawBug.status = 'pending';
+      rawBug.severity = 'pending';
+      rawBug.app = req.newBug.app;
+
+      const newBug = SerializeService.formatBug(rawBug);
 
       res.status(200).json({ newBug });
     } catch (error) {

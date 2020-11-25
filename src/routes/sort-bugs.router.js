@@ -148,12 +148,20 @@ sortBugsRouter.route('/app').get(async (req, res, next) => {
 sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
   try {
     const app = req.params.app.replace(/-/g, ' ');
+    const { dev, user_name } = req.dbUser;
 
-    const rawBugs = await CRUDService.getAllByOrder(
-      req.app.get('db'),
-      TABLE_NAME,
-      'updated_at',
-    );
+    const rawBugs = dev
+      ? await CRUDService.getAllByOrder(
+          req.app.get('db'),
+          TABLE_NAME,
+          'updated_at',
+        )
+      : await CRUDService.getAllBySearchOrder(
+          req.app.get('db'),
+          'user_name',
+          user_name,
+          'updated_at',
+        );
 
     const pending = [],
       high = [],

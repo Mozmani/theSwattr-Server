@@ -14,11 +14,10 @@ const {
   bugRouter,
   commentRouter,
   sortBugsRouter,
-  usersRouter
+  usersRouter,
 } = require('./routes');
 
-const appRouter = require('./routes/app.router')
-
+const appRouter = require('./routes/app.router');
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
@@ -40,18 +39,19 @@ app.get('/', (_req, res) => {
 
 */
 
-const BUG_EP = ROUTES.API + ROUTES.BUGS;
-const COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD;
-const EDIT_BUGS_EP = ROUTES.API + ROUTES.EDIT_BUGS;
-const SORT_BUGS_EP = ROUTES.API + ROUTES.SORT_BUGS;
-const USERS_EP = ROUTES.API + ROUTES.USERS;
+const APP_EP = ROUTES.API + ROUTES.APP,
+  BUG_EP = ROUTES.API + ROUTES.BUGS,
+  COMMENT_THREAD_EP = ROUTES.API + ROUTES.COMMENT_THREAD,
+  EDIT_BUGS_EP = ROUTES.API + ROUTES.EDIT_BUGS,
+  SORT_BUGS_EP = ROUTES.API + ROUTES.SORT_BUGS,
+  USERS_EP = ROUTES.API + ROUTES.USERS;
 
+app.use(APP_EP, appRouter);
 app.use(BUG_EP, bugRouter);
 app.use(COMMENT_THREAD_EP, commentRouter);
-app.use('/api/sort', sortBugsRouter);
 app.use(EDIT_BUGS_EP, sortBugsRouter);
+app.use(SORT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
-app.use('/api/app', appRouter)
 
 /*
 |--------------------------------------

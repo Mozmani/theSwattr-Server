@@ -13,11 +13,74 @@ describe.skip('Route: Users router', () => {
     app.set('db', db);
   });
 
+  beforeEach('seed all users', () => helpers.seedUsers(db));
+
   afterEach('cleanup', () => helpers.cleanTables(db));
 
   after('disconnect from db', () => db.destroy());
 
-  // const seedAllTablesHook = () => {
-  //   beforeEach('seed all data', () => helpers.seedAllTables(db));
-  // };
+  describe.skip(`ENDPOINT: '/users'`, () => {
+    context.skip('GET', () => {
+      it.skip('rejects unauthorized user', () => {});
+
+      it.skip('returns error if non-dev', () => {});
+
+      it.skip('returns all users', () => {});
+    });
+  });
+
+  describe.skip(`ENDPOINT: '/users/token'`, () => {
+    context.skip('GET', () => {
+      it.skip('rejects unauthorized user', () => {});
+
+      it.skip('returns authToken on success', () => {});
+    });
+  });
+
+  describe.skip(`ENDPOINT: '/users/login'`, () => {
+    it.skip('returns error if missing body fields', () => {});
+
+    it.skip('returns error if invalid username', () => {});
+
+    context.skip('POST', () => {
+      it.skip('returns error if invalid password', () => {});
+
+      it.skip('returns authToken on success', () => {});
+    });
+  });
+
+  describe.skip(`ENDPOINT: '/users/register'`, () => {
+    it.skip('returns error if missing body fields', () => {});
+
+    context.skip('POST', () => {
+      it.skip('returns error if invalid name', () => {});
+
+      it.skip('creates new entry in users table', () => {});
+
+      it.skip('returns authToken on success', () => {});
+    });
+  });
+
+  const selfToggle = null;
+  const userToggle = null;
+  const devRoutes = [
+    ['/users/dev', selfToggle],
+    ['/users/dev/:userName', userToggle],
+  ];
+
+  devRoutes.forEach(([route, userData]) => {
+    describe.skip(`ENDPOINT: '${route}'`, () => {
+      it.skip('rejects unauthorized user', () => {});
+
+      it.skip('returns error if missing body fields', () => {});
+
+      it.skip('returns error if dev_secret is invalid', () => {});
+
+      context.skip('PATCH', () => {
+        it.skip('toggles dev field in users table', () => {});
+
+        it.skip('returns dev status of user', () => {});
+      });
+    });
+  });
 });

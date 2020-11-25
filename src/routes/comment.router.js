@@ -81,9 +81,9 @@ commentRouter
         );
 
         if (!bug_name) {
-          res
-            .status(401)
-            .json({ error: `Unauthorized comment post` });
+          res.status(401).json({
+            error: 'Bug not found/unauthorized comment query',
+          });
           return;
         }
 
@@ -119,7 +119,9 @@ commentRouter
       );
 
       if (!bug_name) {
-        res.status(401).json({ error: `Unauthorized comment query` });
+        res.status(401).json({
+          error: 'Bug not found/unauthorized comment query',
+        });
         return;
       }
 
@@ -196,6 +198,20 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
     const { bugId } = req.params;
     const { dev, user_name } = req.dbUser;
 
+    const bug_name = await _bugName(
+      req.app.get('db'),
+      bugId,
+      dev,
+      user_name,
+    );
+
+    if (!bug_name) {
+      res
+        .status(401)
+        .json({ error: 'Bug not found/unauthorized comment query' });
+      return;
+    }
+
     const rawComments = await CRUDService.getAllBySearchOrder(
       req.app.get('db'),
       TABLE_NAME,
@@ -205,18 +221,12 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
     );
 
     for (let i = 0; i < rawComments.length; i++) {
-      rawComments[i].bug_name = await _bugName(
-        req.app.get('db'),
-        bugId,
-        dev,
-        user_name,
-      );
+      rawComments[i].bug_name = bug_name;
     }
 
-    const comments = SerializeService.formatAll(
-      rawComments,
-      TABLE_NAME,
-    );
+    const comments = rawComments.length
+      ? SerializeService.formatAll(rawComments, TABLE_NAME)
+      : `No comments found for bug: '${bug_name}'`;
 
     res.status(200).json({ filteredBy: 'bug_id', comments });
   } catch (error) {
@@ -247,10 +257,9 @@ commentRouter.route('/user/:userName').get(async (req, res, next) => {
       );
     }
 
-    const comments = SerializeService.formatAll(
-      rawComments,
-      TABLE_NAME,
-    );
+    const comments = rawComments.length
+      ? SerializeService.formatAll(rawComments, TABLE_NAME)
+      : `No comments found for user: '${user_name}'`;
 
     res.status(200).json({ filteredBy: 'user_name', comments });
   } catch (error) {

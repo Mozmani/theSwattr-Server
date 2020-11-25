@@ -33,13 +33,13 @@ rules:
   one-var: 0
   no-unused-vars:
     #! example - if not using 'req': router.get((_req, res, next) => {})
-    - error
+    - warn
     - argsIgnorePattern: ^_
   linebreak-style:
     - error
     - unix
   no-empty-function:
-    - error
+    - warn
     - allow:
         #! this allows for empty service/boilerplate code
         - methods

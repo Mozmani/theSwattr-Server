@@ -109,7 +109,7 @@ usersRouter
   });
 
 usersRouter
-  .route('/dev/:userName')
+  .route('/dev')
   .all(auth.requireAuth, jsonBodyParser, validate.devBody)
   .patch(async (req, res, next) => {
     try {
@@ -121,7 +121,35 @@ usersRouter
         !dev,
       );
 
-      res.status(201).json({ devStat: !dev });
+      res.status(201).json({ [user_name]: `Dev status: ${!dev}` });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+usersRouter
+  .route('/dev/:userName')
+  .all(auth.requireAuth, jsonBodyParser, validate.devBody)
+  .patch(async (req, res, next) => {
+    try {
+      const { userName } = req.params;
+
+      const user = await CRUDService.getBySearch(
+        req.app.get('db'),
+        TABLE_NAME,
+        'user_name',
+        userName,
+      );
+
+      await CRUDService.updateDevField(
+        req.app.get('db'),
+        user.user_name,
+        !user.dev,
+      );
+
+      res
+        .status(201)
+        .json({ [userName]: `Dev status: ${!user.dev}` });
     } catch (error) {
       next(error);
     }

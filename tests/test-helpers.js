@@ -617,6 +617,10 @@ const cleanTables = (db) => {
   );
 };
 
+const cleanBugs = (db) => {
+  return db.raw(`TRUNCATE bug CASCADE;`);
+};
+
 const seedTable = (db, table, data) => db(table).insert(data);
 
 const seedUsers = (db) => db(USERS).insert(users_seed);
@@ -644,6 +648,7 @@ module.exports = {
   getExpectedQueryData,
 
   cleanTables,
+  cleanBugs,
   seedTable,
   seedUsers,
   seedAllTables,
