@@ -63,6 +63,6 @@ VALUES
   (2, 'admin', 'dev response 1'),
   (2, 'user2', 'user response 1'),
   (2, 'admin', 'dev response 2'),
-  (1, 'admin', 'dev comment 1');
+  (1, 'admin', 'dev comment 2');
 
 COMMIT;
