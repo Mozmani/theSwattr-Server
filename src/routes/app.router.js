@@ -10,18 +10,18 @@ appRouter.use(auth.requireAuth);
 
 appRouter.route('/').get(async (req, res, next) => {
   try {
-    const rawApps = await CRUDService.getAllData(
+    const apps = await CRUDService.getAllData(
       req.app.get('db'),
       TABLE_NAME,
     );
 
-    const apps = rawApps.map(({ id, app_name }) => {
-      const appName = app_name
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-      return { id, appName };
-    });
+    // const apps = rawApps.map(({ id, app_name }) => {
+    //   const appName = app_name
+    //     .split(' ')
+    //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    //     .join(' ');
+    //   return { id, appName };
+    // });
 
     res.status(200).json({ apps });
   } catch (error) {
