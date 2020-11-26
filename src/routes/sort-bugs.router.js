@@ -167,7 +167,9 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
       high = [],
       medium = [],
       low = [];
-    for (let i = 0; i < rawBugs.length; i++) {
+      
+    
+      for (let i = 0; i < rawBugs.length; i++) {
       const thisBug = rawBugs[i];
 
       const links = await QueryService.grabBugLinkages(
@@ -175,6 +177,7 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
         thisBug.id,
       );
 
+        console.log(links)
       if (links.app_name === app) {
         thisBug.status = links.status_name;
         thisBug.app = links.app_name;

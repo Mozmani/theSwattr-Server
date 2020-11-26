@@ -226,7 +226,7 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
 
     const comments = rawComments.length
       ? SerializeService.formatAll(rawComments, TABLE_NAME)
-      : `No comments found for bug: '${bug_name}'`;
+      : [{id:0, userName:'None', comment:"There are no bugs for:", createdDate: bug_name}];
 
     res.status(200).json({ filteredBy: 'bug_id', comments });
   } catch (error) {
