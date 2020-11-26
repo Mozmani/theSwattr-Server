@@ -112,7 +112,7 @@ const bugBody = async (req, res, next) => {
       app,
     } = req.body;
 
-    const rawBug = { user_name, bug_name, description, app };
+    const rawBug = { user_name, bug_name, description};
 
     // ? for testing only
     if (req.body.id) {
@@ -132,6 +132,7 @@ const bugBody = async (req, res, next) => {
     const newBug = SerializeService.sanitizeObject(rawBug);
 
     req.newBug = newBug;
+    req.app_name = app;
     next();
   } catch (error) {
     next(error);
