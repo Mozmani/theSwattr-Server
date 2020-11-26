@@ -65,26 +65,22 @@ bugRouter
   })
 
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
-    
-    console.log(req.body)
     try {
-      
-      
       const [rawBug] = await CRUDService.createEntry(
         req.app.get('db'),
         TABLE_NAME,
         req.newBug,
       );
-      //console.log(rawBug)
+
       await QueryService.initLinkages(
         req.app.get('db'),
         rawBug.id,
-        req.body.app,
+        req.appName,
       );
 
       rawBug.status = 'pending';
       rawBug.severity = 'pending';
-      rawBug.app = req.body.app;
+      rawBug.app = req.appName;
 
       const newBug = SerializeService.formatBug(rawBug);
 
@@ -128,7 +124,7 @@ bugRouter.route('/user/:userName').get(async (req, res, next) => {
 
     const userBugs = filtBugs.length
       ? SerializeService.formatAll(filtBugs, TABLE_NAME)
-      : `No bugs found for user: '${userName}'`;
+      : [{ message: `No bugs found for user: '${userName}'` }];
 
     res.status(200).json({ userBugs });
   } catch (error) {
@@ -174,7 +170,7 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
 
     const appBugs = filtBugs.length
       ? SerializeService.formatAll(filtBugs, TABLE_NAME)
-      : `Wow! No bugs found for app: '${app}'`;
+      : [{ message: `Wow! No bugs found for app: '${app}'` }];
 
     res.status(200).json({ appBugs });
   } catch (error) {
@@ -220,7 +216,7 @@ bugRouter.route('/status/:status').get(async (req, res, next) => {
 
     const statBugs = filtBugs.length
       ? SerializeService.formatAll(filtBugs, TABLE_NAME)
-      : `No bugs found with status: '${status}'`;
+      : [{ message: `No bugs found with status: '${status}'` }];
 
     res.status(200).json({ statBugs });
   } catch (error) {
@@ -266,7 +262,7 @@ bugRouter.route('/severity/:level').get(async (req, res, next) => {
 
     const bugs = filtBugs.length
       ? SerializeService.formatAll(filtBugs, TABLE_NAME)
-      : `No bugs found with severity: '${level}'`;
+      : [{ message: `No bugs found with severity: '${level}'` }];
 
     res.status(200).json({ bugs });
   } catch (error) {
