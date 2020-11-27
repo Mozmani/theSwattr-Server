@@ -114,12 +114,14 @@ const bugBody = async (req, res, next) => {
 
     const rawBug = { user_name, bug_name, description };
 
-    if (!app || app !== 'main app' || app !== 'second app') {
-      res.status(400).json({
-        error: `Invalid app name`,
-      });
-      return;
-    }
+    // Removed this validation because it prevented postman from working with correct app name
+
+    // if (!app || app !== 'main app' || app !== 'second app') {
+    //   res.status(400).json({
+    //     error: `Invalid app name`,
+    //   });
+    //   return;
+    // }
 
     // ? for testing only
     if (req.body.id) {
