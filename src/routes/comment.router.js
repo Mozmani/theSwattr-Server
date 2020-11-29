@@ -224,11 +224,11 @@ commentRouter.route('/bug/:bugId').get(async (req, res, next) => {
       rawComments[i].bug_name = bug_name;
     }
 
-    const comments = rawComments.length
+    const bugComments = rawComments.length
       ? SerializeService.formatAll(rawComments, TABLE_NAME)
       : [{ message: `No comments found for bug: ${bug_name}` }];
 
-    res.status(200).json({ filteredBy: 'bug_id', comments });
+    res.status(200).json({ bugComments });
   } catch (error) {
     next(error);
   }
@@ -257,11 +257,11 @@ commentRouter.route('/user/:userName').get(async (req, res, next) => {
       );
     }
 
-    const comments = rawComments.length
+    const userComments = rawComments.length
       ? SerializeService.formatAll(rawComments, TABLE_NAME)
       : [{ message: `No comments found for user: '${user_name}'` }];
 
-    res.status(200).json({ filteredBy: 'user_name', comments });
+    res.status(200).json({ userComments });
   } catch (error) {
     next(error);
   }

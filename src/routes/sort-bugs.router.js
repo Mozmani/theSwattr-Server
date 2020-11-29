@@ -175,7 +175,7 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
         req.app.get('db'),
         thisBug.id,
       );
-      console.log(app);
+
       if (links && links.app_name === app) {
         thisBug.status = links.status_name;
         thisBug.app = links.app_name;
