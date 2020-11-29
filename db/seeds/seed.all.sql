@@ -12,8 +12,8 @@ VALUES
 
 INSERT INTO app (app_name)
 VALUES
-  ('main app'),
-  ('second app');
+  ('main-app'),
+  ('second-app');
 
 INSERT INTO severity_level (level)
 VALUES
@@ -47,8 +47,8 @@ VALUES
   ('user2', 'Bug 2', 'decription of Bug 2');
 
 -- functions to seed linkage tables
-SELECT init_app_severity(1, 'main app');
-SELECT init_app_severity(2, 'second app');
+SELECT init_app_severity(1, 'main-app');
+SELECT init_app_severity(2, 'second-app');
 
 SELECT update_bug_severity(1, 'high');
 

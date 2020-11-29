@@ -72,6 +72,11 @@ bugRouter
         req.newBug,
       );
 
+      if (!rawBug) {
+        res.status(400).json({ error: 'Invalid body credentials' });
+        return;
+      }
+
       await QueryService.initLinkages(
         req.app.get('db'),
         rawBug.id,

@@ -14,7 +14,7 @@ sortBugsRouter.use(auth.requireAuth);
 
 sortBugsRouter.route('/status/:app').get(async (req, res, next) => {
   try {
-    const app = req.params.app.replace(/-/g, ' ');
+    const { app } = req.params;
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
@@ -147,7 +147,7 @@ sortBugsRouter.route('/app').get(async (req, res, next) => {
 
 sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
   try {
-    const app = req.params.app.replace(/-/g, ' ');
+    const { app } = req.params;
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
@@ -175,8 +175,8 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
         req.app.get('db'),
         thisBug.id,
       );
-
-      if (links.app_name === app) {
+      console.log(app);
+      if (links && links.app_name === app) {
         thisBug.status = links.status_name;
         thisBug.app = links.app_name;
         thisBug.severity = links.level;

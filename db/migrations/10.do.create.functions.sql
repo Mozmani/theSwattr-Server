@@ -16,8 +16,8 @@ RETURNS VOID AS $update_bug_app$
     END IF;
 
     CASE
-      WHEN app = 'main app' THEN bugged_app = 1;
-      WHEN app = 'second app' THEN bugged_app = 2;
+      WHEN app = 'main-app' THEN bugged_app = 1;
+      WHEN app = 'second-app' THEN bugged_app = 2;
       ELSE RAISE EXCEPTION 'invalid app name';
     END CASE;
 

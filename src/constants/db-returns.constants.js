@@ -1,4 +1,6 @@
 // ? More for reference, these are the 'keys' in the objects that the server will CLIENT_return to the client
+const APP_CLIENT_RETURN = ['appName1', 'appName2', 'etc...'];
+
 const USERS_CLIENT_RETURN = {
   firstName: 'first_name',
   lastName: 'last_name',
@@ -36,6 +38,7 @@ const COMMENT_THREAD_CLIENT_RETURN = {
 // const BUG_SEVERITY_CLIENT_RETURN = [...BUG_CLIENT_RETURN];
 
 module.exports = {
+  APP_CLIENT_RETURN,
   USERS_CLIENT_RETURN,
   BUG_CLIENT_RETURN,
   COMMENT_THREAD_CLIENT_RETURN,
