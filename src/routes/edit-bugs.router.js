@@ -41,12 +41,12 @@ editBugsRouter
         const { bug_name, description, completed_notes } = req.newBug;
         const appDb = req.app.get('db');
 
-        if (completed_notes && req.status !== 'closed') {
+        if (completed_notes && req.links.status !== 'closed') {
           res.status(401).json({ error: `Status must be 'closed'` });
           return;
         }
 
-        const rawBug = await CRUDService.getBySearch(
+        let rawBug = await CRUDService.getBySearch(
           appDb,
           BUG_TABLE,
           'id',
@@ -71,13 +71,14 @@ editBugsRouter
         }
 
         if (bugChanged) {
-          await CRUDService.updateEntry(
+          const [update] = await CRUDService.updateEntry(
             appDb,
             BUG_TABLE,
             'id',
             rawBug.id,
             rawBug,
           );
+          rawBug = update;
         }
 
         const links = await QueryService.grabBugLinkages(
@@ -85,12 +86,12 @@ editBugsRouter
           rawBug.id,
         );
 
-        if (links.status_name !== req.status) {
+        if (links.status_name !== req.links.status) {
           const status = await CRUDService.getBySearch(
             appDb,
             STAT_TABLE,
-            'level',
-            req.status,
+            'status_name',
+            req.links.status,
           );
 
           await CRUDService.updateFieldByBugId(
@@ -101,15 +102,15 @@ editBugsRouter
             status.id,
           );
 
-          rawBug.status = req.status;
+          rawBug.status = req.links.status;
         } else rawBug.status = links.status_name;
 
-        if (links.app_name !== req.app) {
+        if (links.app_name !== req.links.app) {
           const app = await CRUDService.getBySearch(
             appDb,
             APP_TABLE,
             'app_name',
-            req.app,
+            req.links.app,
           );
 
           await CRUDService.updateFieldByBugId(
@@ -120,15 +121,15 @@ editBugsRouter
             app.id,
           );
 
-          rawBug.app = req.app;
+          rawBug.app = req.links.app;
         } else rawBug.app = links.app_name;
 
-        if (links.level !== req.severity) {
+        if (links.level !== req.links.severity) {
           const severity = await CRUDService.getBySearch(
             appDb,
             SEV_TABLE,
             'level',
-            req.severity,
+            req.links.severity,
           );
 
           await CRUDService.updateFieldByBugId(
@@ -139,7 +140,7 @@ editBugsRouter
             severity.id,
           );
 
-          rawBug.severity = req.level;
+          rawBug.severity = req.links.severity;
         } else rawBug.severity = links.level;
 
         const editBug = SerializeService.formatBug(rawBug);

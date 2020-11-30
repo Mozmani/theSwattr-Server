@@ -166,7 +166,8 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
     const pending = [],
       high = [],
       medium = [],
-      low = [];
+      low = [],
+      complete = [];
 
     for (let i = 0; i < rawBugs.length; i++) {
       const thisBug = rawBugs[i];
@@ -181,25 +182,29 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
         thisBug.app = links.app_name;
         thisBug.severity = links.level;
 
-        switch (thisBug.severity) {
-          case 'pending':
-            pending.push(thisBug);
-            break;
+        if (thisBug.status === 'closed') {
+          complete.push(thisBug);
+        } else {
+          switch (thisBug.severity) {
+            case 'pending':
+              pending.push(thisBug);
+              break;
 
-          case 'high':
-            high.push(thisBug);
-            break;
+            case 'high':
+              high.push(thisBug);
+              break;
 
-          case 'medium':
-            medium.push(thisBug);
-            break;
+            case 'medium':
+              medium.push(thisBug);
+              break;
 
-          case 'low':
-            low.push(thisBug);
-            break;
+            case 'low':
+              low.push(thisBug);
+              break;
 
-          default:
-            break;
+            default:
+              break;
+          }
         }
       }
     }
@@ -210,11 +215,16 @@ sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
       ),
       bugsHigh = SerializeService.formatAll(high, TABLE_NAME),
       bugsMedium = SerializeService.formatAll(medium, TABLE_NAME),
-      bugsLow = SerializeService.formatAll(low, TABLE_NAME);
+      bugsLow = SerializeService.formatAll(low, TABLE_NAME),
+      bugsComplete = SerializeService.formatAll(complete, TABLE_NAME);
 
-    res
-      .status(200)
-      .json({ bugsPending, bugsHigh, bugsMedium, bugsLow });
+    res.status(200).json({
+      bugsPending,
+      bugsHigh,
+      bugsMedium,
+      bugsLow,
+      bugsComplete,
+    });
   } catch (error) {
     next(error);
   }
