@@ -18,7 +18,7 @@ const commentRouter = require('./comment.router');
 const editBugsRouter = require('./edit-bugs.router');
 const sortBugsRouter = require('./sort-bugs.router');
 const usersRouter = require('./users.router');
-const editBugsRouter = require('./edit-bugs.router')
+
 
 module.exports = {
   appRouter,
@@ -27,5 +27,4 @@ module.exports = {
   editBugsRouter,
   sortBugsRouter,
   usersRouter,
-  editBugsRouter,
 };

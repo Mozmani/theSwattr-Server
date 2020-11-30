@@ -17,7 +17,6 @@ const {
   editBugsRouter,
   sortBugsRouter,
   usersRouter,
-  editBugsRouter
 } = require('./routes');
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
