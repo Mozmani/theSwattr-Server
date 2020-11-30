@@ -11,13 +11,13 @@ const {
 
 const { app, error } = require('./middlewares');
 const {
+  appRouter,
   bugRouter,
   commentRouter,
+  editBugsRouter,
   sortBugsRouter,
   usersRouter,
 } = require('./routes');
-
-const appRouter = require('./routes/app.router');
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 const morganSkip = { skip: () => NODE_ENV === 'test' };
@@ -34,6 +34,10 @@ app.get('/', (_req, res) => {
   res.send('Express boilerplate initialized!');
 });
 
+// app.use('/api/edit', (_req, res) => {
+//   res.send('Express boilerplate initialized!');
+// });
+
 /*
 | ROUTES HERE -------------------------
 
@@ -49,7 +53,7 @@ const APP_EP = ROUTES.API + ROUTES.APP,
 app.use(APP_EP, appRouter);
 app.use(BUG_EP, bugRouter);
 app.use(COMMENT_THREAD_EP, commentRouter);
-app.use(EDIT_BUGS_EP, sortBugsRouter);
+app.use(EDIT_BUGS_EP, editBugsRouter);
 app.use(SORT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
 
