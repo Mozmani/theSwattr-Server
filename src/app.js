@@ -15,6 +15,7 @@ const {
   commentRouter,
   sortBugsRouter,
   usersRouter,
+  editBugsRouter
 } = require('./routes');
 
 const appRouter = require('./routes/app.router');
@@ -49,7 +50,7 @@ const APP_EP = ROUTES.API + ROUTES.APP,
 app.use(APP_EP, appRouter);
 app.use(BUG_EP, bugRouter);
 app.use(COMMENT_THREAD_EP, commentRouter);
-app.use(EDIT_BUGS_EP, sortBugsRouter);
+app.use(EDIT_BUGS_EP, editBugsRouter);
 app.use(SORT_BUGS_EP, sortBugsRouter);
 app.use(USERS_EP, usersRouter);
 
