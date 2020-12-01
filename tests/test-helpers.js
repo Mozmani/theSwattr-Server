@@ -66,15 +66,15 @@ const app_seed = [
 const severity_level_seed = [
   {
     id: 1,
-    status_name: 'pending',
+    level: 'pending',
   },
   {
     id: 2,
-    status_name: 'open',
+    level: 'open',
   },
   {
     id: 3,
-    status_name: 'closed',
+    level: 'closed',
   },
 ];
 
@@ -140,30 +140,30 @@ const COMPLETED_AT_DATE = '2020-11-16 15:05:28.457464-07';
 const bug_seed = [
   {
     id: 1,
-    user_id: 1,
+    user_name: 'user_name1',
     bug_name: 'bug_name1',
     description: 'description1',
   },
   {
     id: 2,
-    user_id: 2,
+    user_name: 'user_name2',
     bug_name: 'bug_name2',
     description: 'description2',
   },
   {
     id: 3,
-    user_id: 3,
+    user_name: 'user_name3',
     bug_name: 'bug_name3',
     description: 'description3',
   },
   {
     id: 4,
-    user_id: 1,
+    user_name: 'user_name1',
     bug_name: 'bug_name4',
     description: 'description4',
     created_at: CREATED_AT_DATE,
-    updated_at_DATE: UPDATED_AT_DATE,
-    completed_at_DATE: COMPLETED_AT_DATE,
+    updated_at: UPDATED_AT_DATE,
+    completed_at: COMPLETED_AT_DATE,
     completed_notes: 'bug 4 resolved',
   },
 ];
@@ -172,25 +172,25 @@ const comment_thread_seed = [
   {
     id: 1,
     bug_id: 2,
-    user_id: 2,
+    user_name: 'user_name2',
     comment: 'comment1',
   },
   {
     id: 2,
     bug_id: 2,
-    user_id: 2,
+    user_name: 'user_name2',
     comment: 'comment2',
   },
   {
     id: 3,
     bug_id: 3,
-    user_id: 3,
+    user_name: 'user_name3',
     comment: 'comment3',
   },
   {
     id: 4,
     bug_id: 2,
-    user_id: 1,
+    user_name: 'user_name1',
     comment: 'comment4',
   },
 ];
@@ -207,10 +207,6 @@ const bug_app_seed = [
   {
     bug_id: 3,
     app_id: 1,
-  },
-  {
-    bug_id: 4,
-    app_id: 2,
   },
 ];
 

@@ -3,7 +3,7 @@ const knex = require('knex');
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 
-describe.skip('Route: Bug router', () => {
+describe('Route: Bug router', () => {
   let db;
   before('make knex instance', () => {
     db = knex({
@@ -25,11 +25,11 @@ describe.skip('Route: Bug router', () => {
     helpers.seedUsers(db);
   });
 
-  describe.skip(`ENDPOINT: '/bugs'`, () => {
-    context.skip('GET', () => {
+  describe(`ENDPOINT: '/bugs'`, () => {
+    context('GET', () => {
       seedAllTablesHook();
 
-      it.skip('all bugs when user is a dev', () => {});
+      it('all bugs when user is a dev', () => {});
 
       it.skip('only user-bugs when user is not a dev', () => {});
     });
