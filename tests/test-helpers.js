@@ -59,7 +59,11 @@ const status_seed = [
 const app_seed = [
   {
     id: 1,
-    app_name: 'main app',
+    app_name: 'main-app',
+  },
+  {
+    id: 2,
+    app_name: 'second-app',
   },
 ];
 
