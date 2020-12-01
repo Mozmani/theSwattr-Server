@@ -3,8 +3,8 @@ const { CRUDService } = require('../services');
 const { auth, Router } = require('../middlewares');
 
 const TABLE_NAME = TABLE_NAMES.APP;
-const severity = TABLE_NAMES.SEVERITY_LEVEL
-const status = TABLE_NAMES.STATUS
+const SEV_TABLE = TABLE_NAMES.SEVERITY_LEVEL;
+const STAT_TABLE = TABLE_NAMES.STATUS;
 
 const appRouter = Router();
 
@@ -35,38 +35,34 @@ appRouter.route('/severity').get(async (req, res, next) => {
   try {
     const rawSev = await CRUDService.getAllData(
       req.app.get('db'),
-      severity,
+      SEV_TABLE,
     );
 
-    let returnedSevs = rawSev.map(sev => {
+    const returnedSevs = rawSev.map((sev) => {
       return sev.level;
-    })
-    
+    });
 
-    res.status(200).json(returnedSevs );
+    res.status(200).json(returnedSevs);
   } catch (error) {
     next(error);
   }
 });
 
-
 appRouter.route('/status').get(async (req, res, next) => {
   try {
     const rawStats = await CRUDService.getAllData(
       req.app.get('db'),
-      status,
+      STAT_TABLE,
     );
 
-    let returnedStats = rawStats.map(status => {
+    const returnedStats = rawStats.map((status) => {
       return status.status_name;
-    })
-    
+    });
 
     res.status(200).json(returnedStats);
   } catch (error) {
     next(error);
   }
 });
-
 
 module.exports = appRouter;
