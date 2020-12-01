@@ -36,7 +36,6 @@ const {
 | Seed Data
 |--------------------------------------------------------------------------
 */
-
 // ! These are hard coded for custom SQL Triggers/Functions
 const status_seed = [
   {
@@ -80,13 +79,32 @@ const severity_level_seed = [
 ];
 
 // ! These can be test-specific
+const USER_PASSWORDS_JWT = {
+  user_name1: {
+    password: 'passPASS1!',
+    authToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQHlvb2hvby5jb20iLCJmaXJzdE5hbWUiOiJmaXJzdF9uYW1lMSIsImxhc3ROYW1lIjoibGFzdF9uYW1lMSIsImRldiI6ZmFsc2UsImlhdCI6MTYwNjg1NTgyOSwiZXhwIjoxNjA2ODU1OTQ5LCJzdWIiOiJ1c2VyX25hbWUxIn0.K4U6sriYxNroSfLw07XOtsqEnv4nNQONLSLVmkHV1Vg',
+  },
+
+  user_name2: {
+    password: 'passPASS2!',
+    authToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQHlvb2hvby5jb20iLCJmaXJzdE5hbWUiOiJmaXJzdF9uYW1lMiIsImxhc3ROYW1lIjoibGFzdF9uYW1lMiIsImRldiI6ZmFsc2UsImlhdCI6MTYwNjg1NjEwNSwiZXhwIjoxNjA2ODU2MjI1LCJzdWIiOiJ1c2VyX25hbWUyIn0.iLbRHfRwCH9EJXNtNjZSwQnkGTbC0CbcYelkuV76REI',
+  },
+
+  user_name3: {
+    password: 'passPASS3!',
+    authToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIzQHlvb2hvby5jb20iLCJmaXJzdE5hbWUiOiJmaXJzdF9uYW1lMyIsImxhc3ROYW1lIjoibGFzdF9uYW1lMyIsImRldiI6ZmFsc2UsImlhdCI6MTYwNjg1NjEzMCwiZXhwIjoxNjA2ODU2MjUwLCJzdWIiOiJ1c2VyX25hbWUzIn0.Zwe4Zt2Va4A0T2xwT09c8MpVpzHCndjiwEnaAhRiYtw',
+  },
+};
+
 const users_seed = [
   {
     id: 1,
     first_name: 'first_name1',
     last_name: 'last_name1',
     user_name: 'user_name1',
-    // ! PASSWORD HERE!!!
     password: 'HASH HERE!!!',
     email: 'user1@yoohoo.com',
     dev: true,
@@ -574,6 +592,14 @@ const UNIQUE_QUERIES = {};
 | Helper functions
 |--------------------------------------------------------------------------
 */
+const getAuthHeaders = (userName) => ({
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${USER_PASSWORDS_JWT[userName].authToken}`,
+});
+
+const getUserPassword = (userName) =>
+  USER_PASSWORDS_JWT[userName].password;
+
 const getSeedData = () => ({
   status_seed,
   app_seed,
@@ -641,6 +667,8 @@ module.exports = {
   UPDATED_AT_DATE,
   COMPLETED_AT_DATE,
 
+  getUserPassword,
+  getAuthHeaders,
   getSeedData,
   getClientSubmissions,
   getMaliciousSubmissions,
