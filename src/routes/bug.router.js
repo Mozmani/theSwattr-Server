@@ -1,6 +1,15 @@
-const { TABLE_NAMES } = require("../constants/db.constants");
-const { CRUDService, QueryService, SerializeService } = require("../services");
-const { auth, validate, Router, jsonBodyParser } = require("../middlewares");
+const { TABLE_NAMES } = require('../constants/db.constants');
+const {
+  CRUDService,
+  QueryService,
+  SerializeService,
+} = require('../services');
+const {
+  auth,
+  validate,
+  Router,
+  jsonBodyParser,
+} = require('../middlewares');
 
 const TABLE_NAME = TABLE_NAMES.BUG;
 
@@ -9,22 +18,22 @@ const bugRouter = Router();
 bugRouter.use(auth.requireAuth);
 
 bugRouter
-  .route("/")
+  .route('/')
   .get(async (req, res, next) => {
     try {
       const { dev, user_name } = req.dbUser;
 
       const rawBugs = dev
         ? await CRUDService.getAllByOrder(
-            req.app.get("db"),
+            req.app.get('db'),
             TABLE_NAME,
-            "updated_at"
+            'updated_at',
           )
         : await CRUDService.getAllBySearchOrder(
-            req.app.get("db"),
-            "user_name",
+            req.app.get('db'),
+            'user_name',
             user_name,
-            "updated_at"
+            'updated_at',
           );
 
       if (!rawBugs.length) {
@@ -38,8 +47,8 @@ bugRouter
         const thisBug = rawBugs[i];
 
         const links = await QueryService.grabBugLinkages(
-          req.app.get("db"),
-          thisBug.id
+          req.app.get('db'),
+          thisBug.id,
         );
 
         thisBug.status = links.status_name;
@@ -58,24 +67,24 @@ bugRouter
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
     try {
       const [rawBug] = await CRUDService.createEntry(
-        req.app.get("db"),
+        req.app.get('db'),
         TABLE_NAME,
-        req.newBug
+        req.newBug,
       );
 
       if (!rawBug) {
-        res.status(400).json({ error: "Invalid body credentials" });
+        res.status(400).json({ error: 'Invalid body credentials' });
         return;
       }
 
       await QueryService.initLinkages(
-        req.app.get("db"),
+        req.app.get('db'),
         rawBug.id,
-        req.appName
+        req.appName,
       );
 
-      rawBug.status = "pending";
-      rawBug.severity = "pending";
+      rawBug.status = 'pending';
+      rawBug.severity = 'pending';
       rawBug.app = req.appName;
 
       const newBug = SerializeService.formatBug(rawBug);
@@ -87,30 +96,30 @@ bugRouter
   });
 
 // ? Filter routes...
-bugRouter.route("/user/:userName").get(async (req, res, next) => {
+bugRouter.route('/user/:userName').get(async (req, res, next) => {
   try {
     const { userName } = req.params;
     const { dev, user_name } = req.dbUser;
 
     if (!dev && user_name !== userName) {
-      res.status(401).json({ error: "Unauthorized filter request" });
+      res.status(401).json({ error: 'Unauthorized filter request' });
       return;
     }
 
     const filtBugs = await CRUDService.getAllBySearchOrder(
-      req.app.get("db"),
+      req.app.get('db'),
       TABLE_NAME,
-      "user_name",
+      'user_name',
       userName,
-      "updated_at"
+      'updated_at',
     );
 
     for (let i = 0; i < filtBugs.length; i++) {
       const thisBug = filtBugs[i];
 
       const links = await QueryService.grabBugLinkages(
-        req.app.get("db"),
-        thisBug.id
+        req.app.get('db'),
+        thisBug.id,
       );
 
       thisBug.status = links.status_name;
@@ -128,22 +137,22 @@ bugRouter.route("/user/:userName").get(async (req, res, next) => {
   }
 });
 
-bugRouter.route("/app/:app").get(async (req, res, next) => {
+bugRouter.route('/app/:app').get(async (req, res, next) => {
   try {
-    const app = req.params.app.replace(/-/g, " ");
+    const app = req.params.app.replace(/-/g, ' ');
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
       ? await CRUDService.getAllByOrder(
-          req.app.get("db"),
+          req.app.get('db'),
           TABLE_NAME,
-          "updated_at"
+          'updated_at',
         )
       : await CRUDService.getAllBySearchOrder(
-          req.app.get("db"),
-          "user_name",
+          req.app.get('db'),
+          'user_name',
           user_name,
-          "updated_at"
+          'updated_at',
         );
 
     const filtBugs = [];
@@ -151,8 +160,8 @@ bugRouter.route("/app/:app").get(async (req, res, next) => {
       const thisBug = rawBugs[i];
 
       const links = await QueryService.grabBugLinkages(
-        req.app.get("db"),
-        thisBug.id
+        req.app.get('db'),
+        thisBug.id,
       );
 
       if (links.app === app) {
@@ -174,22 +183,22 @@ bugRouter.route("/app/:app").get(async (req, res, next) => {
   }
 });
 
-bugRouter.route("/status/:status").get(async (req, res, next) => {
+bugRouter.route('/status/:status').get(async (req, res, next) => {
   try {
     const { status } = req.params;
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
       ? await CRUDService.getAllByOrder(
-          req.app.get("db"),
+          req.app.get('db'),
           TABLE_NAME,
-          "updated_at"
+          'updated_at',
         )
       : await CRUDService.getAllBySearchOrder(
-          req.app.get("db"),
-          "user_name",
+          req.app.get('db'),
+          'user_name',
           user_name,
-          "updated_at"
+          'updated_at',
         );
 
     const filtBugs = [];
@@ -197,8 +206,8 @@ bugRouter.route("/status/:status").get(async (req, res, next) => {
       const thisBug = rawBugs[i];
 
       const links = await QueryService.grabBugLinkages(
-        req.app.get("db"),
-        thisBug.id
+        req.app.get('db'),
+        thisBug.id,
       );
 
       if (links.status === status) {
@@ -220,22 +229,22 @@ bugRouter.route("/status/:status").get(async (req, res, next) => {
   }
 });
 
-bugRouter.route("/severity/:level").get(async (req, res, next) => {
+bugRouter.route('/severity/:level').get(async (req, res, next) => {
   try {
     const { level } = req.params;
     const { dev, user_name } = req.dbUser;
 
     const rawBugs = dev
       ? await CRUDService.getAllByOrder(
-          req.app.get("db"),
+          req.app.get('db'),
           TABLE_NAME,
-          "updated_at"
+          'updated_at',
         )
       : await CRUDService.getAllBySearchOrder(
-          req.app.get("db"),
-          "user_name",
+          req.app.get('db'),
+          'user_name',
           user_name,
-          "updated_at"
+          'updated_at',
         );
 
     const filtBugs = [];
@@ -243,8 +252,8 @@ bugRouter.route("/severity/:level").get(async (req, res, next) => {
       const thisBug = rawBugs[i];
 
       const links = await QueryService.grabBugLinkages(
-        req.app.get("db"),
-        thisBug.id
+        req.app.get('db'),
+        thisBug.id,
       );
 
       if (links.level === level) {
@@ -266,26 +275,26 @@ bugRouter.route("/severity/:level").get(async (req, res, next) => {
   }
 });
 
-bugRouter.route("/:id").get(async (req, res, next) => {
+bugRouter.route('/:id').get(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { dev, user_name } = req.dbUser;
 
     const rawBug = await CRUDService.getBySearch(
-      req.app.get("db"),
+      req.app.get('db'),
       TABLE_NAME,
-      "id",
-      id
+      'id',
+      id,
     );
 
-    if (dev === false || rawBug.user_name !== user_name) {
-      res.status(401).json({ error: "Unauthorized bug ID request" });
+    if (!dev && rawBug.user_name !== user_name) {
+      res.status(401).json({ error: 'Unauthorized bug ID request' });
       return;
     }
 
     const links = await QueryService.grabBugLinkages(
-      req.app.get("db"),
-      rawBug.id
+      req.app.get('db'),
+      rawBug.id,
     );
 
     rawBug.status = links.status_name;
