@@ -105,7 +105,8 @@ const users_seed = [
     first_name: 'first_name1',
     last_name: 'last_name1',
     user_name: 'user_name1',
-    password: 'HASH HERE!!!',
+    password:
+      '$2a$05$NGLJdZfhFMlaqEuP69mA0OStLKkA3Enb0urTz1SHS4EWSv4pgRV9i',
     email: 'user1@yoohoo.com',
     dev: true,
   },
@@ -114,8 +115,8 @@ const users_seed = [
     first_name: 'first_name2',
     last_name: 'last_name2',
     user_name: 'user_name2',
-    // ! PASSWORD HERE!!!
-    password: 'HASH HERE!!!',
+    password:
+      '$2a$05$29rSq0l1gb3jYePE9mt1R.gflKjO.srX/dCKRsWStd/ME8hk6nebi',
     email: 'user2@yoohoo.com',
     dev: false,
   },
@@ -124,8 +125,8 @@ const users_seed = [
     first_name: 'first_name3',
     last_name: 'last_name3',
     user_name: 'user_name3',
-    // ! PASSWORD HERE!!!
-    password: 'HASH HERE!!!',
+    password:
+      '$2a$05$373Ly2Bc0JO0tn.30HpUI.9uXRcKxJYn77/d66a3GmOIE6bPAE4ei',
     email: 'user3@yoohoo.com',
     dev: true,
   },
