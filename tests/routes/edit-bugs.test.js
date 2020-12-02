@@ -22,40 +22,28 @@ describe.skip('Route: Edit-Bugs router', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  const seedAllTablesHook = () => {
-    beforeEach('seed all data', () => helpers.seedAllTables(db));
-  };
-
   const authHeaders = { dev: {}, nonDev: {} };
-  const getAuthHeadersHook = () => {
-    beforeEach('set auth headers', async () => {
-      authHeaders.dev = await helpers.getAuthHeaders(
-        app,
-        testDev.user_name,
-        db,
-      );
-      authHeaders.nonDev = await helpers.getAuthHeaders(
-        app,
-        testUser.user_name,
-        db,
-      );
-    });
-  };
+  beforeEach('set auth headers', async () => {
+    await helpers.seedAllTables(db);
 
-  it.skip('rejects unauthorized user', () => {
-    helpers.seedUsers(db);
+    authHeaders.dev = await helpers.getAuthHeaders(
+      app,
+      testDev.user_name,
+      db,
+    );
+    authHeaders.nonDev = await helpers.getAuthHeaders(
+      app,
+      testUser.user_name,
+      db,
+    );
   });
 
+  it.skip('rejects unauthorized user', () => {});
+
   describe.skip(`ENDPOINT: '/edit/:bugId'`, () => {
-    it.skip('returns and error if not a dev', () => {
-      helpers.seedUsers(db);
-      getAuthHeadersHook();
-    });
+    it.skip('returns and error if not a dev', () => {});
 
     context.skip('PATCH', () => {
-      seedAllTablesHook();
-      getAuthHeadersHook();
-
       it.skip('returns error if missing bug body fields', () => {});
 
       it.skip('returns error if missing linkage body fields', () => {});
