@@ -56,7 +56,7 @@ usersRouter
       );
 
       if (!dbUser) {
-        res.status(400).json({
+        res.status(401).json({
           error: 'Incorrect username or password',
         });
         return;
@@ -132,6 +132,11 @@ usersRouter
   .all(auth.requireAuth, jsonBodyParser, validate.devBody)
   .patch(async (req, res, next) => {
     try {
+      if (!req.dbUser.dev) {
+        res.status(401).json({ error: `Unauthorized request` });
+        return;
+      }
+
       const { userName } = req.params;
 
       const user = await CRUDService.getBySearch(

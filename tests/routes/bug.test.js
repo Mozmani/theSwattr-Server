@@ -5,7 +5,7 @@ const app = require('../../src/app');
 const helpers = require('../test-helpers');
 const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-describe('Route: Bug router', () => {
+describe.skip('Route: Bug router', () => {
   const BUGS_EP = ROUTES.API + ROUTES.BUGS;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];

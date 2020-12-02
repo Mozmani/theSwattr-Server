@@ -93,7 +93,6 @@ const USER_PASSWORDS_JWT = {
 
 const users_seed = [
   {
-    id: 1,
     first_name: 'first_name1',
     last_name: 'last_name1',
     user_name: 'user_name1',
@@ -103,7 +102,6 @@ const users_seed = [
     dev: true,
   },
   {
-    id: 2,
     first_name: 'first_name2',
     last_name: 'last_name2',
     user_name: 'user_name2',
@@ -113,7 +111,6 @@ const users_seed = [
     dev: false,
   },
   {
-    id: 3,
     first_name: 'first_name3',
     last_name: 'last_name3',
     user_name: 'user_name3',
@@ -131,25 +128,21 @@ const COMPLETED_AT_DATE = '2020-11-16 15:05:28.457464-07';
 
 const bug_seed = [
   {
-    id: 1,
     user_name: 'user_name1',
     bug_name: 'bug_name1',
     description: 'description1',
   },
   {
-    id: 2,
     user_name: 'user_name2',
     bug_name: 'bug_name2',
     description: 'description2',
   },
   {
-    id: 3,
     user_name: 'user_name3',
     bug_name: 'bug_name3',
     description: 'description3',
   },
   {
-    id: 4,
     user_name: 'user_name1',
     bug_name: 'bug_name4',
     description: 'description4',
@@ -162,25 +155,21 @@ const bug_seed = [
 
 const comment_thread_seed = [
   {
-    id: 1,
     bug_id: 2,
     user_name: 'user_name2',
     comment: 'comment1',
   },
   {
-    id: 2,
     bug_id: 2,
     user_name: 'user_name2',
     comment: 'comment2',
   },
   {
-    id: 3,
     bug_id: 3,
     user_name: 'user_name3',
     comment: 'comment3',
   },
   {
-    id: 4,
     bug_id: 2,
     user_name: 'user_name1',
     comment: 'comment4',
@@ -237,15 +226,15 @@ const safeUser = {
     user_name: 'safe user name',
     password: 'Safe-Pass123!',
     email: 'safeUser@yoohoo.com',
-    dev: true,
+    dev: false,
   },
   result: {
-    // ! check if (id = 4) and (password = HASH HERE!!!)
-    firstName: 'safe first name',
-    lastName: 'safe last name',
-    userName: 'safe user name',
+    id: 4,
+    first_name: 'safe first name',
+    last_name: 'safe last name',
+    user_name: 'safe user name',
     email: 'safeUser@yoohoo.com',
-    dev: true,
+    dev: false,
   },
 };
 
@@ -420,6 +409,39 @@ const devBug1SeverityUpdate = {
 |--------------------------------------------------------------------------
 */
 const GET_REQUESTS = {
+  allUsers: [
+    {
+      id: 1,
+      first_name: 'first_name1',
+      last_name: 'last_name1',
+      user_name: 'user_name1',
+      password:
+        '$2a$05$mOEj38JVBH8BWXLWGmz9duOIOLmGqHhM3TJF0yofJHf7I5cdGpvRu',
+      email: 'user1@yoohoo.com',
+      dev: true,
+    },
+    {
+      id: 3,
+      first_name: 'first_name3',
+      last_name: 'last_name3',
+      user_name: 'user_name3',
+      password:
+        '$2a$05$373Ly2Bc0JO0tn.30HpUI.9uXRcKxJYn77/d66a3GmOIE6bPAE4ei',
+      email: 'user3@yoohoo.com',
+      dev: true,
+    },
+    {
+      id: 2,
+      first_name: 'first_name2',
+      last_name: 'last_name2',
+      user_name: 'user_name2',
+      password:
+        '$2a$05$29rSq0l1gb3jYePE9mt1R.gflKjO.srX/dCKRsWStd/ME8hk6nebi',
+      email: 'user2@yoohoo.com',
+      dev: false,
+    },
+  ],
+
   userId1: {
     firstName: 'first_name1',
     lastName: 'last_name1',
@@ -572,6 +594,11 @@ const getAuthHeaders = async (app, user_name, db) => {
   };
 };
 
+const invalidHeader = {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer invalidToken`,
+};
+
 const getSeedData = () => ({
   status_seed,
   app_seed,
@@ -641,6 +668,7 @@ module.exports = {
 
   getUserPassword,
   getAuthHeaders,
+  invalidHeader,
   getSeedData,
   getClientSubmissions,
   getMaliciousSubmissions,
