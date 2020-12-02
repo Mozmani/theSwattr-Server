@@ -1,9 +1,16 @@
 const knex = require('knex');
+const supertest = require('supertest');
 
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
+const { ROUTES } = require('../../src/constants/endpoints.constants');
 
 describe('Route: Bug router', () => {
+  const BUGS_EP = ROUTES.API + ROUTES.BUGS;
+  const USERS_EP = ROUTES.API + ROUTES.USERS;
+  const testUser = helpers.getSeedData().users_seed[0];
+  const queries = helpers.getExpectedQueryData();
+
   let db;
   before('make knex instance', () => {
     db = knex({
@@ -21,6 +28,17 @@ describe('Route: Bug router', () => {
     beforeEach('seed all data', () => helpers.seedAllTables(db));
   };
 
+  let authHeaders;
+  const getAuthHeadersHook = () => {
+    beforeEach('set auth headers', async () => {
+      authHeaders = await helpers.getAuthHeaders(
+        app,
+        testUser.user_name,
+        db,
+      );
+    });
+  };
+
   it.skip('rejects unauthorized user', () => {
     helpers.seedUsers(db);
   });
@@ -28,8 +46,17 @@ describe('Route: Bug router', () => {
   describe(`ENDPOINT: '/bugs'`, () => {
     context('GET', () => {
       seedAllTablesHook();
+      getAuthHeadersHook();
 
-      it('all bugs when user is a dev', () => {});
+      it('all bugs when user is a dev', () => {
+        return supertest(app)
+          .get(BUGS_EP)
+          .set(authHeaders)
+          .expect(200)
+          .expect((res) => {
+            expect(res.body.bugs).to.have.lengthOf(4);
+          });
+      });
 
       it.skip('only user-bugs when user is not a dev', () => {});
     });

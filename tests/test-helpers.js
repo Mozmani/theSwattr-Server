@@ -11,26 +11,6 @@ const {
   },
 } = require('../src/constants/db.constants');
 
-// ? helper function for generating seed data
-// const formatTableRow = (id, row, col) => {
-//   if (col === 'id' || col.includes('id')) {
-//     row[col] = id;
-//   } else if (col === 'password') {
-//     row.password = 'HASH HERE!!!';
-//   } else if (col === 'email') {
-//     row.email = `user${id}@yoohoo.com`;
-//   } else if (col === 'dev') {
-//     row.dev = id % 2 === 1;
-//   } else if (col === 'created_at' || col === 'updated_at_DATE') {
-//     row[col] = Date.now();
-//   } else if (col === 'completed_at_DATE' || col === 'completed_notes') {
-//     row[col] = id === 3 ? col + id : null;
-//   } else {
-//     row[col] = col + id;
-//   }
-//   return row;
-// };
-
 /*
 |--------------------------------------------------------------------------
 | Seed Data
@@ -87,7 +67,7 @@ const USER_PASSWORDS_JWT = {
   user_name1: {
     password: 'passPASS1!',
     authToken:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQHlvb2hvby5jb20iLCJmaXJzdE5hbWUiOiJmaXJzdF9uYW1lMSIsImxhc3ROYW1lIjoibGFzdF9uYW1lMSIsImRldiI6ZmFsc2UsImlhdCI6MTYwNjg1NTgyOSwiZXhwIjoxNjA2ODU1OTQ5LCJzdWIiOiJ1c2VyX25hbWUxIn0.K4U6sriYxNroSfLw07XOtsqEnv4nNQONLSLVmkHV1Vg',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQHlvb2hvby5jb20iLCJmaXJzdE5hbWUiOiJmaXJzdF9uYW1lMSIsImxhc3ROYW1lIjoibGFzdF9uYW1lMSIsImRldiI6dHJ1ZSwiaWF0IjoxNjA2OTI0NjI0LCJleHAiOjE2MDY5MjQ2MzQsInN1YiI6InVzZXJfbmFtZTEifQ.4U7VCqzA2ZmHzU5vNzYKEbluRV3InwGpWOCwNx_7EcY',
   },
 
   user_name2: {
@@ -110,7 +90,7 @@ const users_seed = [
     last_name: 'last_name1',
     user_name: 'user_name1',
     password:
-      '$2a$05$NGLJdZfhFMlaqEuP69mA0OStLKkA3Enb0urTz1SHS4EWSv4pgRV9i',
+      '$2a$05$mOEj38JVBH8BWXLWGmz9duOIOLmGqHhM3TJF0yofJHf7I5cdGpvRu',
     email: 'user1@yoohoo.com',
     dev: true,
   },
@@ -212,6 +192,10 @@ const bug_app_seed = [
     bug_id: 3,
     app_id: 1,
   },
+  {
+    bug_id: 4,
+    app_id: 1,
+  },
 ];
 
 const bug_severity_seed = [
@@ -262,7 +246,7 @@ const safeBug = {
     user_id: 1,
     bug_name: 'safe bug',
     description: 'safe description',
-    app_name: 'second app',
+    app_name: 'second-app',
     level: 'high',
   },
   result: {
@@ -270,12 +254,10 @@ const safeBug = {
     userName: 'user_name1',
     bugName: 'safe bug',
     description: 'safe description',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'second app',
+    app: 'second-app',
     severity: 'high',
   },
 };
@@ -325,7 +307,7 @@ const maliciousBug = {
     user_id: 1,
     bug_name: '<script>naughty</script>',
     description: '<script>naughty</script>',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
   result: {
@@ -333,12 +315,10 @@ const maliciousBug = {
     userName: 'user_name1',
     bugName: '&lt;script&gt;naughty&lt;/script&gt;',
     description: '&lt;script&gt;naughty&lt;/script&gt;',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
 };
@@ -354,7 +334,6 @@ const maliciousComment = {
     bugName: 'user_name1',
     userName: 'bug_name1',
     comment: '&lt;script&gt;naughty&lt;/script&gt;',
-    createdDate: 'CHECK_IF_EXISTS',
   },
 };
 
@@ -374,12 +353,10 @@ const devBug1Update = {
     bugPostedBy: 'user_name1',
     bugName: 'updated bug name',
     description: 'updated bug description',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
 };
@@ -391,29 +368,25 @@ const devBug1StatusUpdate = {
     bugPostedBy: 'user_name1',
     bugName: 'bug_name1',
     description: 'description1',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'open',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
 };
 
 const devBug1AppUpdate = {
-  request: { bug_id: 1, app_id: 'second app' },
+  request: { bug_id: 1, app_id: 'second-app' },
   result: {
     id: 1,
     bugPostedBy: 'user_name1',
     bugName: 'bug_name1',
     description: 'description1',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'second app',
+    app: 'second-app',
     severity: 'low',
   },
 };
@@ -425,12 +398,10 @@ const devBug1SeverityUpdate = {
     bugPostedBy: 'user_name1',
     bugName: 'bug_name1',
     description: 'description1',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'main app',
+    app: 'main-app',
     severity: 'high',
   },
 };
@@ -455,12 +426,10 @@ const GET_REQUESTS = {
     bugPostedBy: 'user_name1',
     bugName: 'bug_name1',
     description: 'description1',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
 
@@ -470,12 +439,10 @@ const GET_REQUESTS = {
       bugPostedBy: 'user_name1',
       bugName: 'bug_name1',
       description: 'description1',
-      createdDate: 'CHECK_IF_EXISTS',
-      updatedDate: 'CHECK_IF_EXISTS',
       completedDate: null,
       completedNotes: null,
       status: 'pending',
-      app: 'main app',
+      app: 'main-app',
       severity: 'low',
     },
     {
@@ -483,12 +450,10 @@ const GET_REQUESTS = {
       bugPostedBy: 'user_name2',
       bugName: 'bug_name2',
       description: 'description2',
-      createdDate: 'CHECK_IF_EXISTS',
-      updatedDate: 'CHECK_IF_EXISTS',
       completedDate: null,
       completedNotes: null,
       status: 'open',
-      app: 'main app',
+      app: 'main-app',
       severity: 'medium',
     },
     {
@@ -496,12 +461,10 @@ const GET_REQUESTS = {
       bugPostedBy: 'user_name3',
       bugName: 'bug_name3',
       description: 'description3',
-      createdDate: 'CHECK_IF_EXISTS',
-      updatedDate: 'CHECK_IF_EXISTS',
       completedDate: null,
       completedNotes: null,
       status: 'open',
-      app: 'main app',
+      app: 'main-app',
       severity: 'high',
     },
     {
@@ -514,7 +477,7 @@ const GET_REQUESTS = {
       completedDate: COMPLETED_AT_DATE,
       completedNotes: 'bug 4 resolved',
       status: 'closed',
-      app: 'main app',
+      app: 'main-app',
       severity: 'high',
     },
   ],
@@ -524,7 +487,6 @@ const GET_REQUESTS = {
     bugName: 'bug_name2',
     userName: 'user_name1',
     comment: 'comment4',
-    createdDate: 'CHECK_IF_EXISTS',
   },
 
   allCommentsBug2: [
@@ -533,21 +495,18 @@ const GET_REQUESTS = {
       bugName: 'bug_name2',
       userName: 'user_name1',
       comment: 'comment4',
-      createdDate: 'CHECK_IF_EXISTS',
     },
     {
       id: 2,
       bugName: 'bug_name2',
       userName: 'user_name2',
       comment: 'comment2',
-      createdDate: 'CHECK_IF_EXISTS',
     },
     {
       id: 1,
       bugName: 'bug_name2',
       userName: 'user_name2',
       comment: 'comment1',
-      createdDate: 'CHECK_IF_EXISTS',
     },
   ],
 };
@@ -566,12 +525,10 @@ const DELETE_REQUESTS = {
     bugPostedBy: 'user_name1',
     bugName: 'bug_name1',
     description: 'description1',
-    createdDate: 'CHECK_IF_EXISTS',
-    updatedDate: 'CHECK_IF_EXISTS',
     completedDate: null,
     completedNotes: null,
     status: 'pending',
-    app: 'main app',
+    app: 'main-app',
     severity: 'low',
   },
 
@@ -580,7 +537,6 @@ const DELETE_REQUESTS = {
     bugName: 'bug_name1',
     userName: 'user_name1',
     comment: 'comment1',
-    createdDate: 'CHECK_IF_EXISTS',
   },
 };
 
@@ -593,13 +549,20 @@ const UNIQUE_QUERIES = {};
 | Helper functions
 |--------------------------------------------------------------------------
 */
-const getAuthHeaders = (userName) => ({
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${USER_PASSWORDS_JWT[userName].authToken}`,
-});
-
 const getUserPassword = (userName) =>
   USER_PASSWORDS_JWT[userName].password;
+
+const getAuthHeaders = async (app, user_name, db) => {
+  const { password } = USER_PASSWORDS_JWT[user_name];
+  const { body } = await supertest(app)
+    .post('/api/users/login')
+    .send({ user_name, password });
+
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${body.authToken}`,
+  };
+};
 
 const getSeedData = () => ({
   status_seed,
@@ -640,12 +603,12 @@ const getExpectedQueryData = () => ({
 
 const cleanTables = (db) => {
   return db.raw(
-    `TRUNCATE users, status, app, severity_level CASCADE;`,
+    `TRUNCATE users, status, app, severity_level RESTART IDENTITY CASCADE;`,
   );
 };
 
 const cleanBugs = (db) => {
-  return db.raw(`TRUNCATE bug CASCADE;`);
+  return db.raw(`TRUNCATE bug RESTART IDENTITY CASCADE;`);
 };
 
 const seedTable = (db, table, data) => db(table).insert(data);
