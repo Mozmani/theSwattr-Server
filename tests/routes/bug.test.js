@@ -50,10 +50,10 @@ describe('Route: Bug router', () => {
   });
 
   describe(`ENDPOINT: '/bugs'`, () => {
-    context('GET', () => {
-      seedAllTablesHook();
-      getAuthHeadersHook();
+    seedAllTablesHook();
+    getAuthHeadersHook();
 
+    context('GET', () => {
       it('all bugs when user is a dev', () => {
         return supertest(app)
           .get(BUGS_EP)
@@ -67,10 +67,22 @@ describe('Route: Bug router', () => {
       it.skip('only user-bugs when user is not a dev', () => {});
     });
 
-    context.skip('POST', () => {
+    context('POST', () => {
       it.skip('throws error if missing body fields', () => {});
 
-      it.skip('creates a new bug entry', () => {});
+      it('creates a new bug entry', () => {
+        return supertest(app)
+          .post(BUGS_EP)
+          .set(authHeaders.dev)
+          .send({
+            id: '5',
+            app: 'main-app',
+            user_name: 'user_name1',
+            bug_name: 'thisBug',
+            description: 'this is a desc!',
+          })
+          .expect(200);
+      });
 
       beforeEach('TODO - seed a new bug', () => {});
 

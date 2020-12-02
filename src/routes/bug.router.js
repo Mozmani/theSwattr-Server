@@ -64,7 +64,6 @@ bugRouter
       next(error);
     }
   })
-
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
     try {
       const [rawBug] = await CRUDService.createEntry(

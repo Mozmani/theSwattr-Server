@@ -50,15 +50,19 @@ const app_seed = [
 const severity_level_seed = [
   {
     id: 1,
-    level: 'pending',
+    level: 'low',
   },
   {
     id: 2,
-    level: 'open',
+    level: 'medium',
   },
   {
     id: 3,
-    level: 'closed',
+    level: 'high',
+  },
+  {
+    id: 4,
+    level: 'pending',
   },
 ];
 
