@@ -64,6 +64,10 @@ const severity_level_seed = [
     id: 4,
     level: 'pending',
   },
+  {
+    id: 4,
+    level: 'dormant',
+  },
 ];
 
 // ! These can be test-specific

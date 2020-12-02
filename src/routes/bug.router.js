@@ -91,6 +91,7 @@ bugRouter
 
       res.status(200).json({ newBug });
     } catch (error) {
+      console.log({ error });
       next(error);
     }
   });
