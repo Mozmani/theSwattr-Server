@@ -6,6 +6,9 @@ const { ROUTES } = require('../../src/constants/endpoints.constants');
 
 describe.skip('Route: Users router', () => {
   const USERS_EP = ROUTES.API + ROUTES.USERS;
+  const queries = helpers.getExpectedQueryData();
+  const testDev = helpers.getSeedData().users_seed[0];
+  const testUser = helpers.getSeedData().users_seed[1];
 
   let db;
   before('make knex instance', () => {
@@ -16,21 +19,18 @@ describe.skip('Route: Users router', () => {
     app.set('db', db);
   });
 
-  const testDev = helpers.getSeedData().users_seed[0];
-  const testUser = helpers.getSeedData().users_seed[1];
-
   const authHeaders = { dev: {}, nonDev: {} };
   const getAuthHeadersHook = () => {
-    beforeEach("set auth headers", async () => {
+    beforeEach('set auth headers', async () => {
       authHeaders.dev = await helpers.getAuthHeaders(
         app,
         testDev.user_name,
-        db
+        db,
       );
       authHeaders.nonDev = await helpers.getAuthHeaders(
         app,
         testUser.user_name,
-        db
+        db,
       );
     });
   };
@@ -41,74 +41,255 @@ describe.skip('Route: Users router', () => {
 
   after('disconnect from db', () => db.destroy());
 
-
-  describe.skip(`ENDPOINT: '/users'`, () => {
-    context.skip('GET', () => {
+  describe(`ENDPOINT: '/users'`, () => {
+    context('GET', () => {
       getAuthHeadersHook();
 
-      it.skip('rejects unauthorized user', () => {});
+      it('returns error if missing token', () => {
+        return supertest(app)
+          .get(USERS_EP)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Missing bearer token');
+          });
+      });
 
-      it.skip('returns error if non-dev', () => {});
+      it('returns error if non-dev', () => {
+        return supertest(app)
+          .get(USERS_EP)
+          .set(authHeaders.nonDev)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Unauthorized request');
+          });
+      });
 
-      it.skip('returns all users', () => {});
+      it('returns all users', () => {
+        return supertest(app)
+          .get(USERS_EP)
+          .set(authHeaders.dev)
+          .expect(200)
+          .then((res) => {
+            const { allUsers } = res.body;
+            expect(allUsers).to.eql(queries.GET_REQUESTS.allUsers);
+          });
+      });
     });
   });
 
-  describe.skip(`ENDPOINT: '/users/token'`, () => {
-    context.skip('GET', () => {
+  describe(`ENDPOINT: '/users/token'`, () => {
+    context('GET', () => {
       getAuthHeadersHook();
 
-      it.skip('rejects unauthorized user', () => {});
+      it('returns error if token is invalid', () => {
+        return supertest(app)
+          .get(`${USERS_EP}/token`)
+          .set(helpers.invalidHeader)
+          .expect(500)
+          .then((res) => {
+            const { message } = res.body;
+            expect(message).to.eql('jwt malformed');
+          });
+      });
 
-      it.skip('returns authToken on success', () => {});
+      it('returns authToken on success', () => {
+        return supertest(app)
+          .get(`${USERS_EP}/token`)
+          .set(authHeaders.dev)
+          .expect(200)
+          .then((res) => {
+            const { authToken } = res.body;
+            expect(authToken).to.be.a('string');
+          });
+      });
     });
   });
 
-  describe.skip(`ENDPOINT: '/users/login'`, () => {
-    it.skip('returns error if missing body fields', () => {});
+  describe(`ENDPOINT: '/users/login'`, () => {
+    context('POST', () => {
+      const { user_name } = testDev;
+      const password = helpers.getUserPassword(user_name);
 
-    it.skip('returns error if invalid username', () => {});
+      it('returns error if missing body fields', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/login`)
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql(
+              "Missing 'user_name' in request body",
+            );
+          });
+      });
 
-    context.skip('POST', () => {
-      it.skip('returns error if invalid password', () => {});
+      it('returns error if invalid username', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/login`)
+          .send({ user_name: 'invalid', password })
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Incorrect username or password');
+          });
+      });
 
-      it.skip('returns authToken on success', () => {});
+      it('returns error if invalid password', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/login`)
+          .send({ user_name, password: 'invalid' })
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Incorrect username or password');
+          });
+      });
+
+      it('returns authToken on success', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/login`)
+          .send({ user_name, password })
+          .expect(200)
+          .then((res) => {
+            const { authToken } = res.body;
+            expect(authToken).to.be.a('string');
+          });
+      });
     });
   });
 
-  describe.skip(`ENDPOINT: '/users/register'`, () => {
-    it.skip('returns error if missing body fields', () => {});
+  describe(`ENDPOINT: '/users/register'`, () => {
+    const { safeUser } = helpers.getClientSubmissions();
 
-    context.skip('POST', () => {
-      it.skip('returns error if invalid name', () => {});
+    context('POST', () => {
+      it('returns error if missing body fields', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/register`)
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql(
+              "Missing 'first_name' in request body",
+            );
+          });
+      });
 
-      it.skip('creates new entry in users table', () => {});
+      it('returns error if invalid password', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/register`)
+          .send({ ...safeUser.request, password: 'invalid' })
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql(
+              'Password be longer than 8 characters',
+            );
+          });
+      });
 
-      it.skip('returns authToken on success', () => {});
-    });
-  });
+      it('returns error if invalid email', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/register`)
+          .send({ ...safeUser.request, email: 'invalid' })
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('You must use a valid email!');
+          });
+      });
 
-  const selfToggle = null;
-  const userToggle = null;
-  const devRoutes = [
-    ['/users/dev', selfToggle],
-    ['/users/dev/:userName', userToggle],
-  ];
-
-  devRoutes.forEach(([route, userData]) => {
-    describe.skip(`ENDPOINT: '${route}'`, () => {
       getAuthHeadersHook();
 
-      it.skip('rejects unauthorized user', () => {});
+      it('creates new entry in users table and returns authToken', () => {
+        return supertest(app)
+          .post(`${USERS_EP}/register`)
+          .send(safeUser.request)
+          .expect(201)
+          .then((res) => {
+            const { authToken } = res.body;
+            expect(authToken).to.be.a('string');
 
-      it.skip('returns error if missing body fields', () => {});
+            return supertest(app)
+              .get(USERS_EP)
+              .set(authHeaders.dev)
+              .expect(200)
+              .then((res_) => {
+                const { allUsers } = res_.body;
+                safeUser.result.password = allUsers[3].password || '';
 
-      it.skip('returns error if dev_secret is invalid', () => {});
+                expect(allUsers).to.be.lengthOf(4);
+                expect(allUsers).to.eql([
+                  ...queries.GET_REQUESTS.allUsers,
+                  safeUser.result,
+                ]);
+              });
+          });
+      });
+    });
+  });
 
-      context.skip('PATCH', () => {
-        it.skip('toggles dev field in users table', () => {});
+  const devRoutes = [`${USERS_EP}/dev`, `${USERS_EP}/dev/user_name1`];
 
-        it.skip('returns dev status of user', () => {});
+  devRoutes.forEach((route) => {
+    describe(`ENDPOINT: PATCH '${route}'`, () => {
+      getAuthHeadersHook();
+      const dev_secret = 'irdev';
+
+      it('rejects unauthorized user', () => {
+        return (
+          route === `${USERS_EP}/dev/user_name1` &&
+          supertest(app)
+            .patch(route)
+            .send({ dev_secret })
+            .set(authHeaders.nonDev)
+            .expect(401)
+            .then((res) => {
+              const { error } = res.body;
+              expect(error).to.eql('Unauthorized request');
+            })
+        );
+      });
+
+      it('returns error if missing body fields', () => {
+        return supertest(app)
+          .patch(route)
+          .set(authHeaders.nonDev)
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql(
+              "Missing 'dev_secret' in request body",
+            );
+          });
+      });
+
+      it('returns error if dev_secret is invalid', () => {
+        return supertest(app)
+          .patch(route)
+          .send({ dev_secret: 'invalid' })
+          .set(authHeaders.dev)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Invalid code');
+          });
+      });
+
+      it('toggles dev field and returns dev status of user', () => {
+        const result =
+          route === `${USERS_EP}/dev`
+            ? { devStatus: 'Dev status: false' }
+            : { user_name1: 'Dev status: false' };
+
+        return supertest(app)
+          .patch(route)
+          .send({ dev_secret })
+          .set(authHeaders.dev)
+          .expect(201)
+          .then((res) => {
+            expect(res.body).to.eql(result);
+          });
       });
     });
   });
