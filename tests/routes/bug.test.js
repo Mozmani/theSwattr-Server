@@ -8,7 +8,8 @@ const { ROUTES } = require('../../src/constants/endpoints.constants');
 describe('Route: Bug router', () => {
   const BUGS_EP = ROUTES.API + ROUTES.BUGS;
   const USERS_EP = ROUTES.API + ROUTES.USERS;
-  const testUser = helpers.getSeedData().users_seed[0];
+  const testDev = helpers.getSeedData().users_seed[0];
+  const testUser = helpers.getSeedData().users_seed[1];
   const queries = helpers.getExpectedQueryData();
 
   let db;
@@ -28,10 +29,15 @@ describe('Route: Bug router', () => {
     beforeEach('seed all data', () => helpers.seedAllTables(db));
   };
 
-  let authHeaders;
+  const authHeaders = { dev: {}, nonDev: {} };
   const getAuthHeadersHook = () => {
     beforeEach('set auth headers', async () => {
-      authHeaders = await helpers.getAuthHeaders(
+      authHeaders.dev = await helpers.getAuthHeaders(
+        app,
+        testDev.user_name,
+        db,
+      );
+      authHeaders.nonDev = await helpers.getAuthHeaders(
         app,
         testUser.user_name,
         db,
@@ -51,7 +57,7 @@ describe('Route: Bug router', () => {
       it('all bugs when user is a dev', () => {
         return supertest(app)
           .get(BUGS_EP)
-          .set(authHeaders)
+          .set(authHeaders.dev)
           .expect(200)
           .expect((res) => {
             expect(res.body.bugs).to.have.lengthOf(4);
