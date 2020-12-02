@@ -41,6 +41,7 @@ commentRouter
           )
         : await CRUDService.getAllBySearchOrder(
             req.app.get('db'),
+            TABLE_NAME,
             'user_name',
             user_name,
             'created_at',
