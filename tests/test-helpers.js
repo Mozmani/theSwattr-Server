@@ -60,6 +60,10 @@ const severity_level_seed = [
     id: 3,
     level: 'closed',
   },
+  {
+    id: 4,
+    level: 'dormant',
+  },
 ];
 
 // ! These can be test-specific

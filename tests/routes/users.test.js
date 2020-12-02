@@ -3,7 +3,7 @@ const knex = require('knex');
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 
-describe.skip('Route: Users router', () => {
+describe('Route: Users router', () => {
   let db;
   before('make knex instance', () => {
     db = knex({
@@ -12,6 +12,25 @@ describe.skip('Route: Users router', () => {
     });
     app.set('db', db);
   });
+
+  const testDev = helpers.getSeedData().users_seed[0];
+  const testUser = helpers.getSeedData().users_seed[1];
+
+  const authHeaders = { dev: {}, nonDev: {} };
+  const getAuthHeadersHook = () => {
+    beforeEach("set auth headers", async () => {
+      authHeaders.dev = await helpers.getAuthHeaders(
+        app,
+        testDev.user_name,
+        db
+      );
+      authHeaders.nonDev = await helpers.getAuthHeaders(
+        app,
+        testUser.user_name,
+        db
+      );
+    });
+  };
 
   beforeEach('seed all users', () => helpers.seedUsers(db));
 

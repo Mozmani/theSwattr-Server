@@ -31,6 +31,7 @@ bugRouter
           )
         : await CRUDService.getAllBySearchOrder(
             req.app.get('db'),
+            TABLE_NAME,
             'user_name',
             user_name,
             'updated_at',
@@ -91,6 +92,7 @@ bugRouter
 
       res.status(200).json({ newBug });
     } catch (error) {
+      console.log({ error });
       next(error);
     }
   });
