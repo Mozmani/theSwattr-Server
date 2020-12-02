@@ -152,6 +152,7 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
         )
       : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
+          TABLE_NAME,
           'user_name',
           user_name,
           'updated_at',
@@ -198,6 +199,7 @@ bugRouter.route('/status/:status').get(async (req, res, next) => {
         )
       : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
+          TABLE_NAME,
           'user_name',
           user_name,
           'updated_at',
@@ -244,6 +246,7 @@ bugRouter.route('/severity/:level').get(async (req, res, next) => {
         )
       : await CRUDService.getAllBySearchOrder(
           req.app.get('db'),
+          TABLE_NAME,
           'user_name',
           user_name,
           'updated_at',

@@ -2,8 +2,13 @@ const knex = require('knex');
 
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
+const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-describe('Route: Users router', () => {
+describe.skip('Route: Users router', () => {
+  const USERS_EP = ROUTES.API + ROUTES.USERS;
+  const testDev = helpers.getSeedData().users_seed[0];
+  const testUser = helpers.getSeedData().users_seed[1];
+
   let db;
   before('make knex instance', () => {
     db = knex({
@@ -38,8 +43,26 @@ describe('Route: Users router', () => {
 
   after('disconnect from db', () => db.destroy());
 
+  const authHeaders = { dev: {}, nonDev: {} };
+  const getAuthHeadersHook = () => {
+    beforeEach('set auth headers', async () => {
+      authHeaders.dev = await helpers.getAuthHeaders(
+        app,
+        testDev.user_name,
+        db,
+      );
+      authHeaders.nonDev = await helpers.getAuthHeaders(
+        app,
+        testUser.user_name,
+        db,
+      );
+    });
+  };
+
   describe.skip(`ENDPOINT: '/users'`, () => {
     context.skip('GET', () => {
+      getAuthHeadersHook();
+
       it.skip('rejects unauthorized user', () => {});
 
       it.skip('returns error if non-dev', () => {});
@@ -50,6 +73,8 @@ describe('Route: Users router', () => {
 
   describe.skip(`ENDPOINT: '/users/token'`, () => {
     context.skip('GET', () => {
+      getAuthHeadersHook();
+
       it.skip('rejects unauthorized user', () => {});
 
       it.skip('returns authToken on success', () => {});
@@ -89,6 +114,8 @@ describe('Route: Users router', () => {
 
   devRoutes.forEach(([route, userData]) => {
     describe.skip(`ENDPOINT: '${route}'`, () => {
+      getAuthHeadersHook();
+
       it.skip('rejects unauthorized user', () => {});
 
       it.skip('returns error if missing body fields', () => {});
