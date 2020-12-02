@@ -3,8 +3,9 @@ const knex = require('knex');
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 const { ROUTES } = require('../../src/constants/endpoints.constants');
+const { expect } = require('chai');
 
-describe.skip('Route: App router', () => {
+describe('Route: App router', () => {
   const APP_EP = ROUTES.API + ROUTES.APP;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];
@@ -38,11 +39,27 @@ describe.skip('Route: App router', () => {
     );
   });
 
-  it.skip('rejects unauthorized user', () => {});
+  it('rejects unauthorized user', () => {
+    return supertest(app).get(APP_EP).expect(401);
+  });
 
-  describe.skip(`ENDPOINT: '/app'`, () => {
-    context.skip('GET', () => {
-      it.skip('all formatted apps', () => {});
+  describe(`ENDPOINT: '/app'`, () => {
+    context('GET', () => {
+      it('all formatted apps', () => {
+        const result = {        
+          apps: [
+            { id: 1, rawName: 'main-app', formatName: 'Main App' },
+            { id: 2, rawName: 'second-app', formatName: 'Second App' }
+          ]
+        }
+        
+        return supertest(app).get(APP_EP)
+        .set(authHeaders.dev)
+        .expect(200)
+        .expect(res => {
+          expect(res.body).to.deep.equal(result)
+        })
+      });
     });
   });
 });
