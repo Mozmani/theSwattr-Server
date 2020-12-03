@@ -4,10 +4,10 @@
 -->
 
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
-GIT-USERNAME-HERE
-REPO-NAME-HERE
-APP-NAME-HERE
-PUT-TECH-STACK-HERE
+thinkful-ei-rabbit
+Cap3_Server_Team_A
+theSwattr
+React, Node.js, Postgresql
 API-DEPLOY-URL-HERE
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
 
@@ -21,27 +21,27 @@ API-DEPLOY-URL-HERE
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE">
-    <img src="images/LOGO-PATH-HERE" alt="Logo" width="100" height="100">
+  <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A">
+    <img src="images/logo-dark.png" alt="Logo" >
   </a>
 
-  <h3 align="center">APP-NAME-HERE - Server</h3>
+  <h3 align="center">theSwattr - Server</h3>
 
   <p align="center">
-    PUT-TECH-STACK-HERE
+    React, Node.js, Postgresql
     <br />
-    <a href="https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/issues">Report Bug</a>
+    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues">Report Bug</a>
     ·
-    <a href="https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/issues">Request Feature?</a>
+    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues">Request Feature?</a>
   </p>
 </p>
 
 ---
 
-<h1 align="center">APP-NAME-HERE</h1>
+<h1 align="center">theSwattr</h1>
 
 > ---
 >
@@ -192,16 +192,17 @@ module.exports = {
 
 You can see this in action in **[ app.js ]**:
 
-# TODO!!!
-<!-- ```js
+
+```js
 const {
+  appRouter,
+  bugRouter,
+  commentRouter,
+  editBugsRouter,
+  sortBugsRouter,
   usersRouter,
-  songsRouter,
-  songsSetsRouter,
-  setsRouter,
-  gigsRouter
 } = require('./routes');
-``` -->
+```
 
 > _Note that the import doesn't point to the index file. Node perceives **[ index.js ]** files as points of entry and the default file to grab exports from, essentially making it an implicit file in import statements_
 
@@ -227,6 +228,8 @@ Though it may be inconsequential for a server of this scale, it should be known 
 
 I can create both the `app` and `jsonBodyParser` (which is just middleware), and extract the `Router()` method itself (to be used as a sort of local "helper" function). Beacuase these are now local dependencies, I can import these wherever I want without an impact on runtime performance.
 
+-Derek Nelis
+
 #### body-validators.js:
 
 These are used to extract and validate request body values on a per-route basis, serialize any user-inputs, then creates a completed object passing it on to the next middleware. There are a few helper-functions at the top to DRY up the code a bit.
@@ -239,9 +242,47 @@ There's nothing too special here, just basic Token authentication, password encr
 
 ## routes:
 
+* bugs: /api/bugs
+```
+  '/'  -   GET, POST (all bugs)
+  '/:id' - GET (bug by id)
+  '/user/:userName' - GET (bugs by user)
+  '/severity/:severity' - GET (bugs by severity)
+  '/app/:app' - GET (bugs by app)
+  
+  ```
+* app: /api/app
+```
+  '/' - GET (graps all app names)
+```
+
+* users: /api/users
+```
+  '/' - GET (gets all users)
+  '/token' - GET (grabs auth token)
+  '/login' - POST (posts login)
+  '/register' - POST (posts new user)
+  '/dev' - PATCH (edits dev status of user)
+```
+* comments: /api/comments
+```
+  '/' - GET, POST (Get all comments or post one)
+  '/:id' - GET (get comment by id)
+```
+* sort: /api/sort
+```
+  '/severity/:app' - GET (returns arrays of bugs based on severity sorted by status)
+```
+* edit bugs: /edit
+```
+  '/:bugId' - PATCH (edits a specific bug)
+  ```
+
+## database:
+
 <div align="center">
   <h5>A brief overview of the database:</h5>
-  <img src="images/psql_erm.png" alt="erm" width="500">
+  <img src="images/ermDB.jpg" alt="erm" width="500">
 </div>
 
 > _This isn't 100% representative of the current database implementation, but from a relationship view this is how the Server operates. Currently, the following tables are implemented: users, songs, sets, songs_sets_
@@ -254,7 +295,8 @@ There's nothing too special here, just basic Token authentication, password encr
 
 ## <!-- CONTACT -->
 
-## Contact
+## Contact Derek:
+
 
 #### Github - [musicMan1337][github]
 
@@ -264,20 +306,31 @@ There's nothing too special here, just basic Token authentication, password encr
 
 #### Instagram - [@derek.8bit.nellis][instagram]
 
+## Contact Mark:
+#### Github - [Mark-The-Dev](https://github.com/Mark-The-Dev)
+
+#### LinkedIn - [Mark Marcello](https://www.linkedin.com/in/mark-marcello/)
+
+## Contact Russel:
+
+#### Github -
+#### LinkedIn - 
+
+
 <!-- MARKDOWN LINKS & IMAGES -->
 
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/GIT-USERNAME-HERE/REPO-NAME-HERE.svg?style=flat-square
-[contributors-url]: https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/GIT-USERNAME-HERE/REPO-NAME-HERE.svg?style=flat-square
-[forks-url]: https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/network/members
-[stars-shield]: https://img.shields.io/github/stars/GIT-USERNAME-HERE/REPO-NAME-HERE.svg?style=flat-square
-[stars-url]: https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GIT-USERNAME-HERE/REPO-NAME-HERE.svg?style=flat-square
-[issues-url]: https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/issues
-[license-shield]: https://img.shields.io/github/license/GIT-USERNAME-HERE/REPO-NAME-HERE.svg?style=flat-square
-[license-url]: https://github.com/GIT-USERNAME-HERE/REPO-NAME-HERE/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
+[contributors-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
+[forks-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/network/members
+[stars-shield]: https://img.shields.io/github/stars/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
+[stars-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/stargazers
+[issues-shield]: https://img.shields.io/github/issues/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
+[issues-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues
+[license-shield]: https://img.shields.io/github/license/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
+[license-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: www.linkedin.com/in/derek-8bit-nellis
 [product-screenshot]: images/p10k.png
