@@ -4,11 +4,13 @@
 -->
 
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
+
 thinkful-ei-rabbit
 Cap3_Server_Team_A
 theSwattr
 React, Node.js, Postgresql
 API-DEPLOY-URL-HERE
+
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -186,12 +188,11 @@ You may have already noticed that there are actually many **[ index.js ]** files
 const usersRouter = require('./users.router');
 
 module.exports = {
-  usersRouter
+  usersRouter,
 };
 ```
 
 You can see this in action in **[ app.js ]**:
-
 
 ```js
 const {
@@ -242,21 +243,25 @@ There's nothing too special here, just basic Token authentication, password encr
 
 ## routes:
 
-* bugs: /api/bugs
+- bugs: /api/bugs
+
 ```
   '/'  -   GET, POST (all bugs)
   '/:id' - GET (bug by id)
   '/user/:userName' - GET (bugs by user)
   '/severity/:severity' - GET (bugs by severity)
   '/app/:app' - GET (bugs by app)
-  
-  ```
-* app: /api/app
+
+```
+
+- app: /api/app
+
 ```
   '/' - GET (graps all app names)
 ```
 
-* users: /api/users
+- users: /api/users
+
 ```
   '/' - GET (gets all users)
   '/token' - GET (grabs auth token)
@@ -264,19 +269,25 @@ There's nothing too special here, just basic Token authentication, password encr
   '/register' - POST (posts new user)
   '/dev' - PATCH (edits dev status of user)
 ```
-* comments: /api/comments
+
+- comments: /api/comments
+
 ```
   '/' - GET, POST (Get all comments or post one)
   '/:id' - GET (get comment by id)
 ```
-* sort: /api/sort
+
+- sort: /api/sort
+
 ```
   '/severity/:app' - GET (returns arrays of bugs based on severity sorted by status)
 ```
-* edit bugs: /edit
+
+- edit bugs: /edit
+
 ```
   '/:bugId' - PATCH (edits a specific bug)
-  ```
+```
 
 ## database:
 
@@ -297,7 +308,6 @@ There's nothing too special here, just basic Token authentication, password encr
 
 ## Contact Derek:
 
-
 #### Github - [musicMan1337][github]
 
 #### LinkedIn - [Derek-8Bit-Nellis][linkedin]
@@ -307,15 +317,16 @@ There's nothing too special here, just basic Token authentication, password encr
 #### Instagram - [@derek.8bit.nellis][instagram]
 
 ## Contact Mark:
+
 #### Github - [Mark-The-Dev](https://github.com/Mark-The-Dev)
 
 #### LinkedIn - [Mark Marcello](https://www.linkedin.com/in/mark-marcello/)
 
-## Contact Russel:
+## Contact Russell:
 
-#### Github -
-#### LinkedIn - 
+#### Github - [Russjames92](https://github.com/Russjames92)
 
+#### LinkedIn - [Russell Champlain](https://www.linkedin.com/in/russell-champlain/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
