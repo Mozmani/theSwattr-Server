@@ -7,7 +7,7 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
-    "migrate:test": "env NODE_ENV=test npm run migrate",
+    "migrate:test": "env NODE_ENV=test npm run migrate -- 11",
     "migrate:prod": "heroku run npm run migrate",
     "lint": "eslint src/ ; exit 0",
     "lint:fix": "eslint --fix src/",

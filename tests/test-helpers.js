@@ -63,8 +63,7 @@ const severity_level_seed = [
   {
     id: 4,
     level: 'pending',
-  }
-  
+  },
 ];
 
 // ! These can be test-specific
@@ -336,11 +335,15 @@ const maliciousComment = {
 | Dev-Only Client-side submission data
 |--------------------------------------------------------------------------
 */
-const devBug1Update = {
+const devBug1FullUpdate = {
   request: {
-    id: 1,
+    user_name: 'user_name1',
     bug_name: 'updated bug name',
     description: 'updated bug description',
+    completed_notes: null,
+    status: 'open',
+    app: 'main-app',
+    severity: 'high',
   },
   result: {
     id: 1,
@@ -349,53 +352,34 @@ const devBug1Update = {
     description: 'updated bug description',
     completedDate: null,
     completedNotes: null,
-    status: 'pending',
-    app: 'main-app',
-    severity: 'low',
-  },
-};
-
-const devBug1StatusUpdate = {
-  request: { bug_id: 1, status: 'open' },
-  result: {
-    id: 1,
-    bugPostedBy: 'user_name1',
-    bugName: 'bug_name1',
-    description: 'description1',
-    completedDate: null,
-    completedNotes: null,
     status: 'open',
     app: 'main-app',
-    severity: 'low',
+    severity: 'high',
   },
 };
 
-const devBug1AppUpdate = {
-  request: { bug_id: 1, app_id: 'second-app' },
-  result: {
-    id: 1,
-    bugPostedBy: 'user_name1',
-    bugName: 'bug_name1',
-    description: 'description1',
-    completedDate: null,
-    completedNotes: null,
-    status: 'pending',
+const devBug1InvalidUpdate = {
+  user_name: 'user_name1',
+  bug_name: 'updated bug name',
+  description: 'updated bug description',
+  completed_notes: 'invalid status',
+  status: 'open',
+  app: 'main-app',
+  severity: 'high',
+};
+
+const devBug1UpdateBodies = {
+  bugBody: {
+    user_name: 'user_name1',
+    bug_name: 'updated bug name',
+    description: 'updated bug description',
     app: 'second-app',
-    severity: 'low',
+    completed_notes: null,
   },
-};
 
-const devBug1SeverityUpdate = {
-  request: { bug_id: 1, severity_id: 'high' },
-  result: {
-    id: 1,
-    bugPostedBy: 'user_name1',
-    bugName: 'bug_name1',
-    description: 'description1',
-    completedDate: null,
-    completedNotes: null,
-    status: 'pending',
-    app: 'main-app',
+  linkageBody: {
+    status: 'open',
+    app: 'second-app',
     severity: 'high',
   },
 };
@@ -536,6 +520,161 @@ const GET_REQUESTS = {
       comment: 'comment1',
     },
   ],
+
+  allCommentsUser1: [
+    {
+      id: 1,
+      bugName: 'bug_name2',
+      userName: 'user_name2',
+      comment: 'comment1',
+      createdDate: '',
+    },
+    {
+      id: 2,
+      bugName: 'bug_name2',
+      userName: 'user_name2',
+      comment: 'comment2',
+      createdDate: '',
+    },
+    {
+      id: 3,
+      bugName: 'bug_name3',
+      userName: 'user_name3',
+      comment: 'comment3',
+      createdDate: '',
+    },
+    {
+      id: 4,
+      bugName: 'bug_name2',
+      userName: 'user_name1',
+      comment: 'comment4',
+      createdDate: '',
+    },
+  ],
+
+  allCommentsUser2: [
+    {
+      id: 1,
+      bugName: 'bug_name2',
+      userName: 'user_name2',
+      comment: 'comment1',
+      createdDate: '',
+    },
+    {
+      id: 2,
+      bugName: 'bug_name2',
+      userName: 'user_name2',
+      comment: 'comment2',
+      createdDate: '',
+    },
+  ],
+
+  allApps: [
+    { id: 1, rawName: 'main-app', formatName: 'Main App' },
+    {
+      id: 2,
+      rawName: 'second-app',
+      formatName: 'Second App',
+    },
+  ],
+
+  sorts: {
+    status: {
+      dev: {
+        bugsPending: [
+          {
+            id: 4,
+            bugPostedBy: 'user_name1',
+            bugName: 'bug_name4',
+            description: 'description4',
+            createdDate: '2020-11-16T22:03:52.802Z',
+            updatedDate: '2020-11-16T22:04:56.423Z',
+            completedDate: '2020-11-16T22:05:28.457Z',
+            completedNotes: 'bug 4 resolved',
+            status: 'pending',
+            app: 'main-app',
+            severity: 'high',
+          },
+          {
+            id: 1,
+            bugPostedBy: 'user_name1',
+            bugName: 'bug_name1',
+            description: 'description1',
+            createdDate: '2020-12-03T23:26:55.247Z',
+            updatedDate: '2020-12-03T23:26:55.247Z',
+            completedDate: null,
+            completedNotes: null,
+            status: 'pending',
+            app: 'main-app',
+            severity: 'low',
+          },
+        ],
+        bugsOpen: [
+          {
+            id: 3,
+            bugPostedBy: 'user_name3',
+            bugName: 'bug_name3',
+            description: 'description3',
+            createdDate: '2020-12-03T23:26:55.247Z',
+            updatedDate: '2020-12-03T23:26:55.280Z',
+            completedDate: null,
+            completedNotes: null,
+            status: 'open',
+            app: 'main-app',
+            severity: 'high',
+          },
+          {
+            id: 2,
+            bugPostedBy: 'user_name2',
+            bugName: 'bug_name2',
+            description: 'description2',
+            createdDate: '2020-12-03T23:26:55.247Z',
+            updatedDate: '2020-12-03T23:26:55.280Z',
+            completedDate: null,
+            completedNotes: null,
+            status: 'open',
+            app: 'main-app',
+            severity: 'medium',
+          },
+        ],
+        bugsClosed: [],
+        bugsDormant: [],
+      },
+
+      nonDev: {
+        bugsPending: [],
+        bugsOpen: [
+          {
+            id: 2,
+            bugPostedBy: 'user_name2',
+            bugName: 'bug_name2',
+            description: 'description2',
+            createdDate: '2020-12-03T23:26:53.905Z',
+            updatedDate: '2020-12-03T23:26:53.930Z',
+            completedDate: null,
+            completedNotes: null,
+            status: 'open',
+            app: 'main-app',
+            severity: 'medium',
+          },
+        ],
+        bugsClosed: [],
+        bugsDormant: [],
+      },
+    },
+
+    app: {
+      dev: {},
+
+      nonDev: {},
+    },
+
+    severity: {
+      dev: {},
+
+      nonDev: {},
+    },
+  },
 };
 
 const DELETE_REQUESTS = {
@@ -579,7 +718,7 @@ const UNIQUE_QUERIES = {};
 const getUserPassword = (userName) =>
   USER_PASSWORDS_JWT[userName].password;
 
-const getAuthHeaders = async (app, user_name, db) => {
+const getAuthHeaders = async (app, user_name) => {
   const { password } = USER_PASSWORDS_JWT[user_name];
   const { body } = await supertest(app)
     .post('/api/users/login')
@@ -620,10 +759,9 @@ const getMaliciousSubmissions = () => ({
 });
 
 const getDevOnlySubmissions = () => ({
-  devBug1Update,
-  devBug1StatusUpdate,
-  devBug1AppUpdate,
-  devBug1SeverityUpdate,
+  devBug1FullUpdate,
+  devBug1InvalidUpdate,
+  devBug1UpdateBodies,
 });
 
 const getExpectedQueryData = () => ({

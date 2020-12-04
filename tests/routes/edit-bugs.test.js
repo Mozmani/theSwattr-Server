@@ -1,13 +1,16 @@
-const knex = require('knex');
-
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-describe.skip('Route: Edit-Bugs router', () => {
-  const EDIT_BUGS_EP = ROUTES.API + ROUTES.EDIT_BUGS;
+describe('Route: Edit-Bugs router', () => {
+  const EDIT_BUGS_EP = `${ROUTES.API + ROUTES.EDIT_BUGS}/1`;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];
+  const {
+    devBug1FullUpdate,
+    devBug1InvalidUpdate,
+    devBug1UpdateBodies,
+  } = helpers.getDevOnlySubmissions();
 
   let db;
   before('make knex instance', () => {
@@ -38,23 +41,95 @@ describe.skip('Route: Edit-Bugs router', () => {
     );
   });
 
-  it.skip('rejects unauthorized user', () => {});
+  describe(`ENDPOINT: '/edit/:bugId'`, () => {
+    context('PATCH', () => {
+      it('returns error if missing token', () => {
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Missing bearer token');
+          });
+      });
 
-  describe.skip(`ENDPOINT: '/edit/:bugId'`, () => {
-    it.skip('returns and error if not a dev', () => {});
+      it('returns and error if not a dev', () => {
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .set(authHeaders.nonDev)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Unauthorized edit request');
+          });
+      });
 
-    context.skip('PATCH', () => {
-      it.skip('returns error if missing bug body fields', () => {});
+      it('returns error if missing bug body fields', () => {
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .set(authHeaders.dev)
+          .send(devBug1UpdateBodies.linkageBody)
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql(
+              "Missing 'user_name' in request body",
+            );
+          });
+      });
 
-      it.skip('returns error if missing linkage body fields', () => {});
+      it('returns error if missing linkage body fields', () => {
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .set(authHeaders.dev)
+          .send(devBug1UpdateBodies.bugBody)
+          .expect(400)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql("Missing 'status' in request body");
+          });
+      });
 
-      it.skip('returns error if closing a bug has invalid fields', () => {});
+      it('returns error if closing a bug has invalid fields', () => {
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .set(authHeaders.dev)
+          .send(devBug1InvalidUpdate)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql("Status must be 'closed'");
+          });
+      });
 
-      it.skip('updates bug table if bug is changed', () => {});
+      it('returns updated bug', () => {
+        const { request, result } = devBug1FullUpdate;
 
-      it.skip('updates linkage tables if linkages are changed', () => {});
+        return supertest(app)
+          .patch(EDIT_BUGS_EP)
+          .set(authHeaders.dev)
+          .send(request)
+          .expect(200)
+          .then((res) => {
+            const { editBug } = res.body;
+            const {
+              createdDate,
+              updatedDate,
+              completedDate,
+            } = editBug;
+            const expected = {
+              ...result,
+              createdDate,
+              updatedDate,
+              completedDate,
+            };
 
-      it.skip('returns updated bug', () => {});
+            expect(createdDate).to.be.a('string');
+            expect(updatedDate).to.be.a('string');
+            expect(completedDate).to.eql(null);
+            expect(editBug).to.eql(expected);
+          });
+      });
     });
   });
 });

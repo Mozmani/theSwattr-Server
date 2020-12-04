@@ -1,11 +1,8 @@
-const knex = require('knex');
-const supertest = require('supertest');
-
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-describe.skip('Route: Bug router', () => {
+describe('Route: Bug router', () => {
   const BUGS_EP = ROUTES.API + ROUTES.BUGS;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];
@@ -145,7 +142,7 @@ describe.skip('Route: Bug router', () => {
   });
 
   // future feature tests
-  describe.skip('ENDPOINTS: filter routes', () => {
+  describe('ENDPOINTS: filter routes', () => {
     const filterRoutes = [
       '/bugs/user/:userName',
       '/bugs/app/:app',

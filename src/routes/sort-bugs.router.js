@@ -48,7 +48,7 @@ sortBugsRouter.route('/status/:app').get(async (req, res, next) => {
         thisBug.app = links.app_name;
         thisBug.severity = links.level;
 
-        switch (thisBug.severity) {
+        switch (thisBug.status) {
           case 'pending':
             pending.push(thisBug);
             break;

@@ -1,13 +1,13 @@
-const knex = require('knex');
-
 const app = require('../../src/app');
 const helpers = require('../test-helpers');
 const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-describe.skip('Route: Sort-Bugs router', () => {
+describe('Route: Sort-Bugs router', () => {
   const SORT_BUGS_EP = ROUTES.API + ROUTES.SORT_BUGS;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];
+  const queries = helpers.getExpectedQueryData();
+  const { sorts } = queries.GET_REQUESTS;
 
   let db;
   before('make knex instance', () => {
@@ -38,43 +38,59 @@ describe.skip('Route: Sort-Bugs router', () => {
     );
   });
 
-  it.skip('rejects unauthorized user', () => {});
+  const sortRoutes = {
+    status: '/status/main-app',
+    app: '/app',
+    severity: '/severity/main-app',
+  };
+  const sortTypes = Object.keys(sortRoutes);
 
-  describe.skip(`ENDPOINT: '/sort/status/:app'`, () => {
-    context.skip('GET', () => {
-      const devResults = null;
-      const userResults = null;
+  sortTypes.forEach((type) => {
+    context(`ENDPOINT: GET '/sort${sortRoutes[type]}'`, () => {
+      const nonDevResults = sorts[type].nonDev;
+      const devResults = sorts[type].dev;
+      const tests = [nonDevResults, devResults];
 
-      [(devResults, userResults)].forEach((results, idx) => {
-        const dev = idx === 0 ? 'dev' : 'non-dev';
+      tests.forEach((expected, isDev) => {
+        const text = isDev ? 'dev' : 'non-dev';
+        const ENDPOINT = SORT_BUGS_EP + sortRoutes[type];
 
-        it.skip(`returns sorted arrays by ${dev}`, () => {});
-      });
-    });
-  });
+        // ? only run once per route
+        if (!isDev) {
+          it('returns error if missing token', () => {
+            return supertest(app)
+              .get(ENDPOINT)
+              .expect(401)
+              .then((res) => {
+                const { error } = res.body;
+                expect(error).to.eql('Missing bearer token');
+              });
+          });
+        }
 
-  describe.skip(`ENDPOINT: '/sort/app'`, () => {
-    context.skip('GET', () => {
-      const devResults = null;
-      const userResults = null;
+        it(`returns sorted arrays by ${text}`, () => {
+          const headers = isDev ? authHeaders.dev : authHeaders.nonDev;
 
-      [(devResults, userResults)].forEach((results, idx) => {
-        const dev = idx === 0 ? 'dev' : 'non-dev';
+          return supertest(app)
+            .get(ENDPOINT)
+            .set(headers)
+            .expect(200)
+            .then((res) => {
+              const { body } = res;
+              const keys = Object.keys(expected);
+              keys.forEach((key) => {
+                expected[key].forEach((bug, idx) => {
+                  const resBug = body[key][idx];
+                  const { createdDate, updatedDate } = resBug;
+                  const expBug = { ...bug, createdDate, updatedDate };
 
-        it.skip(`returns sorted arrays by ${dev}`, () => {});
-      });
-    });
-  });
-
-  describe.skip(`ENDPOINT: '/sort/severity/:app'`, () => {
-    context.skip('GET', () => {
-      const devResults = null;
-      const userResults = null;
-
-      [(devResults, userResults)].forEach((results, idx) => {
-        const dev = idx === 0 ? 'dev' : 'non-dev';
-
-        it.skip(`returns sorted arrays by ${dev}`, () => {});
+                  expect(createdDate).to.be.a('string');
+                  expect(updatedDate).to.be.a('string');
+                  expect(resBug).to.eql(expBug);
+                });
+              });
+            });
+        });
       });
     });
   });

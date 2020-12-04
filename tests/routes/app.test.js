@@ -1,60 +1,63 @@
-const knex = require("knex");
+const app = require('../../src/app');
+const helpers = require('../test-helpers');
+const { ROUTES } = require('../../src/constants/endpoints.constants');
 
-const app = require("../../src/app");
-const helpers = require("../test-helpers");
-const { ROUTES } = require("../../src/constants/endpoints.constants");
-const { expect } = require("chai");
-
-describe("Route: App router", () => {
+describe('Route: App router', () => {
   const APP_EP = ROUTES.API + ROUTES.APP;
   const testDev = helpers.getSeedData().users_seed[0];
   const testUser = helpers.getSeedData().users_seed[1];
+  const queries = helpers.getExpectedQueryData();
 
   let db;
-  before("make knex instance", () => {
+  before('make knex instance', () => {
     db = knex({
-      client: "pg",
+      client: 'pg',
       connection: TEST_DB_URL,
     });
-    app.set("db", db);
+    app.set('db', db);
   });
 
-  afterEach("cleanup", () => helpers.cleanTables(db));
+  afterEach('cleanup', () => helpers.cleanTables(db));
 
-  after("disconnect from db", () => db.destroy());
+  after('disconnect from db', () => db.destroy());
 
   const authHeaders = { dev: {}, nonDev: {} };
-  beforeEach("set auth headers", async () => {
+  beforeEach('set auth headers', async () => {
     await helpers.seedAllTables(db);
 
-    authHeaders.dev = await helpers.getAuthHeaders(app, testDev.user_name, db);
+    authHeaders.dev = await helpers.getAuthHeaders(
+      app,
+      testDev.user_name,
+      db,
+    );
     authHeaders.nonDev = await helpers.getAuthHeaders(
       app,
       testUser.user_name,
-      db
+      db,
     );
   });
 
-  it("rejects unauthorized user", () => {
-    return supertest(app).get(APP_EP).expect(401);
-  });
-
   describe(`ENDPOINT: '/app'`, () => {
-    context("GET", () => {
-      it("all formatted apps", () => {
-        const result = {
-          apps: [
-            { id: 1, rawName: "main-app", formatName: "Main App" },
-            { id: 2, rawName: "second-app", formatName: "Second App" },
-          ],
-        };
+    context('GET', () => {
+      it('returns error if missing token', () => {
+        return supertest(app)
+          .get(APP_EP)
+          .expect(401)
+          .then((res) => {
+            const { error } = res.body;
+            expect(error).to.eql('Missing bearer token');
+          });
+      });
 
+      it('returns formatted apps', () => {
         return supertest(app)
           .get(APP_EP)
           .set(authHeaders.dev)
           .expect(200)
           .expect((res) => {
-            expect(res.body).to.deep.equal(result);
+            const { allApps } = queries.GET_REQUESTS;
+            const { apps } = res.body;
+            expect(apps).to.deep.equal(allApps);
           });
       });
     });

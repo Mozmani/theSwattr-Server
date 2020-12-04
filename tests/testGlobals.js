@@ -3,6 +3,7 @@ process.env.JWT_EXPIRY = '10s';
 
 const { expect } = require('chai');
 const supertest = require('supertest');
+const knex = require('knex');
 
 const {
   NODE_ENV,
@@ -13,6 +14,7 @@ const {
 
 global.expect = expect;
 global.supertest = supertest;
+global.knex = knex;
 global.NODE_ENV = NODE_ENV;
 global.TEST_DB_URL = TEST_DB_URL;
 global.JWT_SECRET = JWT_SECRET;

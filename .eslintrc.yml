@@ -17,6 +17,7 @@ globals:
   #! for testing
   expect: readonly
   supertest: readonly
+  knex: readonly
   NODE_ENV: readonly
   TEST_DB_URL: readonly
   JWT_SECRET: readonly
