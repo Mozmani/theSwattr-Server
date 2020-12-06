@@ -7,10 +7,14 @@ const QueryService = {
       .then((user) => !!user);
   },
 
+  //more advanced queries
+
+
   initLinkages(db, bug_id, app) {
     return db.raw(`SELECT init_app_severity(${bug_id}, '${app}')`);
   },
 
+  //grab linkages for bugs
   async grabBugLinkages(db, bug_id) {
     const [{ status_name }] = await db('status as s')
       .join('bug_status as bs', 'bs.status_id', 's.id')

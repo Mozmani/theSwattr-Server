@@ -1,5 +1,6 @@
 const { NODE_ENV } = require('../config');
 
+//error handlers
 const errorTypes = {
   ValidationError: 422,
   UniqueViolationError: 409,

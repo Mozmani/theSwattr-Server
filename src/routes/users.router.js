@@ -10,8 +10,10 @@ const {
 const usersRouter = Router();
 const TABLE_NAME = TABLE_NAMES.USERS;
 
+//users router
 usersRouter
   .route('/')
+  //gets all users
   .get(auth.requireAuth, async (req, res, next) => {
     try {
       if (!req.dbUser.dev) {
@@ -34,6 +36,7 @@ usersRouter
 
 usersRouter
   .route('/token')
+  //gets token
   .get(auth.requireAuth, async (req, res, next) => {
     try {
       const authToken = auth.createJwt(req.dbUser);
@@ -68,6 +71,7 @@ usersRouter
       next(error);
     }
   })
+  //posts a login
   .post(auth.passwordCheck, (req, res, next) => {
     try {
       res.send({ authToken: req.token });
@@ -79,6 +83,7 @@ usersRouter
 usersRouter
   .route('/register')
   .all(jsonBodyParser, validate.registrationBody)
+  //posts registration
   .post(async (req, res, next) => {
     try {
       const invalidName = await QueryService.userNameExists(
@@ -111,6 +116,7 @@ usersRouter
 usersRouter
   .route('/dev')
   .all(auth.requireAuth, jsonBodyParser, validate.devBody)
+  //edits dev status of user
   .patch(async (req, res, next) => {
     try {
       const { user_name, dev } = req.dbUser;
@@ -130,6 +136,7 @@ usersRouter
 usersRouter
   .route('/dev/:userName')
   .all(auth.requireAuth, jsonBodyParser, validate.devBody)
+  //edits dev status of a specific user
   .patch(async (req, res, next) => {
     try {
       if (!req.dbUser.dev) {

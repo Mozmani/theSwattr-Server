@@ -8,10 +8,12 @@ const {
 
 const TABLE_NAME = TABLE_NAMES.BUG;
 
+//sort bugs router
 const sortBugsRouter = Router();
 
 sortBugsRouter.use(auth.requireAuth);
 
+// sorts by status of app
 sortBugsRouter.route('/status/:app').get(async (req, res, next) => {
   try {
     const { app } = req.params;
@@ -87,6 +89,7 @@ sortBugsRouter.route('/status/:app').get(async (req, res, next) => {
   }
 });
 
+//sort by app
 sortBugsRouter.route('/app').get(async (req, res, next) => {
   try {
     const { dev, user_name } = req.dbUser;
@@ -147,6 +150,7 @@ sortBugsRouter.route('/app').get(async (req, res, next) => {
   }
 });
 
+//sorts by severity for the targeted app ** Dev view route
 sortBugsRouter.route('/severity/:app').get(async (req, res, next) => {
   try {
     const { app } = req.params;

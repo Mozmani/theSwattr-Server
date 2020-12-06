@@ -6,12 +6,15 @@ const {
   validatePassword,
 } = require('../helpers/validations');
 
+//body validators
+
 function _errorResponse(res, undefField) {
   res.status(400).json({
     error: `Missing '${undefField}' in request body`,
   });
 }
 
+//validates login body
 const loginBody = (req, res, next) => {
   try {
     const { user_name, password } = req.body;
@@ -32,6 +35,7 @@ const loginBody = (req, res, next) => {
   }
 };
 
+//validates registration body
 const registrationBody = async (req, res, next) => {
   try {
     const {
@@ -82,6 +86,7 @@ const registrationBody = async (req, res, next) => {
   }
 };
 
+//validates dev body
 const devBody = (req, res, next) => {
   try {
     const { dev_secret } = req.body;
@@ -102,6 +107,7 @@ const devBody = (req, res, next) => {
   }
 };
 
+//validates bug body
 const bugBody = async (req, res, next) => {
   try {
     const {
@@ -150,6 +156,7 @@ const bugBody = async (req, res, next) => {
   }
 };
 
+//validates linkage tables
 const linkageBody = async (req, res, next) => {
   try {
     const { status, app, severity } = req.body;
@@ -177,6 +184,7 @@ const linkageBody = async (req, res, next) => {
   }
 };
 
+//validates comment body
 const commentBody = async (req, res, next) => {
   try {
     const { bug_id, user_name, comment } = req.body;

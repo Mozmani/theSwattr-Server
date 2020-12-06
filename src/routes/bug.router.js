@@ -13,12 +13,14 @@ const {
 
 const TABLE_NAME = TABLE_NAMES.BUG;
 
+//bug router
 const bugRouter = Router();
 
 bugRouter.use(auth.requireAuth);
 
 bugRouter
   .route('/')
+  //gets all bugs
   .get(async (req, res, next) => {
     try {
       const { dev, user_name } = req.dbUser;
@@ -64,6 +66,7 @@ bugRouter
       next(error);
     }
   })
+  //posts new bug
   .post(jsonBodyParser, validate.bugBody, async (req, res, next) => {
     try {
       const [rawBug] = await CRUDService.createEntry(
@@ -96,7 +99,7 @@ bugRouter
     }
   });
 
-// ? Filter routes...
+// gets bugs by username
 bugRouter.route('/user/:userName').get(async (req, res, next) => {
   try {
     const { userName } = req.params;
@@ -138,6 +141,7 @@ bugRouter.route('/user/:userName').get(async (req, res, next) => {
   }
 });
 
+//gets bugs by app
 bugRouter.route('/app/:app').get(async (req, res, next) => {
   try {
     const app = req.params.app.replace(/-/g, ' ');
@@ -185,6 +189,7 @@ bugRouter.route('/app/:app').get(async (req, res, next) => {
   }
 });
 
+//gets bugs by status
 bugRouter.route('/status/:status').get(async (req, res, next) => {
   try {
     const { status } = req.params;
@@ -232,6 +237,7 @@ bugRouter.route('/status/:status').get(async (req, res, next) => {
   }
 });
 
+//gets bugs by severity
 bugRouter.route('/severity/:level').get(async (req, res, next) => {
   try {
     const { level } = req.params;
@@ -279,6 +285,7 @@ bugRouter.route('/severity/:level').get(async (req, res, next) => {
   }
 });
 
+//gets bug by id
 bugRouter.route('/:id').get(async (req, res, next) => {
   try {
     const { id } = req.params;

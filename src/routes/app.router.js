@@ -10,6 +10,9 @@ const appRouter = Router();
 
 appRouter.use(auth.requireAuth);
 
+//app router
+
+//get all apps
 appRouter.route('/').get(async (req, res, next) => {
   try {
     const rawApps = await CRUDService.getAllData(
@@ -31,6 +34,7 @@ appRouter.route('/').get(async (req, res, next) => {
   }
 });
 
+//returns severity levels from app
 appRouter.route('/severity').get(async (req, res, next) => {
   try {
     const rawSev = await CRUDService.getAllData(
@@ -48,6 +52,7 @@ appRouter.route('/severity').get(async (req, res, next) => {
   }
 });
 
+//get status levels from app
 appRouter.route('/status').get(async (req, res, next) => {
   try {
     const rawStats = await CRUDService.getAllData(

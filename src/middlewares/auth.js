@@ -4,7 +4,9 @@ const bcrypt = require('bcryptjs');
 const { JWT_SECRET, JWT_EXPIRY, SALT_ROUNDS } = require('../config');
 const { TABLE_NAMES } = require('../constants/db.constants');
 const { CRUDService } = require('../services');
+//Auth middlewates
 
+//creates JWT
 const createJwt = (user) => {
   const { user_name, email, first_name, last_name, dev } = user;
 
@@ -22,7 +24,7 @@ const createJwt = (user) => {
     algorithm: 'HS256',
   });
 };
-
+//hashes password with bcrypt
 const hashPassword = async (password) => {
   try {
     return await bcrypt.hash(password, SALT_ROUNDS);
@@ -31,6 +33,7 @@ const hashPassword = async (password) => {
   }
 };
 
+//checks password to hashed p/w
 const passwordCheck = async (req, res, next) => {
   try {
     const plainTextPassword = req.loginUser.password;
@@ -57,6 +60,7 @@ const passwordCheck = async (req, res, next) => {
   }
 };
 
+//requires auth for specific route
 const requireAuth = async (req, res, next) => {
   const authToken = req.get('Authorization') || '';
 

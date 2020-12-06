@@ -9,7 +9,10 @@ const {
   COMMENT_THREAD_CLIENT_RETURN,
 } = require('../constants/db-returns.constants');
 
+
+//serialize service
 const SerializeService = {
+  //sanitizes object
   sanitizeObject(rawObject) {
     const keyVals = Object.entries(rawObject);
 
@@ -18,10 +21,12 @@ const SerializeService = {
     return rawObject;
   },
 
+  //sanitize all
   sanitizeAll(rawArray) {
     return rawArray.map(this.serializeObject);
   },
 
+  //formats user for response
   formatUser(rawUser) {
     const keyVals = Object.entries(USERS_CLIENT_RETURN);
 
@@ -31,6 +36,7 @@ const SerializeService = {
     return user;
   },
 
+  //formats bug for response
   formatBug(rawBug) {
     const keyVals = Object.entries(BUG_CLIENT_RETURN);
 
@@ -40,6 +46,7 @@ const SerializeService = {
     return bug;
   },
 
+  //formats comment for response
   formatComment(rawComment) {
     const keyVals = Object.entries(COMMENT_THREAD_CLIENT_RETURN);
 
@@ -51,6 +58,7 @@ const SerializeService = {
     return comment;
   },
 
+  //standard format all
   formatAll(data, tableName) {
     switch (tableName) {
       case BUG:

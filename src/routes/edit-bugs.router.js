@@ -19,6 +19,7 @@ const BUG_TABLE = TABLE_NAMES.BUG,
   BUG_APP_TABLE = TABLE_NAMES.BUG_APP,
   BUG_SEV_TABLE = TABLE_NAMES.BUG_SEVERITY;
 
+//edit bugs router
 const editBugsRouter = Router();
 
 editBugsRouter.use(auth.requireAuth, jsonBodyParser);
@@ -32,6 +33,7 @@ editBugsRouter
       res.status(401).json({ error: 'Unauthorized edit request' });
     } else next();
   })
+  // edits a bug
   .patch(
     validate.bugBody,
     validate.linkageBody,

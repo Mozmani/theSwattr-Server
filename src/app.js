@@ -34,9 +34,6 @@ app.get('/', (_req, res) => {
   res.send('Express boilerplate initialized!');
 });
 
-// app.use('/api/edit', (_req, res) => {
-//   res.send('Express boilerplate initialized!');
-// });
 
 /*
 | ROUTES HERE -------------------------

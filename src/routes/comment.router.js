@@ -1,7 +1,7 @@
 const { TABLE_NAMES } = require("../constants/db.constants");
 const { CRUDService, SerializeService } = require("../services");
 const { auth, validate, Router, jsonBodyParser } = require("../middlewares");
-
+//comments router
 const commentRouter = Router();
 const TABLE_NAME = TABLE_NAMES.COMMENT_THREAD;
 
@@ -19,6 +19,7 @@ commentRouter.use(auth.requireAuth);
 
 commentRouter
   .route("/")
+  //get all comments
   .get(async (req, res, next) => {
     try {
       const { dev, user_name } = req.dbUser;
@@ -54,6 +55,7 @@ commentRouter
       next(error);
     }
   })
+  //posts a comment
   .post(jsonBodyParser, validate.commentBody, async (req, res, next) => {
     try {
       const { dev, user_name } = req.dbUser;
@@ -110,6 +112,7 @@ commentRouter
       next(error);
     }
   })
+  //gets a comment by id
   .get(async (req, res, next) => {
     try {
       const rawComment = await CRUDService.getBySearch(
@@ -128,6 +131,7 @@ commentRouter
       next(error);
     }
   })
+  //edits a specific comment
   .patch(jsonBodyParser, validate.commentBody, async (req, res, next) => {
     try {
       const [updComment] = await CRUDService.updateEntry(
@@ -147,6 +151,7 @@ commentRouter
       next(error);
     }
   })
+  //deletes a comment
   .delete(async (req, res, next) => {
     try {
       const [delComment] = await CRUDService.deleteEntry(
@@ -166,6 +171,7 @@ commentRouter
     }
   });
 
+//gets comment by bugId
 commentRouter.route("/bug/:bugId").get(async (req, res, next) => {
   try {
     const { bugId } = req.params;
@@ -207,6 +213,7 @@ commentRouter.route("/bug/:bugId").get(async (req, res, next) => {
   }
 });
 
+//gets comments by user name
 commentRouter.route("/user/:userName").get(async (req, res, next) => {
   try {
     const { userName } = req.params;
