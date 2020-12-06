@@ -5,11 +5,6 @@
 
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
 
-thinkful-ei-rabbit
-Cap3_Server_Team_A
-theSwattr
-React, Node.js, Postgresql
-API-DEPLOY-URL-HERE
 
 <!-- ! highlight and 'ctrl+shift+L' to replace all ! -->
 
@@ -23,7 +18,7 @@ API-DEPLOY-URL-HERE
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A">
+  <a href="https://github.com/Mark-The-Dev/theSwattr-Server">
     <img src="images/logo-dark.png" alt="Logo" >
   </a>
 
@@ -32,12 +27,12 @@ API-DEPLOY-URL-HERE
   <p align="center">
     React, Node.js, Postgresql
     <br />
-    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Mark-The-Dev/theSwattr-Server"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues">Report Bug</a>
+    <a href="https://github.com/Mark-The-Dev/theSwattr-Server/issues">Report Bug</a>
     ·
-    <a href="https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues">Request Feature?</a>
+    <a href="https://github.com/Mark-The-Dev/theSwattr-Server/issues">Request Feature?</a>
   </p>
 </p>
 
@@ -45,15 +40,27 @@ API-DEPLOY-URL-HERE
 
 <h1 align="center">theSwattr</h1>
 
+
+## Summary:
 > ---
+> 
+> This is the client for theSwattr, the development team bug tracking application with a built in ticket system. This application works to allow developers to see a sorted and organized list of bugs for their applications based on severity and status.
+> 
+> In addition regular users can submit bugs and see their own submitted bugs. Inside of each bug is a list of comments pertaining to the status of the bug. This is a place where the developers and end users can communicate with eachother to make sure that issue is adressed.
 >
-> _This will be a comprehensive README for the sake of both prospective employers and fellow cohort peers, and whomever else would be interested in some of the techniques I've learned creating my frist Fullstack application. As a bonus, this README has some interesting implementations, though I won't address them here._
+> _If you'd like to test the server via Postman, visit the client app..._ https://github.com/Mark-The-Dev/theSwattr-Client
+>_...register a user, grab your Bearer Token in dev tools, and use this endpoint: https://the-swattr.herokuapp.com/api/
 >
-> _If you'd like to test the server via Postman, visit the client app..._
+> ---
+
+![dev-view](https://github.com/thinkful-ei-rabbit/Cap3_Client_Team_A/blob/master/public/dev-view.png?raw=true)
+
+
+
 >
-> <div><a href="https://API-DEPLOY-URL-HERE">here</a></div>
+
 >
-> _...register a user, grab your Bearer Token in dev tools, and use this endpoint: https://glacial-basin-85263.herokuapp.com/setapp/v1_
+> 
 >
 > ---
 
@@ -61,7 +68,6 @@ API-DEPLOY-URL-HERE
 
 ###### This README will systematically go over the entire app from the top level to the bottom layer, so I'll provide links to various sections for convenience.
 
-# TODO - ADD DIRECTORY LINKS!
 
 ---
 
@@ -298,13 +304,15 @@ There's nothing too special here, just basic Token authentication, password encr
 
 > _This isn't 100% representative of the current database implementation, but from a relationship view this is how the Server operates. Currently, the following tables are implemented: users, songs, sets, songs_sets_
 
----
 
-## services:
-
----
 
 ## <!-- CONTACT -->
+
+## Contact Mark:
+
+#### Github - [Mark-The-Dev](https://github.com/Mark-The-Dev)
+
+#### LinkedIn - [Mark Marcello](https://www.linkedin.com/in/mark-marcello/)
 
 ## Contact Derek:
 
@@ -316,11 +324,6 @@ There's nothing too special here, just basic Token authentication, password encr
 
 #### Instagram - [@derek.8bit.nellis][instagram]
 
-## Contact Mark:
-
-#### Github - [Mark-The-Dev](https://github.com/Mark-The-Dev)
-
-#### LinkedIn - [Mark Marcello](https://www.linkedin.com/in/mark-marcello/)
 
 ## Contact Russell:
 
@@ -332,16 +335,16 @@ There's nothing too special here, just basic Token authentication, password encr
 
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
-[contributors-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
-[forks-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/network/members
-[stars-shield]: https://img.shields.io/github/stars/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
-[stars-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/stargazers
-[issues-shield]: https://img.shields.io/github/issues/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
-[issues-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/issues
-[license-shield]: https://img.shields.io/github/license/thinkful-ei-rabbit/Cap3_Server_Team_A.svg?style=flat-square
-[license-url]: https://github.com/thinkful-ei-rabbit/Cap3_Server_Team_A/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Mark-The-Dev/theSwattr-Server.svg?style=flat-square
+[contributors-url]: https://github.com/Mark-The-Dev/theSwattr-Server/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Mark-The-Dev/theSwattr-Server.svg?style=flat-square
+[forks-url]: https://github.com/Mark-The-Dev/theSwattr-Server/network/members
+[stars-shield]: https://img.shields.io/github/stars/Mark-The-Dev/theSwattr-Server.svg?style=flat-square
+[stars-url]: https://github.com/Mark-The-Dev/theSwattr-Server/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Mark-The-Dev/theSwattr-Server.svg?style=flat-square
+[issues-url]: https://github.com/Mark-The-Dev/theSwattr-Server/issues
+[license-shield]: https://img.shields.io/github/license/Mark-The-Dev/theSwattr-Server.svg?style=flat-square
+[license-url]: https://github.com/Mark-The-Dev/theSwattr-Server/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: www.linkedin.com/in/derek-8bit-nellis
 [product-screenshot]: images/p10k.png
