@@ -58,11 +58,6 @@ API-DEPLOY-URL-HERE
 > ---
 
 ---
-
-###### This README will systematically go over the entire app from the top level to the bottom layer, so I'll provide links to various sections for convenience.
-
-# TODO - ADD DIRECTORY LINKS!
-
 ---
 
 <!-- ? For Typescript only!
@@ -293,7 +288,7 @@ There's nothing too special here, just basic Token authentication, password encr
 
 <div align="center">
   <h5>A brief overview of the database:</h5>
-  <img src="images/ermDB.jpg" alt="erm" width="500">
+  <img src="https://i.imgur.com/tmqkNPR.png" alt="erm" width="500">
 </div>
 
 > _This isn't 100% representative of the current database implementation, but from a relationship view this is how the Server operates. Currently, the following tables are implemented: users, songs, sets, songs_sets_
